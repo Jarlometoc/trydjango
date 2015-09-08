@@ -24,9 +24,9 @@ urlpatterns = [
     url(r'^$', 'UserAccounts.views.home', name='home'),   #^$ means nothing (home)
     url(r'^contact/$', 'UserAccounts.views.contact', name = 'contact'),
     url(r'^about/$', 'trydjango18.views.about', name = 'about'),
-    url(r'^accounts/', include('registration.backends.default.urls')),    #register
+    #url(r'^accounts/', include('registration.backends.default.urls')),    #register
     url(r'^main/', 'trydjango18.views.main', name = 'main'),   #mainpage
-    #url(r'^accounts/', include('registration.backends.simple.urls')),  #no registration/confirm etc
+    url(r'^accounts/', include('registration.backends.simple.urls')),  #no registration/confirm etc
 
 ]
 

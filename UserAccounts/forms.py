@@ -2,7 +2,7 @@ from django import forms
 from .models import SignUp
 
 
-#for contact forms
+#for contact us!
 from django import forms
 class ContactForm(forms.Form):
     full_name = forms.CharField()

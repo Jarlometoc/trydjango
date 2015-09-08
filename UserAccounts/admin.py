@@ -2,9 +2,9 @@ from django.contrib import admin
 
 # Bring in and Register your models here.
 #Import model and register
-from .models import SignUp
-class SignUpAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "timestamp", "updated"]
-    class Meta:
-        model = SignUp
-admin.site.register(SignUp, SignUpAdmin)
+#from .models import SignUp
+#class SignUpAdmin(admin.ModelAdmin):
+    #list_display = ["__str__", "timestamp", "updated"]
+    #class Meta:
+       # model = SignUp
+#admin.site.register(SignUp, SignUpAdmin)
