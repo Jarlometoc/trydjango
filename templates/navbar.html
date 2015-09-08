@@ -33,7 +33,13 @@
 
           </ul>
          <ul class="nav navbar-nav navbar-right">
-        {% if request.user.is_authenticated %}
+
+         {% if request.user.is_staff %}
+            <li><a href="/admin/">Django administration</a></li>
+            <li><a href="{% url 'main'%}">MainPage</a></li>
+            <li><a href="{% url 'auth_logout'%}">Logout</a></li>
+
+        {% elif request.user.is_authenticated %}
              <li><a href="{% url 'main'%}">MainPage</a></li>
               <li><a href="{% url 'auth_logout'%}">Logout</a></li>
 
