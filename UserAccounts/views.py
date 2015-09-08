@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import ContactForm  #for contact form additon
-from .forms import SignUpForm
+#from .forms import SignUpForm
 
 #For email
 #*************************
@@ -9,16 +9,16 @@ from django.core.mail import send_mail  #see django example
 #**************************
 
 def home(request):
-    title = 'New and Returning'
-    #if request.user.is_authenticated():
-     #   title = "Welcome Back %s"  %(request.user)
+    #title = 'New and Returning'
+   # if request.user.is_authenticated():
+     # title = "Welcome Back %s"  %(request.user)
 
-    form = SignUpForm()
-    context = {
-        "title": title,    #context dict
-        "form": form
-    }
-    return render(request, 'home.html', context)   #from url UserAccounts.views.home
+   # form = SignUpForm()
+    #3context = {
+    #    "title": title,    #context dict
+    #    "form": form
+  #  }
+  return render(request, 'home.html', {}) #context)   #from url UserAccounts.views.home
 
 #Email us!
 #*********
@@ -39,6 +39,9 @@ def contact(request):
         contact_message = "%s wrote: %s, using the email: %s" %(form_full_name, form_message, form_email)
         send_mail(subject, contact_message, from_email, to_email, fail_silently = False)
         #**********************
+
+        #Return to landing after sending email
+        return render(request, 'home.html', {})
 
     #present the form on the contact us page
     context = {

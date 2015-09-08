@@ -10,7 +10,7 @@ class ContactForm(forms.Form):
     message = forms.CharField()
 
 
-class SignUpForm(forms.ModelForm):
-    class Meta:
-        model = SignUp
-        fields = ['full_name', 'email']
+#class SignUpForm(forms.ModelForm):
+    #class Meta:
+        #model = SignUp
+        #fields = ['full_name', 'email']
