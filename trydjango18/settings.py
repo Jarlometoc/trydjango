@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 #For Email
 #***********
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'bioinformaticsproject42@gmail.com'    #need to unlock Captcha under accounts.google.com/displayunlockcaptcha
+EMAIL_HOST_USER = 'bioinformaticsproject42@gmail.com'   #From Email:see Views Contact   #need to unlock Captcha under accounts.google.com/displayunlockcaptcha
 EMAIL_HOST_PASSWORD = 'Slulo1970'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
