@@ -14,7 +14,8 @@
       <div class="jumbotron">
         <div class="row">
          <div class="col-md-6">
-         <p>Directions</p>
+         <h2>Directions</h2>
+             <br>
         <li>RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </li>
         <li>SUBMIT and wait. This will take a few minutes.</li>
         <li>Examine the results.</li>
@@ -24,22 +25,88 @@
 
       </div>
       <div class='col-sm-4 pull-right'>
-          <p>Retrieve your PDB</p>
-          <button type="button" onclick="alert('Find file...')">Local Source</button>
-          <form class='navbar-form navbar-right' method = 'POST' action = "{% url 'auth_login' %}">{% csrf_token %}
-              <div class="form-group">
-                <input type="text" class="form-control" name="password" placeholder="RCSB PDB ID"/>
-              </div>
-              <body>
+          <h2>Retrieve your PDB</h2>
+          <table border="0" width="80%">
+          <tbody>
+          <p>Download from RCSB:</p>
+          <tr>
+            <td>PDB ID: <input type="text" name="fromRCSB" size="7" maxlength="10"></td>
+            <td><input type="submit" name="cmd" value="Download"></td>
+          </tr>
+           </tbody>
+            </table>
+          <br>
 
-              <button type="Submit" class = 'btn btn-default'>Submit</button>
-              <button type="button" onclick="alert('Run Program...')">Run!</button>
-              </body>
-          </form>
+          <body>
+           <p class="big">Or</p>
+          </body>
+          <br>
+
+          <table border="0" width="100%">
+              <tbody>
+           <p>Upload a local file:</p>
+          <tr>
+            <td><input type="file" name="upload"></td>
+          </tr>
+          </tbody>
+          </table>
+          <p>__________________</p>
+          <table border="0" width="80%">
+          <tbody>
+          <p>File Selected:</p>
+          <tr>
+            <td><input type="text" name="fileSelected" size="7" maxlength="15"></td>
+          </tr>
+           </tbody>
+            </table>
 
       </div>
     </div>
     </div>
+
+<div class="jumbotron">
+
+        <div class="row">
+        <div class="col-md-6">
+        <h2>Parameters</h2>
+           <table border="0" width="80%">
+          <tbody>
+          <p>Select Turns, Units and Rise:</p>
+          <tr>
+            <td>Turns: <input type="text" name="turns" size="7" maxlength="10"></td>
+          </tr>
+          <tr>
+            <td>Units: <input type="text" name="units" size="7" maxlength="10"></td>
+          </tr>
+          <tr>
+            <td>Rise: <input type="text" name="rise" size="7" maxlength="10"></td>
+          </tr>
+          <tr>
+                              <script type="text/javascript">
+                  $(document).ready(
+                    function(){
+                      $("#jqtest").html("JQuery installed successfully!");
+                    }
+                  );
+                </script>
+                <p id="jqtest"></p>
+          </tr>
+           </tbody>
+               </table>
+
+        </div>
+
+        <div class='col-sm-4 pull-right'>
+          <h2>Run Analysis</h2>
+
+
+            <button type="Submit" class = 'btn btn-default'>Run</button>
+            <button type="Submit" class = 'btn btn-default'>Save</button>
+            <button type="Submit" class = 'btn btn-default'>Clear</button>
+
+            </div>
+</div>
+</div>
 
 
 
@@ -55,9 +122,7 @@
      <div class="col-md-5 pull-right">
      <H1>Slider</H1>
     <textarea rows="5" cols="75" placeholder="Jmol code..."></textarea>
-          <button type="Submit" class = 'btn btn-default'>Rerun</button>
-      <button type="Submit" class = 'btn btn-default'>Save</button>
-     <button type="Submit" class = 'btn btn-default'>Clear</button>
+
      </div>
 
 {% endblock %}

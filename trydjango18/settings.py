@@ -47,10 +47,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',     #for registr
+    #'django.contrib.sites',     #for registr
     #third party
     'crispy_forms',
-    'registration',
+    #'registration',  #just used with models.py SignUp..
     #my apps
     'UserAccounts',
 
@@ -119,7 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'   #serve static files
-STATIC_ROOT =  os.path.join(BASE_DIR, "static_in_pro", "static_root")  #server where  it --goes to--
+STATIC_ROOT = os.path.join(BASE_DIR, "static_in_pro", "static_root")  #server where  it --goes to--
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static_in_pro", "our_static"),  #where we -keep- our statics
     #can add other folders, ie virtual env etc

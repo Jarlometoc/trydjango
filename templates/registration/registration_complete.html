@@ -1,6 +1,63 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load crispy_forms_tags %}
 
-{% block content %}
-<p>{% trans "You are now registered. Activation email sent." %}</p>
+<style>
+    {% block style %}
+    .txt-align-center {
+    text-align: center;
+    }
+    {% endblock %}
+</style>
+
+{% block jumbotron_content %}
+<h1>Fibrillar Analysis Tool</h1>
+      <div class="jumbotron">
+        <div class="row">
+         <div class="col-md-6">
+         <p>Directions</p>
+        <li>RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </li>
+        <li>SUBMIT and wait. This will take a few minutes.</li>
+        <li>Examine the results.</li>
+        <li>Use the slider to adjust the parameter and then RERUN the query.</li>
+        <li>Hit SAVE to send your results to your Email address.</li>
+        <li>Hit CLEAR to start over with a new file.</li>
+
+      </div>
+      <div class='col-sm-4 pull-right'>
+          <p>Retrieve your PDB</p>
+          <button type="button" onclick="alert('Find file...')">Local Source</button>
+          <form class='navbar-form navbar-right' method = 'POST' action = "{% url 'auth_login' %}">{% csrf_token %}
+              <div class="form-group">
+                <input type="text" class="form-control" name="password" placeholder="RCSB PDB ID"/>
+              </div>
+              <body>
+
+              <button type="Submit" class = 'btn btn-default'>Submit</button>
+              <button type="button" onclick="alert('Run Program...')">Run!</button>
+              </body>
+          </form>
+
+      </div>
+    </div>
+    </div>
+
+
+
+<div class='col-sm-5'>
+  <H1>LayLines Output</H1>
+    <textarea rows="40" cols="75" placeholder="Laylines code..."></textarea>
+</div>
+ <div class="col-md-5 pull-right">
+     <H1>Jmol Output</H1>
+    <textarea rows="40" cols="75" placeholder="Jmol code..."></textarea>
+ </div>
+
+     <div class="col-md-5 pull-right">
+     <H1>Slider</H1>
+    <textarea rows="5" cols="75" placeholder="Jmol code..."></textarea>
+          <button type="Submit" class = 'btn btn-default'>Rerun</button>
+      <button type="Submit" class = 'btn btn-default'>Save</button>
+     <button type="Submit" class = 'btn btn-default'>Clear</button>
+     </div>
+
 {% endblock %}

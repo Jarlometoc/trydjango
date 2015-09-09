@@ -45,6 +45,7 @@
 
               {% else %}
               <li><a href="{% url 'registration_register'%}">Register</a></li>
+
               {% endif %}
              </ul>
         {% if not request.user.is_authenticated and not "/accounts/login" in request.get_full_path %}

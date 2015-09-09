@@ -1,7 +1,3 @@
-from django import forms
-from .models import SignUp
-
-
 #for contact us!
 from django import forms
 class ContactForm(forms.Form):
@@ -10,6 +6,10 @@ class ContactForm(forms.Form):
     message = forms.CharField()
 
 
+
+
+#from django import forms
+#from .models import SignUp
 #class SignUpForm(forms.ModelForm):
     #class Meta:
         #model = SignUp
