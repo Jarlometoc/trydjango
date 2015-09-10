@@ -1,8 +1,29 @@
-<!-- this is Contact Us page-->
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{%  block content %}
+{% load staticfiles %}
 
+<style>
+    {% block style %}
+    .txt-align-center {
+    text-align: center;
+    }
+    {% endblock %}
+</style>
+
+
+{% block jumbotron_content %}
+      <div class="jumbotron">
+        <div class="row">
+         <h1>Contact</h1>
+        <div class="col-md-8">
+         <p> Feel free to contact us below if you have questions about logging on, data security, registration....  Your email address will be stored securely on our server and not used for any purposes except to respond to your questions. The address will be erased after ....</p>
+     </div>
+     </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
 {%  if title %}
 <div class='row'>
 <div class = 'col-sm-6 col-sm-offset-3'>

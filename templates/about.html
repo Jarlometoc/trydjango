@@ -1,16 +1,90 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
 
-{% block content %}
-    <div class='row'>
-    <div class="col-lg-6 col-lg-6">
+<style>
+    {% block style %}
+    .txt-align-center {
+    text-align: center;
+    }
+    {% endblock %}
+</style>
+
+
+{% block jumbotron_content %}
+      <div class="jumbotron">
+        <div class="row">
          <h1>About</h1>
-            <p> The Fibrillar Assembly Tool was made by.... The program.......</p>
-            <p> Lunds Universitet is .......</p>
-            <p> I am..........</p>
-        </div>
+        <div>
+            <p> The program, developers, Lund University and a little about fibrils.</p>
+
+     </div>
+     </div>
 </div>
+
+{% endblock %}
+
+ {% block content %}
+     <div>
+     <div class="page-header">
+     <h1>The program</h1>
+        </div>
+
+      <div class="row">
+        <div class="col-md-12">
+
+     <p style="font-size:150%">This program was made....</p>
+</div>
+</div>
+</div>
+<br>
+
+       <div>
+     <div class="page-header">
+     <h1>The developers</h1>
+        </div>
+
+      <div class="row">
+        <div class="col-md-12">
+
+     <p style="font-size:150%">The delevopers.... </p>
+</div>
+</div>
+</div>
+
+     <br>
+
+       <div>
+     <div class="page-header">
+     <h1>Andre Lab at Lund University</h1>
+        </div>
+
+      <div class="row">
+        <div class="col-md-12">
+
+     <p style="font-size:150%">The Andre lab....</p>
+</div>
+</div>
+</div>
+<br>
+
+ <br>
+
+       <div>
+     <div class="page-header">
+     <h1>A little about fibrils</h1>
+        </div>
+
+      <div class="row">
+        <div class="col-md-12">
+
+     <p style="font-size:150%">Fibrils....</p>
+</div>
+</div>
+</div>
+
+<br>
+<br>
 
 
 <!-- Javascript call test-->
@@ -20,6 +94,5 @@
 
 <!-- JQuery call test -->
 <button id="about-btn"> Click Me - I'm Javascript on Speed</button>
-
 
 {% endblock %}

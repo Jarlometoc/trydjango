@@ -1,8 +1,6 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 {% load crispy_forms_tags %}
-
-
+{% load staticfiles %}
 
 <style>
     {% block style %}
@@ -12,108 +10,149 @@
     {% endblock %}
 </style>
 
+
 {% block jumbotron_content %}
-    <h1>Fibrillar Analysis Tool</h1>
-          <div class="jumbotron">
-            <div class="row">
-             <div class="col-md-6">
-             <h2>Directions</h2>
-                 <br>
-            <li>RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </li>
-            <li>SUBMIT and wait. This will take a few minutes.</li>
-            <li>Examine the results.</li>
-            <li>Use the slider to adjust the parameter and then RERUN the query.</li>
-            <li>Hit SAVE to send your results to your Email address.</li>
-            <li>Hit CLEAR to start over with a new file.</li>
-
-          </div>
-          <div class='col-sm-4 pull-right'>
-              <h2>Retrieve your PDB</h2>
-              <table border="0" width="80%">
-              <tbody>
-              <p>Download from RCSB:</p>
-              <tr>
-                <td>PDB ID: <input type="text" name="fromRCSB" size="7" maxlength="10"></td>
-                <td><input type="submit" name="cmd" value="Download"></td>
-              </tr>
-               </tbody>
-                </table>
-              <br>
-
-              <body>
-               <p class="big">Or</p>
-              </body>
-              <br>
-
-              <table border="0" width="100%">
-                  <tbody>
-               <p>Upload a local file:</p>
-              <tr>
-                <td><input type="file" name="upload"></td>
-              </tr>
-              </tbody>
-              </table>
-              <p>__________________</p>
-              <table border="0" width="80%">
-              <tbody>
-              <p>File Selected:</p>
-              <tr>
-                <td><input type="text" name="fileSelected" size="7" maxlength="15"></td>
-              </tr>
-               </tbody>
-                </table>
-
-          </div>
+      <div class="jumbotron">
+        <div class="row">
+         <h1>Fibrillar Assembly Server</h1>
+        <div class="col-md-12">
+           <p>This is the MainPage for running the analysis. Provide a PDB file, set the parameters and run the program. In return you receive a layline plot, Jmol plot and a fibrillar score. The program takes a few minutes to run. Users can receive results via Email. See the example run on the HomePage, watch the video, or contact us if you have any questions.
+        </p>
         </div>
-        </div>
+</div>
+</div>
 {% endblock %}
 
 
 {% block content %}
+    <div class="page-header">
+     <h1>Getting ready</h1>
+        </div>
+    <div class="container">
+        <div class="row">
+        <div class="col-md-8">
+        <h2>Directions</h2>
+            <li style="font-size:120%">RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </li>
+            <li style="font-size:120%">Select PARAMETERS, RUN and wait. This will take a few minutes.</li>
+            <li style="font-size:120%">Examine the results.</li>
+            <li style="font-size:120%">Adjust parameters and RUN the query again.</li>
+            <li style="font-size:120%">Press SAVE to send your results to your Email address.</li>
+            <li style="font-size:120%">Press CLEAR to start over with a new file.</li>
+            <li style="font-size:120%">Modify the run using the JMOL SLIDER and RERUN</li>
+        </div>
+         <div class='col-sm-4 pull-right'>
+              <h2>Retrieve your PDB</h2>
 
+              <p>Download from RCSB:</p>
+
+              <input type="text" name="fromRCSB" size="7" maxlength="10">
+                <input type="submit" name="cmd" value="Download">
+
+              <br>
+                <br>
+
+               <p>Or</p>
+
+
+               <p>Upload a local file:</p>
+
+               <input type="file" name="upload">
+
+
+          </div>
+      </div>
+</div>
+<br>
+ <br>
+
+
+    <div class="page-header">
+     <h1>Running the program</h1>
+        </div>
+ <div class="container">
     <div class="row">
-    <div class="col-md-6">
+
+     <div class='col-sm-4 pull-left'>
+        <H2>File Selected</H2>
+             <input type="text" name="File Selected:" size="10" maxlength="20">
+        </div>
+
+
+    <div class="col-md-4">
         <h2>Parameters</h2>
-           <table border="0" width="80%">
-          <tbody>
-          <p>Select Turns, Units and Rise:</p>
-          <tr>
-            <td>Turns: <input type="text" name="turns" size="7" maxlength="10"></td>
-          </tr>
-          <tr>
-            <td>Units: <input type="text" name="units" size="7" maxlength="10"></td>
-          </tr>
-          <tr>
-            <td>Rise: <input type="text" name="rise" size="7" maxlength="10"></td>
-          </tr>
-
-           </tbody>
-               </table>
-
+            Turns: <input type="text" name="turns" size="10" maxlength="10">
+<br>
+        <br>
+            Units: <input type="text" name="units" size="7" maxlength="10">
+<br>
+        <br>
+            Rise: <input type="text" name="rise" size="7" maxlength="10">
     </div>
 
-
-        <div class='col-sm-4 pull-right'>
-          <h2>Run Analysis</h2>
-
+    <div class='col-sm-4 pull-right'>
+          <h2>Run</h2>
 
             <button type="Submit" class = 'btn btn-default'>Run</button>
+        <br>
+        <br>
             <button type="Submit" class = 'btn btn-default'>Save</button>
+        <br>
+        <br>
             <button type="Submit" class = 'btn btn-default'>Clear</button>
 
             </div>
     </div>
 
-
-<div class='col-sm-5'>
-  <H1>LayLines Output</H1>
+</div>
+<br>
+ <br>
+<div class="page-header">
+     <h1>Results</h1>
+        </div>
+<div class="container">
+    <div class="row">
+    <div class="col-md-6">
+  <H2>LayLines Output</H2>
     <textarea rows="40" cols="75" placeholder="Laylines code..."></textarea>
 </div>
  <div class="col-md-5 pull-right">
-     <H1>Jmol Output</H1>
+     <H2>Jmol Output</H2>
     <textarea rows="40" cols="75" placeholder="Jmol code..."></textarea>
  </div>
+</div>
+</div>
+ <br>
 
+    <div class="page-header">
+     <h1>Modifying the Run</h1>
+        </div>
+<div class="container">
+    <div class="row">
+    <div class="col-md-6">
+  <H2>Jmol slider</H2>
+        <div class="demo-output">
+   <input type="hidden" class="single-slider" value="23" />
+</div>
+</div>
+ <div class='col-sm-4 pull-right'>
+          <h2>Rerun your results</h2>
+
+            <button type="Submit" class = 'btn btn-default'>ReRun</button>
+        <br>
+        <br>
+            <button type="Submit" class = 'btn btn-default'>Save</button>
+        <br>
+        <br>
+            <button type="Submit" class = 'btn btn-default'>Clear</button>
+
+            </div>
+</div>
+</div>
+<br>
+ <br>
+ <br>
+ <br>
+ <br>
   <!-- JQuery call test -->
 <button id="about-btn"> Click Me - I'm Javascript on Speed</button>
 
