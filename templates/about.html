@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <div class='row'>
@@ -10,4 +11,15 @@
             <p> I am..........</p>
         </div>
 </div>
+
+
+<!-- Javascript call test-->
+<button onClick="alert('You clicked the button using Javascript.');">
+       Click Me - I run Javascript
+</button>
+
+<!-- JQuery call test -->
+<button id="about-btn"> Click Me - I'm Javascript on Speed</button>
+
+
 {% endblock %}

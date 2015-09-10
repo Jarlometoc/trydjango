@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     #'django.contrib.sites',     #for registr
     #third party
     'crispy_forms',
+    'jquery',
     #'registration',  #just used with models.py SignUp..
     #my apps
     'UserAccounts',
@@ -120,30 +121,32 @@ USE_TZ = True
 
 STATIC_URL = '/static/'   #serve static files
 STATIC_ROOT = os.path.join(BASE_DIR, "static_in_pro", "static_root")  #server where  it --goes to--
+#STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
+
+
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static_in_pro", "our_static"),  #where we -keep- our statics
-    #can add other folders, ie virtual env etc
+    os.path.join(BASE_DIR, "static_in_pro", "our_static"),  #where we keep -our- statics
+
 )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "static_in_pro", "media_root")
+#MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
 
 #Crispy
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-#Registration (redux)
+#Registration
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user at signup
 
 
-#login (redux)
+#login
 SITE_ID = 4   #why 4?  See below:
 #>>> from django.contrib.sites.models import Site
 #>>> site = Site.objects.create(domain='example.com', name='example.com')
 #>>> site.save()
 #then lookup the Site-Id:
 #>>>Site.object.all()[0].pk
-
-
 #Logins go to main page! not landing!
 LOGIN_REDIRECT_URL = 'main'
