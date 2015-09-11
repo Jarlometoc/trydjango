@@ -7,6 +7,7 @@
     .txt-align-center {
     text-align: center;
     }
+
     {% endblock %}
 </style>
 
@@ -16,7 +17,7 @@
         <div class="row">
          <h1>Fibrillar Assembly Server</h1>
         <div class="col-md-12">
-           <p>This is the MainPage for running the analysis. Provide a PDB file, set the parameters and run the program. In return you receive a layline plot, Jmol plot and a fibrillar score. The program takes a few minutes to run. Users can receive results via Email. See the example run on the HomePage, watch the video, or contact us if you have any questions.
+           <p>This is the MainPage for running the analysis. Provide a PDB file, set the parameters and run the program. In return you receive a layerline plot, Jmol plot and a fibrillar score. The program takes a few minutes to run. Users can receive results via Email. See the example run on the HomePage, watch the video, or contact us if you have any questions.
         </p>
         </div>
 </div>
@@ -46,7 +47,7 @@
               <p>Download from RCSB:</p>
 
               <input type="text" name="fromRCSB" size="7" maxlength="10">
-                <input type="submit" name="cmd" value="Download">
+                <input type="submit" class="btn btn-primary" value="Download">
 
               <br>
                 <br>
@@ -56,7 +57,7 @@
 
                <p>Upload a local file:</p>
 
-               <input type="file" name="upload">
+               <input type="submit" class="btn btn-primary" value="Choose File">
 
 
           </div>
@@ -91,14 +92,14 @@
 
     <div class='col-sm-4 pull-right'>
           <h2>Run</h2>
+            <input type="submit" class="btn btn-primary" value=" Run ">
 
-            <button type="Submit" class = 'btn btn-default'>Run</button>
         <br>
         <br>
-            <button type="Submit" class = 'btn btn-default'>Save</button>
+            <input type="submit" class="btn btn-success" value="Save and Send">
         <br>
         <br>
-            <button type="Submit" class = 'btn btn-default'>Clear</button>
+            <input type="submit" class="btn btn-warning" value="Clear">
 
             </div>
     </div>
@@ -112,12 +113,12 @@
 <div class="container">
     <div class="row">
     <div class="col-md-6">
-  <H2>LayLines Output</H2>
-    <textarea rows="40" cols="75" placeholder="Laylines code..."></textarea>
+  <H2>Jmol Output</H2>
+    <textarea rows="30" cols="60" placeholder="Jmol code..."></textarea>
 </div>
  <div class="col-md-5 pull-right">
-     <H2>Jmol Output</H2>
-    <textarea rows="40" cols="75" placeholder="Jmol code..."></textarea>
+     <H2>LayerLines Output</H2>
+    <textarea rows="30" cols="60" placeholder="LayerLines code..."></textarea>
  </div>
 </div>
 </div>
@@ -131,19 +132,20 @@
     <div class="col-md-6">
   <H2>Jmol slider</H2>
         <div class="demo-output">
+            <br>
    <input type="hidden" class="single-slider" value="23" />
 </div>
 </div>
  <div class='col-sm-4 pull-right'>
           <h2>Rerun your results</h2>
 
-            <button type="Submit" class = 'btn btn-default'>ReRun</button>
+            <button type="Submit" class = 'btn btn-primary'>ReRun</button>
         <br>
         <br>
-            <button type="Submit" class = 'btn btn-default'>Save</button>
+            <button type="Submit" class = 'btn btn-success'>Save and Send</button>
         <br>
         <br>
-            <button type="Submit" class = 'btn btn-default'>Clear</button>
+            <button type="Submit" class = 'btn btn-warning'>Clear</button>
 
             </div>
 </div>

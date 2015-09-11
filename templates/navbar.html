@@ -12,28 +12,28 @@
             <span class="icon-bar"></span>
           </button>
          {% if request.user.is_authenticated %}
-         <a class="navbar-brand" href="{% url 'home' %} ">Welcome {{ request.user}}!</a>{% endif %}
+         <a class="navbar-brand" href="{% url 'home' %} "><strong>Welcome {{ request.user}}!</strong></a>{% endif %}
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{% url 'home' %} ">Home</a></li>
-            <li><a href="{% url 'about' %} ">About</a></li>
-            <li><a href="{% url 'contact' %} ">Contact</a></li>
+            <li><a href="{% url 'home' %} "><strong>Home</strong></a></li>
+            <li><a href="{% url 'about' %} "><strong>About</strong></a></li>
+            <li><a href="{% url 'contact' %} "><strong>Contact</strong></a></li>
           </ul>
 
          <ul class="nav navbar-nav navbar-right">
 
          {% if request.user.is_staff %}
-            <li><a href="/admin/">Django administration</a></li>
-            <li><a href="{% url 'main'%}">MainPage</a></li>
-            <li><a href="{% url 'auth_logout'%}">Logout</a></li>
+            <li><a href="/admin/"><strong>Django Admin</strong></a></li>
+            <li><a href="{% url 'main'%}"><strong>Server</strong></a></li>
+            <li><a href="{% url 'auth_logout'%}"><strong>Logoff</strong></a></li>
 
         {% elif request.user.is_authenticated %}
-             <li><a href="{% url 'main'%}">MainPage</a></li>
-              <li><a href="{% url 'auth_logout'%}">Logout</a></li>
+             <li><a href="{% url 'main'%}"><strong>Server</strong></a></li>
+              <li><a href="{% url 'auth_logout'%}"><strong>Logoff</strong></a></li>
 
               {% else %}
-              <li><a href="{% url 'registration_register'%}">Register</a></li>
+              <li><a href="{% url 'registration_register'%}"><strong>Register</strong></a></li>
 
               {% endif %}
              </ul>

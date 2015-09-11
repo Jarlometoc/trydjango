@@ -21,7 +21,7 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'UserAccounts.views.home', name='home'),   #^$ means nothing (home)
+    url(r'^$', 'trydjango18.views.home', name='home'),   #^$ means nothing (home)
     url(r'^contact/$', 'UserAccounts.views.contact', name = 'contact'),
     url(r'^about/$', 'trydjango18.views.about', name = 'about'),
     #url(r'^accounts/', include('registration.backends.default.urls')),    #register

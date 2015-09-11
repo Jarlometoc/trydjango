@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#base= where manage.py is
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -25,7 +25,7 @@ SECRET_KEY = 'm09p(gd68lzjo5=z-y-isrmb1)#onhsxz3wpw4za4@#&rnl)(j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  #production
 
 #For Email
 #***********
@@ -73,7 +73,7 @@ ROOT_URLCONF = 'trydjango18.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates')] #this is a list, so can add other places to look
         ,
         'APP_DIRS': True,
         'OPTIONS': {

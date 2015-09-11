@@ -1,7 +1,10 @@
 from django.shortcuts import render
 
+def home(request):
+  return render(request, 'home.html', {}) #context)
+
 def about(request):
-    return render(request, 'about.html', {})   #from url UserAccounts.views.home
+    return render(request, 'about.html', {})
 
 def main(request):
     if request.user.is_authenticated():
