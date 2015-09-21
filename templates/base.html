@@ -1,5 +1,5 @@
-{% load staticfiles %}
-
+<!-- Base.html is the skeleton for every web page here.  Takes in via 'includes' all CSS and JS and provides basic format:
+in this case the navbar, one jumbotron block and a content block -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,21 +14,14 @@
 
     <title>Base Html</title>
 
-
-<!-- Load Core CSS -->
+<!-- Load Project's CSS -->
 {% include 'All_css.html' %}
-
-      <style>
-      {% block style %}
-      {% endblock %}
-</style>
 
   </head>
 
 
-
-
   <body>
+  <!-- Load Project's navbar here -->
     {% include 'navbar.html' %}
 
     <div class="container">
@@ -40,17 +33,11 @@
         {% endblock %}
     </div>
 
-
-    <!--All Javascript/Jquery here-->
-   {% include "javascript.html" %}
-
+    <!--Load project's javascript and JQuery-->
+   {% include 'All_javascript.html' %}
 
   </body>
 
 <!-- footer --->
-
-
-
-
 
 </html>

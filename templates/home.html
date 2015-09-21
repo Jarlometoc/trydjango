@@ -1,15 +1,5 @@
+<!-- Landing page; gets basic format (navbar, jumbotron, content block) and statics from base.html -->
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% load staticfiles %}
-
-<style>
-    {% block style %}
-    .txt-align-center {
-    text-align: center;
-    }
-    {% endblock %}
-</style>
-
 
 {% block jumbotron_content %}
       <div class="jumbotron">
@@ -47,5 +37,6 @@
 
             </p>
         </div>
+    </div>
     </div>
 {% endblock %}

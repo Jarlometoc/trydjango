@@ -1,15 +1,5 @@
+<!-- About page; gets basic format (navbar, jumbotron, content block) and statics from base.html -->
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% load staticfiles %}
-
-<style>
-    {% block style %}
-    .txt-align-center {
-    text-align: center;
-    }
-    {% endblock %}
-</style>
-
 
 {% block jumbotron_content %}
       <div class="jumbotron">
@@ -92,7 +82,9 @@
        Click Me - I run Javascript
 </button>
 
-<!-- JQuery call test -->
+<h3>Test of CSS from custom.css</h3>
+
+<!-- JQuery call test JQuery function in custom.js-->
 <button id="about-btn"> Click Me - I'm Javascript on Speed</button>
 
 {% endblock %}

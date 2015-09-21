@@ -7,9 +7,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #base= where manage.py is
 
@@ -34,8 +34,6 @@ EMAIL_USE_TLS = True
 #ACCOUNT_EMAIL_VERIFICATION = 'none'
 #***********
 
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -90,7 +88,6 @@ WSGI_APPLICATION = 'trydjango18.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
