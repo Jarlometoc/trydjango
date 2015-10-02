@@ -9,13 +9,3 @@ $(document).ready( function() {
     });
 });
 
-
-// Test for mainpage
-$(document).ready(function(){
-    $("p").click(function(){
-        $(this).hide();
-    });
-});
-
-
-//Jmol slider

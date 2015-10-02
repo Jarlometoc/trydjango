@@ -22,7 +22,7 @@ Also 'includes' jmol functionality from jmol.html-->
     <div class="container">
         <div class="row">
         <div class="col-md-8">
-        <h2>Directions</h2>
+        <h3>Directions</h3>
             <li style="font-size:120%">RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </li>
             <li style="font-size:120%">Select PARAMETERS, RUN and wait. This will take a few minutes.</li>
             <li style="font-size:120%">Examine the results.</li>
@@ -32,20 +32,28 @@ Also 'includes' jmol functionality from jmol.html-->
             <li style="font-size:120%">Modify the run using the JMOL SLIDER and RERUN</li>
         </div>
          <div class='col-sm-4 pull-right'>
-             <center>
-              <h2>Retrieve your PDB</h2>
+
+              <h3>Fetch a PDB from RCSB</h3>
+                 <form action="{% url "importPDBdown" %}" method="post" >{% csrf_token %}
+            {{ PDBdownHTML }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Fetch">
+        </form>
+      <br><br>
 
 
-                <input type="submit" class="btn btn-primary" value="Download from RCSB"> this PDB: <input type="text" name="fromRCSB" size="7" maxlength="10">
+               <h4><bold>Or</bold></h4>
+        <br><br>
 
-              <br>
-                <br>
+                <h3>Upload a PDB from a local source</h3>
+		<form action="{% url "importPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ PDBupHTML }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Upload">
+        </form>
+    <br><br>
 
-               <p><bold>Or</bold></p>
 
-               <input type="submit" class="btn btn-primary" value="Upload locally">
-
-            </center>
           </div>
       </div>
 </div>
@@ -55,33 +63,38 @@ Also 'includes' jmol functionality from jmol.html-->
 
     <div class="page-header">
      <h1>Running the program</h1>
+
         </div>
  <div class="container">
     <div class="row">
 
      <div class='col-sm-4 pull-left'>
-        <H2>PDB Selected</H2>
-             <input type="text" name="File Selected:" size="10" maxlength="20">
+
+            <h3>Upload optional experimental LayerLines data</h3>
+		<form action="{% url "importEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ EXPHTML }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Upload">
+        </form>
+
          <br>
          <br>
-          <H2>Optional data*</H2>
-               <input type="submit" class="btn btn-primary" value="Upload">
+
         </div>
 
 
     <div class="col-md-4">
-        <h2>Parameters</h2>
-            Turns: <input type="text" name="turns" size="10" maxlength="10">
-<br>
-        <br>
-            Units: <input type="text" name="units" size="7" maxlength="10">
-<br>
-        <br>
-            Rise: <input type="text" name="rise" size="7" maxlength="10">
+        <h3>Set Rosetta Parameters</h3>
+		<form action="{% url "importParameters" %}" method="post">{% csrf_token %}
+
+            {{ ParaHTML.as_p }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Set">
+        </form>
     </div>
 
     <div class='col-sm-4 pull-right'>
-          <h2>Run</h2>
+          <h3>Run</h3>
             <input type="submit" class="btn btn-primary" value=" Run ">
 
         <br>

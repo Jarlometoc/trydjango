@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     #'registration',  #just used with models.py SignUp..
     #my apps
     'UserAccounts',
+    'Inputs',
 
 )
 
