@@ -19,6 +19,8 @@ from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import get_template
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbPara
+from subprocess import check_output
+import os
 import subprocess
 
 def Testing(request):
@@ -51,6 +53,7 @@ def Testing(request):
     #gather data and submit to Rosetta
 
     #parameters
+    PDB = '-in:file:s '+ str(chosenPDB)   #the chosen PDB, based on most recent timestamp
     EXP =  '-fiber_diffraction:layer_lines '+ str(Qobject3.EXPupload)     #File containing fiber diffraction layer lines
     Units = '-fiber_diffraction:a '+ str(Qobject4.units)     #number of units
     Turns = '-fiber_diffraction:b '+ str(Qobject4.turns)    #number of turns
@@ -71,16 +74,45 @@ def Testing(request):
     GridPhi = '-fiber_diffraction:grid_phi 128'    #Grid size phi, change if higher accuracy is needed
     OUT = '-fiber_diffraction:output'    #Saves simulated intensities to a file
 
-    #Roundup!
-    flagString = '"'+EXP+'", "'+Units+'", "'+Turns+'", "'+Rise+'", "'+Lcutoff+'", "'+Hcutoff+'", "'+Rfac+'", "'\
-                 +AtomicBF+'", "'+Solv+'", "'+SolvK+'", "'+K1+'", "'+K2+'", "'+SC+'", "'+GridR+'", "'+GridZ+'", "'\
-                 +GridPhi+'", "'+OUT+'"'
+    ParameterList = [PDB,
+                     EXP,
+                     Units,
+                     Turns,
+                     Rise,
+                     Lcutoff,
+                     Hcutoff,
+                     Rfac,
+                     AtomicBF,
+                     Solv,
+                     SolvK,
+                     K1,
+                     K2,
+                     SC,
+                     GridR,
+                     GridZ,
+                     GridPhi,
+                     OUT]
+
+    #make the Flags file
+    import sys
+    FHout = open('Flags', 'w')
+    for item in ParameterList:
+        FHout.write("%s\n" % item)
+    FHout.close()
+
+    #Enter file in DB
+
 
     #send to Rosetta
-    #subprocess.call(['./bin/Rosetta',  #launch program
-                   # flagString,        #with the following flags
-                   #'chosenPDB' #most recent PDB as input
-                   # ])
+    #./score.linuxgccrelease @flags
+    try:
+        #command = 'python3 Rosetta.py TheTest.txt' # + flagString
+        #RosettaTest = os.system(command)
+        subprocess.call('./score.linuxgccrelease @flags', shell=True)
+        #pass
+
+    except:
+        pass
 
 
     #Display Results on Testing.HTML
@@ -91,8 +123,7 @@ def Testing(request):
                                            'PrintParaT': Qobject4.turns,
                                            'PrintParaU': Qobject4.units,
                                            'PrintParaR': Qobject4.rise,
-                                           'PrintChosen': chosenPDB,        #this is the PDB sent to Rosetta
-                                           'PrintFlags': flagString
+                                           'PrintChosen': chosenPDB        #this is the PDB sent to Rosetta
                                            } ))
     return HttpResponse(html)
 
