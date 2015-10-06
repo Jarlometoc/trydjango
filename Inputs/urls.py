@@ -6,6 +6,5 @@ urlpatterns = patterns('Inputs.views',
     url(r'^importPDBup/$', 'importPDBup', name='importPDBup'),
     url(r'^importEXP/$', 'importEXP', name='importEXP'),
     url(r'^importParameters/$', 'importParameters', name='importParameters'),
-
 )
 
