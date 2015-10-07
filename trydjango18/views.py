@@ -14,13 +14,21 @@ def main(request):
         return render(request, 'home.html', {})
 
 
+#**************************************************'
+
+#set storage path for files to include username and month number
+import datetime
+def PathMaker(name, filename):
+    TodaysDate = datetime.date.today()
+    Month = str(TodaysDate.month)
+    return '/'.join(['C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage', name, Month, filename])
+
+
 #just for testing
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import get_template
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbPara
-from subprocess import check_output
-import os
 import subprocess
 
 def Testing(request):
@@ -45,7 +53,8 @@ def Testing(request):
 
     #Identify the most current upload or download by timestamp
     if Qobject.timestamp > Qobject2.timestamp:
-        chosenPDB = Qobject.PDBdown
+        chosenPDB = fetch_pdb(Qobject)
+
     else:
         chosenPDB = Qobject2.PDBup
 
@@ -94,13 +103,13 @@ def Testing(request):
                      OUT]
 
     #make the Flags file
-    import sys
-    FHout = open('Flags', 'w')
+
+    filename = Qobject.username + '_Flags'
+    Path = PathMaker(Qobject.username, filename)
+    FHout = open(Path, 'w')
     for item in ParameterList:
         FHout.write("%s\n" % item)
     FHout.close()
-
-    #Enter file in DB
 
 
     #send to Rosetta
@@ -128,3 +137,17 @@ def Testing(request):
     return HttpResponse(html)
 
 
+#Fetch PDB from RBSC
+import urllib.request
+def fetch_pdb(Qobject):
+    url = 'http://www.rcsb.org/pdb/files/%s.pdb' % Qobject.PDBdown
+    FH = urllib.request.urlopen(url)
+    byteArray = FH.read()   #note: data still a 'bytearray'
+    text = byteArray.decode("utf8") #decode or you get b' bla bla bla'
+    filename = Qobject.PDBdown + '.pdb'
+    Path = PathMaker(Qobject.username, filename)
+    Fout = open(Path, 'w')
+    Fout.write(text)# string
+    FH.close()
+    Fout.close()
+    return Path
