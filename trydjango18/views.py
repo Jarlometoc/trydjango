@@ -28,7 +28,7 @@ def PathMaker(name, filename):
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import get_template
-from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbPara
+from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara
 import subprocess
 
 def Testing(request):
@@ -111,17 +111,27 @@ def Testing(request):
         FHout.write("%s\n" % item)
     FHout.close()
 
+    #now save path to dbFlags
+    addFlag = dbFlag(username=Qobject.username, FlagFile=Path)
+    addFlag.save()
 
     #send to Rosetta
-    #./score.linuxgccrelease @flags
+    #'./score.linuxgccrelease @FlagFilePath'
     try:
         #command = 'python3 Rosetta.py TheTest.txt' # + flagString
         #RosettaTest = os.system(command)
-        subprocess.call('./score.linuxgccrelease @flags', shell=True)
+        query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+        Qobject5 = dbPara.objects.raw(query)[0]
+        FlagFilePath = Qobject5.FlagFile
+
+        subprocess.call('./score.linuxgccrelease @FlagFilePath', shell=True)
         #pass
 
-    except:
-        pass
+    except subprocess.CalledProcessError:
+        pass # handle errors in the called executable
+
+
+
 
 
     #Display Results on Testing.HTML
