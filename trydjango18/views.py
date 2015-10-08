@@ -28,7 +28,7 @@ def PathMaker(name, filename):
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import get_template
-from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara
+from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults
 import subprocess
 
 def Testing(request):
@@ -103,7 +103,6 @@ def Testing(request):
                      OUT]
 
     #make the Flags file
-
     filename = Qobject.username + '_Flags'
     Path = PathMaker(Qobject.username, filename)
     FHout = open(Path, 'w')
@@ -116,21 +115,28 @@ def Testing(request):
     addFlag.save()
 
     #send to Rosetta
+    query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+    Qobject5 = dbPara.objects.raw(query)[0]
+    FlagFilePath = Qobject5.FlagFile
+    #quick function to make a fake LLoutput and chisq for testing
+    both = (LLoutputPath, fakeChi) = fakeRosetta(FlagFilePath, Qobject.username)  #note:returns a tuple
+
+
+    #load the results database  PDBused= chosenPDB
+    addResults = dbResults(username=Qobject.username, PDBused=chosenPDB, experimentalData= Qobject3.EXPupload, \
+                           turns=Qobject4.turns, units=Qobject4.units, rise=Qobject4.rise, LLoutput=both[0], \
+                           chisq=both[1], FlagFile=Qobject5.FlagFile)
+    addResults.save()
+
+
+    #likely final code:
     #'./score.linuxgccrelease @FlagFilePath'
-    try:
-        #command = 'python3 Rosetta.py TheTest.txt' # + flagString
-        #RosettaTest = os.system(command)
-        query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
-        Qobject5 = dbPara.objects.raw(query)[0]
-        FlagFilePath = Qobject5.FlagFile
-
-        subprocess.call('./score.linuxgccrelease @FlagFilePath', shell=True)
+    #try:
+        #command = 'python3 RosettaTest.py ' + str(FlagFilePath)
+        #subprocess.call(command, shell=True)
         #pass
-
-    except subprocess.CalledProcessError:
-        pass # handle errors in the called executable
-
-
+  # except subprocess.CalledProcessError:
+       # pass # handle errors in the called executable
 
 
 
@@ -161,3 +167,24 @@ def fetch_pdb(Qobject):
     FH.close()
     Fout.close()
     return Path
+
+
+#fake Rosetta until project moved to server
+def fakeRosetta(flagfile, username):
+
+    #first open users Flagfile in user's folder
+    FHin = open(flagfile, 'r')
+
+    #'FakeLL.txt' outfile to the user's folder
+    Path= PathMaker(username, 'FakeLL.txt')
+    FHout = open(Path, 'w')
+    for line in FHin:
+        line = line.rstrip()
+        FHout.write(line + '\n')
+    FHin.close()
+    FHout.close()
+
+    #and a fake Chisq value....
+    FakeChisq = '5.5'
+    #return both the path to help LLoutput get inputed into dbResults and the ChiSq
+    return (Path, FakeChisq)  #note:returns a tuple
