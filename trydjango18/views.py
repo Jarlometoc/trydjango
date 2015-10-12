@@ -67,21 +67,21 @@ def Testing(request):
     Units = '-fiber_diffraction:a '+ str(Qobject4.units)     #number of units
     Turns = '-fiber_diffraction:b '+ str(Qobject4.turns)    #number of turns
     Rise = '-fiber_diffraction:p '+ str(Qobject4.rise)     #If specified, subunit rise is taken from input, otherwise is calculated by the program
+    Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12Å
+    Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3Å
 
-    #These are currently default
-    Lcutoff = '-fiber_diffraction:resolution_cutoff_low 0.0833333333' #Resolution cutoff 12Å
-    Hcutoff = '-fiber_diffraction:resolution_cutoff_high 0.3333333333' #Resolution cutoff 3Å
-    Rfac = '-fiber_diffraction:rfactor_refinement'    #If set R factor instead of chi2 is used in scoring and derivatives calculations
-    AtomicBF = '-fiber_diffraction::b_factor 20.0'    #Atomic B-factor
-    Solv = '-fiber_diffraction::b_factor_solv 400'   #temperature factor that accounts for the disordered solvent
-    SolvK = '-fiber_diffraction::b_factor_solv_K 0.4'   #scale factor that adjust average solvent scattering intensity
-    K1 = '-fiber_diffraction:qfht_K1 2.0'    #Hankel transform K1 parameter
-    K2 = '-fiber_diffraction:qfht_K2 2.2'    #Hankel transform K1 parameter
-    SC = '-edensity:sc_scaling 0.92'    #Hankel transform K1 parameter
-    GridR = '-fiber_diffraction:grid_r 256'     #Grid size r, should be bigger than radius of molecule
-    GridZ = '-fiber_diffraction:grid_z 128'     #Grid size z, should be bigger than molecule span in z direction
-    GridPhi = '-fiber_diffraction:grid_phi 128'    #Grid size phi, change if higher accuracy is needed
-    OUT = '-fiber_diffraction:output'    #Saves simulated intensities to a file
+   #These are currently default
+    Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
+    AtomicBF = '-fiber_diffraction::b_factor '+ str(Qobject4.bfactor)    #Atomic B-factor
+    Solv = '-fiber_diffraction::b_factor_solv '+ str(Qobject4.bfactorSolv)   #temperature factor that accounts for the disordered solvent
+    SolvK = '-fiber_diffraction::b_factor_solv_K '+ str(Qobject4.bfactorSolvK)   #scale factor that adjust average solvent scattering intensity
+    K1 = '-fiber_diffraction:qfht_K1 '+ str(Qobject4.qfhtK1)    #Hankel transform K1 parameter
+    K2 = '-fiber_diffraction:qfht_K2 '+ str(Qobject4.qfhtK2)      #Hankel transform K1 parameter
+    SC = '-edensity:sc_scaling '+ str(Qobject4.scscaling)    #Hankel transform K1 parameter
+    GridR = '-fiber_diffraction:grid_r '+ str(Qobject4.gridR)     #Grid size r, should be bigger than radius of molecule
+    GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4.gridZ)     #Grid size z, should be bigger than molecule span in z direction
+    GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4.gridPhi)    #Grid size phi, change if higher accuracy is needed
+    OUT = '-fiber_diffraction:output'
 
     ParameterList = [PDB,
                      EXP,
@@ -115,17 +115,46 @@ def Testing(request):
     addFlag.save()
 
     #send to Rosetta
+    #first query dbPFag and make an object containing everything
     query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
     Qobject5 = dbPara.objects.raw(query)[0]
+    #pull out flagfilepath and send it to a fakeRosetta function to make a test LLoutput adn chisq
     FlagFilePath = Qobject5.FlagFile
-    #quick function to make a fake LLoutput and chisq for testing
+    #send and gt back a fake LLoutput and chisq
     both = (LLoutputPath, fakeChi) = fakeRosetta(FlagFilePath, Qobject.username)  #note:returns a tuple
 
+    #LLoutput Processing goes here!
 
-    #load the results database  PDBused= chosenPDB
-    addResults = dbResults(username=Qobject.username, PDBused=chosenPDB, experimentalData= Qobject3.EXPupload, \
-                           turns=Qobject4.turns, units=Qobject4.units, rise=Qobject4.rise, LLoutput=both[0], \
-                           chisq=both[1], FlagFile=Qobject5.FlagFile)
+
+
+
+
+    #and a pic that actually will come from LLoutput after processing
+    LLoutputPicLocation = 'Storage/bunny.jpg'
+
+    #load the results database, including the new LLoutput and chisq
+    addResults = dbResults(username=Qobject.username,
+                           PDBused=chosenPDB,
+                           experimentalData= Qobject3.EXPupload,
+                           turns=Qobject4.turns,
+                           units=Qobject4.units,
+                           rise=Qobject4.rise,
+                           rescutL=Qobject4.rescutL,
+                           rescutH=Qobject4.rescutH,
+                           rfactor=Qobject4.rfactor,
+                           bfactor=Qobject4.bfactor,
+                           bfactorSolv=Qobject4.bfactorSolv,
+                           bfactorSolvK=Qobject4.bfactorSolvK,
+                           qfhtK1 = Qobject4.qfhtK1,
+                           qfhtK2 = Qobject4.qfhtK2,
+                           scscaling = Qobject4.scscaling,
+                           gridR = Qobject4.gridR,
+                           gridZ= Qobject4.gridZ,
+                           gridPhi = Qobject4.gridPhi,
+                           LLoutput=both[0],   #LLoutput and chisq has unique format to get first in the tuple outputted by FakeRosetta
+                           LLoutputPic=LLoutputPicLocation,  #derived from LLoutput processing
+                           chisq=both[1],
+                           FlagFile=Qobject5.FlagFile)
     addResults.save()
 
 

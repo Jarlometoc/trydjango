@@ -3,123 +3,136 @@ Also 'includes' jmol functionality from jmol.html-->
 {% extends "base.html" %}
 
 {% block jumbotron_content %}
-      <div class="jumbotron">
-        <div class="row">
-         <h1>Fibrillar Assembly Server</h1>
-        <div class="col-md-12">
-           <p>This is the MainPage for running the analysis. Provide a PDB file, set the parameters and run the program. In return you receive a layerline plot, Jmol plot and a fibrillar score. The program takes a few minutes to run. Users can receive results via Email. See the example run on the HomePage, watch the video, or contact us if you have any questions.
-        </p>
-        </div>
+<div class="jumbotron">
+<div class="row">
+<h1>Fibrillar Assembly Server</h1>
+<div class="col-md-12">
+<p>This is the MainPage for running the analysis. Provide a PDB file, set the parameters and run the program. In return you receive a layerline plot, Jmol plot and a fibrillar score. The program takes a few minutes to run. Users can receive results via Email. See the example run on the HomePage, watch the video, or contact us if you have any questions.
+</p>
+</div>
 </div>
 </div>
 {% endblock %}
 
-
 {% block content %}
-    <div class="page-header">
-     <h1>Getting ready</h1>
-        </div>
-    <div class="container">
-        <div class="row">
-        <div class="col-md-8">
-        <h3>Directions</h3>
-            <li style="font-size:120%">RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </li>
-            <li style="font-size:120%">Select PARAMETERS, RUN and wait. This will take a few minutes.</li>
-            <li style="font-size:120%">Examine the results.</li>
-            <li style="font-size:120%">Adjust parameters and RUN the query again.</li>
-            <li style="font-size:120%">Press SAVE to send your results to your Email address.</li>
-            <li style="font-size:120%">Press CLEAR to start over with a new file.</li>
-            <li style="font-size:120%">Modify the run using the JMOL SLIDER and RERUN</li>
-        </div>
-         <div class='col-sm-4 pull-right'>
 
-              <h3>Fetch a PDB from RCSB</h3>
-                 <form action="{% url "importPDBdown" %}" method="post" >{% csrf_token %}
-            {{ PDBdownHTML }}
-            <input type="hidden" name = "username" value = "{{ user.get_username }}">
-            <input type="submit" class="btn btn-primary" value="Fetch">
-        </form>
-      <br><br>
-
-
-               <h4><bold>Or</bold></h4>
-        <br><br>
-
-                <h3>Upload a PDB from a local source</h3>
-		<form action="{% url "importPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-            {{ PDBupHTML }}
-            <input type="hidden" name = "username" value = "{{ user.get_username }}">
-            <input type="submit" class="btn btn-primary" value="Upload">
-        </form>
-    <br><br>
-
-
-          </div>
-      </div>
-</div>
-<br>
- <br>
-
-
-    <div class="page-header">
-     <h1>Running the program</h1>
-
-        </div>
- <div class="container">
-    <div class="row">
-
-     <div class='col-sm-4 pull-left'>
-
-            <h3>Upload optional experimental LayerLines data</h3>
-		<form action="{% url "importEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-            {{ EXPHTML }}
-            <input type="hidden" name = "username" value = "{{ user.get_username }}">
-            <input type="submit" class="btn btn-primary" value="Upload">
-        </form>
-
-         <br>
-         <br>
-
-        </div>
-
-
-    <div class="col-md-4">
-        <h3>Set Rosetta Parameters</h3>
-		<form action="{% url "importParameters" %}" method="post">{% csrf_token %}
-
-            {{ ParaHTML.as_p }}
-            <input type="hidden" name = "username" value = "{{ user.get_username }}">
-            <input type="submit" class="btn btn-primary" value="Set">
-        </form>
-    </div>
-
-    <div class='col-sm-4 pull-right'>
-          <h3>Run</h3>
-            <input type="submit" class="btn btn-primary" value=" Run ">
-
-        <br>
-        <br>
-            <button type="Submit" class = 'btn btn-success'>Save and Send</button>
-        <br>
-        <br>
-            <input type="submit" class="btn btn-warning" value="Clear">
-
-            </div>
-    </div>
-
-</div>
-<br>
- <br>
 <div class="page-header">
-     <h1>Results</h1>
-        </div>
-    <!-- Keep Jmol code on its own -->
-    {% include 'jmol.html' %}
- <br>
+<h1>Directions</h1>
+</div>
+<div class="container">
+<div class="row">
 
-    <div>
- <H2>Chi-Square</H2>
- <input type="text" name="Chi-Square:" size="10" maxlength="20">
+<div class="col-md-8">
+<p style="font-size:120%">RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </p>
+<p style="font-size:120%">Select PARAMETERS, RUN and wait. This will take a few minutes.</p>
+<p style="font-size:120%">Examine the results.</p>
+<p style="font-size:120%">Adjust parameters and RUN the query again.</p>
+<p style="font-size:120%">Press SAVE to send your results to your Email address.</p>
+<p style="font-size:120%">Press CLEAR to start over with a new file.</p>
+<p style="font-size:120%">Modify the run using the JMOL SLIDER and RERUN</p>
+</div>
+
+</div>
+</div>
+
+<br><br><br>
+<div class="page-header">
+<h1>Getting ready</h1>
+</div>
+<div class="container">
+<div class="row">
+
+<div  class='col-sm-4 pull-left'>
+<h4>Fetch a PDB from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
+<form action="{% url "urlPDBdown" %}" method="post" >{% csrf_token %}
+{{ PDBdownHTML }}
+<input type="hidden" name = "username" value = "{{ user.get_username }}">
+<input type="submit" class="btn btn-primary" value="Fetch">
+</form>
+<br>
+<br>
+<h3>Or</h3>
+<br>
+
+<h4>Upload a PDB </h4>
+
+<form action="{% url "urlPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+{{ PDBupHTML }}
+<input type="hidden" name = "username" value = "{{ user.get_username }}">
+<input type="submit" class="btn btn-primary" value="Upload">
+</form>
+</div>
+
+<div  class='col-sm-4 '>
+<h4>Upload optional</h4>
+<h4>experimental LayerLines</h4>
+<form action="{% url "urlEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+{{ EXPHTML }}
+<input type="hidden" name = "username" value = "{{ user.get_username }}">
+<input type="submit" class="btn btn-primary" value="Upload">
+</form>
+</div>
+
+
+<div class='col-sm-4 pull-right'>
+<h4>Set Rosetta Parameters</h4>
+<form action="{% url "urlParameters" %}" method="post">{% csrf_token %}
+{{ ParaHTML.as_p }}
+<input type="hidden" name = "username" value = "{{ user.get_username }}">
+<input type="submit" class="btn btn-primary" value="Set">
+</form>
+</div>
+
+</div>
+</div>
+
+<br><br><br>
+<div class="page-header">
+<h1>Running the program</h1>
+</div>
+<div class="container">
+<div class="row">
+
+<div class='col-sm-4 pull-left'>
+<h3>Your parameters</h3>
+    
+    <h4>Chosen PDB:</h4>
+    <h4>Optional Experimental data:</h4>
+   <h4>Turns:</h4>
+    <h4>Units:</h4>
+    <h4>Rise:</h4>
+
+</div>
+
+
+<div class='col-sm-4 pull-right'>
+<h3>Run</h3>
+<input type="submit" class="btn btn-primary" value=" Run ">
+
+<br>
+<br>
+<button type="Submit" class = 'btn btn-success'>Save and Send</button>
+<br>
+<br>
+<input type="submit" class="btn btn-warning" value="Clear">
+
+</div>
+
+
+</div>
+ </div>
+
+<br><br><br>
+<div class="page-header">
+<h1>Results</h1>
+</div>
+<!-- Keep Jmol code on its own -->
+{% include 'jmol.html' %}
+<br>
+
+<div>
+<H2>Chi-Square</H2>
+<input type="text" name="Chi-Square:" size="10" maxlength="20">
 </div>
 
 
