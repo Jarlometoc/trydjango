@@ -96,19 +96,19 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class='col-sm-4 pull-left'>
 <h3>Your parameters</h3>
     
-    <h4>Chosen PDB:</h4>
-    <h4>Optional Experimental data:</h4>
-   <h4>Turns:</h4>
-    <h4>Units:</h4>
-    <h4>Rise:</h4>
-
+    <h4>Chosen PDB:{{ PrintChosen }}</h4>
+    <h4>Optional Experimental data:{{ PrintEXPupload }}</h4>
+   <h4>Turns:{{ PrintParaT }}</h4>
+    <h4>Units:{{ PrintParaU }}</h4>
+    <h4>Rise:{{ PrintParaR }}</h4>
 </div>
 
 
 <div class='col-sm-4 pull-right'>
 <h3>Run</h3>
-<input type="submit" class="btn btn-primary" value=" Run ">
-
+ <form action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
+      <button type="submit" class="btn btn-primary">Run</button>
+ </form>
 <br>
 <br>
 <button type="Submit" class = 'btn btn-success'>Save and Send</button>
