@@ -16,19 +16,14 @@ def main(request):
 
 #Results view to collect data from various databases, run Rosetta and save results to results DB
 #*************************************************************************************************
-
-#set storage path for files to include username and month number
 import datetime
-def PathMaker(name, filename):
-    TodaysDate = datetime.date.today()
-    Month = str(TodaysDate.month)
-    return '/'.join(['C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage', name, Month, filename])
-
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults
 import subprocess
 
+
+#Main function to collect data from DB's, run Rosetta
 def Testing(request):
-    if request.method == 'POST':
+    if request.method == 'POST':   #if run is pressed....
         #use sql to search DB: consider SQL injection attacks here
         #download
         query = 'SELECT * FROM Inputs_dbpdbdown WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
@@ -47,7 +42,7 @@ def Testing(request):
         Qobject4 = dbPara.objects.raw(query)[0]
 
 
-        #Identify the most current upload or download by timestamp
+        #Identify the most current upload or download by timestamp, choose most recent
         if Qobject.timestamp > Qobject2.timestamp:
             chosenPDB = fetch_pdb(Qobject)
 
@@ -105,12 +100,47 @@ def Testing(request):
         for item in ParameterList:
             FHout.write("%s\n" % item)
         FHout.close()
-
         #now save path to dbFlags
         addFlag = dbFlag(username=Qobject.username, FlagFile=Path)
         addFlag.save()
 
+
+        #Run make_helix_denovo
+        #*********************
+        #takes turns/units/rise/LorR + n=40
+        #returns helix_denovo.sdef- symmetry info and virtuals.pdb- virtual residues coord
+        try:
+            #optional local files to use when needed
+          #  import os.path
+
+           # if os.path.isfile('Storage/symmetry_definition_file'):
+           #  symDef = ' -o ' + 'Storage/symmetry_definition_file'
+          #  else:
+           #     symDef = ''
+
+         #   if os.path.isfile('Storage/virtual_residues_file'):
+          #   virResid = ' -r ' + 'Storage/virtual_residues_file'
+         #   else:
+          #      virResid = ''
+
+            #make commandline
+            command = 'python3 C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/trydjango18/make_helix_denovo.py' # + \
+                     # ' -p ' + Qobject4.rise + \
+                      #' -u ' + Qobject4.units + \
+                     # ' -n 40' + \
+                    #  ' -v ' + Qobject4.turns + \
+                    #  ' -c ' + Qobject4.LorR + \
+                    #  symDef + \
+                   #   virResid
+
+            subprocess.call(command, shell=True)
+        except subprocess.CalledProcessError:    #handle errors in the called executable
+            pass
+        #./make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L
+
+
         #send to Rosetta
+        #************
         #first query dbPFag and make an object containing everything
         query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject5 = dbPara.objects.raw(query)[0]
@@ -118,6 +148,17 @@ def Testing(request):
         FlagFilePath = Qobject5.FlagFile
         #send and gt back a fake LLoutput and chisq
         both = (LLoutputPath, fakeChi) = fakeRosetta(FlagFilePath, Qobject.username)  #note:returns a tuple
+
+        #likely final code:
+        #'./score.linuxgccrelease @FlagFilePath'
+        #try:
+            #command = 'python3 RosettaTest.py ' + str(FlagFilePath)
+            #subprocess.call(command, shell=True)
+            #pass
+      # except subprocess.CalledProcessError:
+           # pass # handle errors in the called executable
+
+
 
         #LLoutput Processing goes here!
 
@@ -155,15 +196,8 @@ def Testing(request):
         addResults.save()
 
 
-        #likely final code:
-        #'./score.linuxgccrelease @FlagFilePath'
-        #try:
-            #command = 'python3 RosettaTest.py ' + str(FlagFilePath)
-            #subprocess.call(command, shell=True)
-            #pass
-      # except subprocess.CalledProcessError:
-           # pass # handle errors in the called executable
 
+    #optional return parameters chosen to mainpage, display next to RUN button
     return render(request, 'main.html',
          {'PrintEXPupload': Qobject3.EXPupload,
          'PrintParaT': Qobject4.turns,
@@ -175,6 +209,13 @@ def Testing(request):
 
 #functions
 #*******************************************************************************
+
+#Takes username and file, returns a path to user's Storage file (by month)
+def PathMaker(name, filename):
+    TodaysDate = datetime.date.today()
+    Month = str(TodaysDate.month)
+    return '/'.join(['C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage', name, Month, filename])
+
 
 #Fetch PDB from RBSC
 import urllib.request
@@ -194,10 +235,8 @@ def fetch_pdb(Qobject):
 
 #fake Rosetta until project moved to server
 def fakeRosetta(flagfile, username):
-
     #first open users Flagfile in user's folder
     FHin = open(flagfile, 'r')
-
     #'FakeLL.txt' outfile to the user's folder
     Path= PathMaker(username, 'FakeLL.txt')
     FHout = open(Path, 'w')
@@ -206,7 +245,6 @@ def fakeRosetta(flagfile, username):
         FHout.write(line + '\n')
     FHin.close()
     FHout.close()
-
     #and a fake Chisq value....
     FakeChisq = '5.5'
     #return both the path to help LLoutput get inputed into dbResults and the ChiSq

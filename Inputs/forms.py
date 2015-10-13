@@ -72,8 +72,8 @@ class ParaForm(ModelForm):
             raise forms.ValidationError("Rise need to be more than 0")
         return rise
 
-    def clean_LorR(self):
-       LorR = self.cleaned_data.get('LorR')
-       if LorR != 'L' or LorR != 'R' or LorR != 'l' or LorR != 'r':
-          raise forms.ValidationError("Enter L or R")
-       return LorR
+    #def clean_LorR(self):
+       #LorR = self.cleaned_data.get('LorR')
+      # if LorR != 'L' or LorR != 'R' or LorR != 'l' or LorR != 'r':
+          #raise forms.ValidationError("Enter L or R")
+      # return LorR
