@@ -76,11 +76,22 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <div class='col-sm-4 pull-right'>
 <h4>Set Rosetta Parameters</h4>
-<form id = "noRefresh" action="{% url "urlParameters" %}" method="post">{% csrf_token %}
+<form action="{% url "urlParameters" %}" method="post">{% csrf_token %}
 {{ ParaHTML.as_p }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
+
+<!--radio buttons
+  <br><br>
+<h4>Left or right handed</h4>
+    <form id = "noRefresh" action="% url "urlRadio" %}" method="post">% csrf_token %}
+    <input type="hidden" name = "username" value = "{ user.get_username }}">
+    <input type="radio" name="left" value="Left">Left<br>
+    <input type="radio" name="right" value="Right">Right
+    </form>-->
+
+
 </div>
 
 </div>
@@ -102,6 +113,7 @@ Also 'includes' jmol functionality from jmol.html-->
     <h4>Units:{{ PrintParaU }}</h4>
     <h4>Rise:{{ PrintParaR }}</h4>
     <button id="about-btn"> Jquery test</button>
+
 </div>
 
 

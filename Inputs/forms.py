@@ -52,7 +52,7 @@ class ParaForm(ModelForm):
     class Meta:
         model = dbPara
         widgets = {'username': forms.HiddenInput()}
-        fields =['username', 'turns', 'units', 'rise', 'rescutL', 'rescutH']
+        fields =['username', 'turns', 'units', 'rise', 'rescutL', 'rescutH', 'LorR']
 
     def clean_turns(self):
         turns = self.cleaned_data.get('turns')
@@ -71,3 +71,9 @@ class ParaForm(ModelForm):
         if rise == 0 :
             raise forms.ValidationError("Rise need to be more than 0")
         return rise
+
+    def clean_LorR(self):
+       LorR = self.cleaned_data.get('LorR')
+       if LorR != 'L' or LorR != 'R' or LorR != 'l' or LorR != 'r':
+          raise forms.ValidationError("Enter L or R")
+       return LorR

@@ -64,7 +64,7 @@ def Testing(request):
         Rise = '-fiber_diffraction:p '+ str(Qobject4.rise)     #If specified, subunit rise is taken from input, otherwise is calculated by the program
         Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12Å
         Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3Å
-
+        LorR = '-fiber_diffraction:LorR '+ str(Qobject4.LorR)   #Left or Right handed
        #These are currently default
         Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
         AtomicBF = '-fiber_diffraction::b_factor '+ str(Qobject4.bfactor)    #Atomic B-factor
@@ -85,6 +85,7 @@ def Testing(request):
                          Rise,
                          Lcutoff,
                          Hcutoff,
+                         LorR,
                          Rfac,
                          AtomicBF,
                          Solv,
@@ -136,6 +137,7 @@ def Testing(request):
                                rise=Qobject4.rise,
                                rescutL=Qobject4.rescutL,
                                rescutH=Qobject4.rescutH,
+                               LorR=Qobject4.LorR,
                                rfactor=Qobject4.rfactor,
                                bfactor=Qobject4.bfactor,
                                bfactorSolv=Qobject4.bfactorSolv,
