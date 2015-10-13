@@ -1,5 +1,5 @@
+#main views to load the various pages
 from django.shortcuts import render
-
 
 def home(request):
   return render(request, 'home.html', {}) #context)
@@ -14,7 +14,8 @@ def main(request):
         return render(request, 'home.html', {})
 
 
-#**************************************************'
+#Results view to collect data from various databases, run Rosetta and save results to results DB
+#*************************************************************************************************
 
 #set storage path for files to include username and month number
 import datetime
@@ -23,11 +24,6 @@ def PathMaker(name, filename):
     Month = str(TodaysDate.month)
     return '/'.join(['C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage', name, Month, filename])
 
-
-#just for testing
-from django.http import HttpResponse
-from django.template import Context
-from django.template.loader import get_template
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults
 import subprocess
 
@@ -167,18 +163,17 @@ def Testing(request):
       # except subprocess.CalledProcessError:
            # pass # handle errors in the called executable
 
+    return render(request, 'main.html',
+         {'PrintEXPupload': Qobject3.EXPupload,
+         'PrintParaT': Qobject4.turns,
+         'PrintParaU': Qobject4.units,
+         'PrintParaR': Qobject4.rise,
+         'PrintChosen': chosenPDB        #this is the PDB sent to Rosetta
+         })
 
 
-        #Display Results on Testing.HTML
-        templateObject = get_template('main.html')
-        html = templateObject.render(Context( {'PrintEXPupload': Qobject3.EXPupload,
-                                               'PrintParaT': Qobject4.turns,
-                                               'PrintParaU': Qobject4.units,
-                                               'PrintParaR': Qobject4.rise,
-                                               'PrintChosen': chosenPDB        #this is the PDB sent to Rosetta
-                                               } ))
-        return HttpResponse(html)
-
+#functions
+#*******************************************************************************
 
 #Fetch PDB from RBSC
 import urllib.request
