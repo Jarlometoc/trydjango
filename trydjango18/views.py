@@ -109,34 +109,31 @@ def Testing(request):
         #*********************
         #takes turns/units/rise/LorR + n=40
         #returns helix_denovo.sdef- symmetry info and virtuals.pdb- virtual residues coord
-        try:
-            #optional local files to use when needed
-          #  import os.path
 
-           # if os.path.isfile('Storage/symmetry_definition_file'):
-           #  symDef = ' -o ' + 'Storage/symmetry_definition_file'
-          #  else:
-           #     symDef = ''
+        #optional local files to use when needed
+        import os.path
+        if os.path.isfile('Storage/symmetry_definition_file'):
+            symDef = ' -o ' + 'Storage/symmetry_definition_file'
+        else:
+            symDef = ''
+        if os.path.isfile('Storage/virtual_residues_file'):
+            virResid = ' -r ' + 'Storage/virtual_residues_file'
+        else:
+            virResid = ''
 
-         #   if os.path.isfile('Storage/virtual_residues_file'):
-          #   virResid = ' -r ' + 'Storage/virtual_residues_file'
-         #   else:
-          #      virResid = ''
-
-            #make commandline
-            command = 'python3 C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/trydjango18/make_helix_denovo.py' # + \
-                     # ' -p ' + Qobject4.rise + \
-                      #' -u ' + Qobject4.units + \
-                     # ' -n 40' + \
-                    #  ' -v ' + Qobject4.turns + \
-                    #  ' -c ' + Qobject4.LorR + \
-                    #  symDef + \
-                   #   virResid
-
-            subprocess.call(command, shell=True)
-        except subprocess.CalledProcessError:    #handle errors in the called executable
+        try:   #make commandline and run
+            command = 'python3 make_helix_denovo.py' + \
+                      ' -p ' + Qobject4.rise + \
+                      ' -u ' + Qobject4.units + \
+                      ' -n 40' + \
+                      ' -v ' + Qobject4.turns + \
+                      ' -c ' + Qobject4.LorR + \
+                      symDef + \
+                      virResid
+                                                  #./make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L
+            subprocess.call(command, shell=True)    #can use: cwd='/bin'
+        except:  #subprocess.CalledProcessError:    causes error in code if added
             pass
-        #./make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L
 
 
         #send to Rosetta
