@@ -56,7 +56,6 @@ def Testing(request):
 
 
         #gather data and submit to Rosetta
-
         #parameters
         PDB = '-in:file:s '+ str(chosenPDB)   #the chosen PDB, based on most recent timestamp
         EXP =  '-fiber_diffraction:layer_lines '+ str(Qobject3.EXPupload)     #File containing fiber diffraction layer lines

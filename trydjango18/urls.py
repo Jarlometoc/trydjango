@@ -14,8 +14,8 @@ urlpatterns = [
     url(r'^about/$', 'trydjango18.views.about', name = 'about'),
     url(r'^main/', 'trydjango18.views.main', name = 'main'),   #mainpage
     url(r'^accounts/', include('registration.backends.simple.urls')),  #no registration/confirm etc
-    url(r'^Inputs', include('Inputs.urls')),  #generic link to Inputs
-    url(r'^Testing/$', 'trydjango18.views.Testing', name='urlTesting'),
+    url(r'^Inputs', include('Inputs.urls')),  #link to the Inputs urls
+    url(r'^Testing/$', 'trydjango18.views.Testing', name='urlTesting'),  #link to Testing function to run Rosetta
 ]
 
 if settings.DEBUG:

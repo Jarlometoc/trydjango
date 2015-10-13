@@ -71,23 +71,3 @@ class ParaForm(ModelForm):
         if rise == 0 :
             raise forms.ValidationError("Rise need to be more than 0")
         return rise
-
-#results from Rosetta
-#class ResultsForm(ModelForm):
-   # class Meta:
-       #model = dbResults
-       # widgets = {'username': forms.HiddenInput()}
-
-   # def clean_output(self):
-       # pass
-        #out = self.cleaned_data.get('output.pdb')
-        #if out == crap :
-            #raise forms.ValidationError("Bad output, try again")
-    #return out
-
-   # def clean_chi(self):
-       # pass
-        #chi= self.cleaned_data.get('turns')
-        #if chi == 0 :
-           # raise forms.ValidationError("bad chi")
-       # return chi
