@@ -24,7 +24,9 @@ import subprocess
 #Main function to collect data from DB's, run Rosetta
 def Testing(request):
     if request.method == 'POST':   #if run is pressed....
-        #use sql to search DB: consider SQL injection attacks here
+
+        #SQL to make query objects for each table
+        #****************************************
         #download
         query = 'SELECT * FROM Inputs_dbpdbdown WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject = dbPDBdown.objects.raw(query)[0]
@@ -50,8 +52,9 @@ def Testing(request):
             chosenPDB = Qobject2.PDBup
 
 
-        #gather data and submit to Rosetta
-        #parameters
+        #Make FlagsFile using the query objects
+        #**************************************
+        #place into variables
         PDB = '-in:file:s '+ str(chosenPDB)   #the chosen PDB, based on most recent timestamp
         EXP =  '-fiber_diffraction:layer_lines '+ str(Qobject3.EXPupload)     #File containing fiber diffraction layer lines
         Units = '-fiber_diffraction:a '+ str(Qobject4.units)     #number of units
@@ -73,6 +76,7 @@ def Testing(request):
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4.gridPhi)    #Grid size phi, change if higher accuracy is needed
         OUT = '-fiber_diffraction:output'
 
+        #make a list of all variables
         ParameterList = [PDB,
                          EXP,
                          Units,
@@ -93,7 +97,7 @@ def Testing(request):
                          GridPhi,
                          OUT]
 
-        #make the Flags file
+        #make the Flags file, tagged with username, placed in user's folder
         filename = Qobject.username + '_Flags'
         Path = PathMaker(Qobject.username, filename)
         FHout = open(Path, 'w')
@@ -107,11 +111,11 @@ def Testing(request):
 
         #Run make_helix_denovo
         #*********************
-        #takes turns/units/rise/LorR + n=40
-        #returns helix_denovo.sdef- symmetry info and virtuals.pdb- virtual residues coord
+        #input units/rise/turns/N=40, plus optional files, returns helix_denovo.sdef- symmetry info for Rosetta
 
-        #optional local files to use when needed
+        #optional local files to use when needed, placed in /Storage
         import os.path
+        #can try import os, os.system('bash script')
         if os.path.isfile('Storage/symmetry_definition_file'):
             symDef = ' -o ' + 'Storage/symmetry_definition_file'
         else:
@@ -121,43 +125,51 @@ def Testing(request):
         else:
             virResid = ''
 
-        try:   #make commandline and run
-            command = 'python3 make_helix_denovo.py' + \
+        #just for testing on windows
+        command = 'python.exe trydjango18/make_helix_denovo.py' #for testing
+        subprocess.call(command, shell=True) #can use: cwd='/bin'
+
+        #for Server
+        try:   #make commandline and run  eg, './make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L'
+            command = 'python.exe trydjango18/make_helix_denovo.py' +\
                       ' -p ' + Qobject4.rise + \
                       ' -u ' + Qobject4.units + \
                       ' -n 40' + \
                       ' -v ' + Qobject4.turns + \
                       ' -c ' + Qobject4.LorR + \
-                      symDef + \
-                      virResid
-                                                  #./make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L
-            subprocess.call(command, shell=True)    #can use: cwd='/bin'
-        except:  #subprocess.CalledProcessError:    causes error in code if added
+                      symDef + virResid  #optional files, if they exist in Storage/
+
+            subprocess.call(command, shell=True)
+
+        except:  #subprocess.CalledProcessError:    !causes error if added!
             pass
 
 
         #send to Rosetta
-        #************
-        #first query dbPFag and make an object containing everything
+        #***************
+        #just for testing on windows
+        #query dbPFag and make an object containing everything
         query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject5 = dbPara.objects.raw(query)[0]
-        #pull out flagfilepath and send it to a fakeRosetta function to make a test LLoutput adn chisq
-        FlagFilePath = Qobject5.FlagFile
-        #send and gt back a fake LLoutput and chisq
-        both = (LLoutputPath, fakeChi) = fakeRosetta(FlagFilePath, Qobject.username)  #note:returns a tuple
+        #send flagfile and username to FakeRosetta and get back a fake LLoutput and chisq
+        both = (LLoutputPath, fakeChi) = fakeRosetta(Qobject5.FlagFile, Qobject.username)
+        #note: returns a tuple: access LLoutputPath, fakeChi from both by LLoutput=both[0], chisq=both[1]
 
-        #likely final code:
+
+        #for Server
         #'./score.linuxgccrelease @FlagFilePath'
-        #try:
-            #command = 'python3 RosettaTest.py ' + str(FlagFilePath)
-            #subprocess.call(command, shell=True)
-            #pass
-      # except subprocess.CalledProcessError:
-           # pass # handle errors in the called executable
+        try:
+            command = 'python3 RosettaTest.py ' + str(Qobject5.FlagFile)
+            subprocess.call(command, shell=True)
+
+        except:  #subprocess.CalledProcessError:    !causes error if added!
+            pass
 
 
 
-        #LLoutput Processing goes here!
+        #LayerLinesToImage
+        #*****************
+
 
 
 
@@ -166,7 +178,10 @@ def Testing(request):
         #and a pic that actually will come from LLoutput after processing
         LLoutputPicLocation = 'Storage/bunny.jpg'
 
-        #load the results database, including the new LLoutput and chisq
+
+        #Save Results
+        #************
+        #load inputs and  results to dbResults
         addResults = dbResults(username=Qobject.username,
                                PDBused=chosenPDB,
                                experimentalData= Qobject3.EXPupload,
@@ -194,7 +209,8 @@ def Testing(request):
 
 
 
-    #optional return parameters chosen to mainpage, display next to RUN button
+    #Display next to RUN button
+    #**************************
     return render(request, 'main.html',
          {'PrintEXPupload': Qobject3.EXPupload,
          'PrintParaT': Qobject4.turns,
