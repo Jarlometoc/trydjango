@@ -14,16 +14,17 @@ def main(request):
         return render(request, 'home.html', {})
 
 
-#Results view to collect data from various databases, run Rosetta and save results to results DB
-#*************************************************************************************************
+#Collect data from various databases, run denovo, Rosetta, LayerLinesToImage and save results to results DB
+#**********************************************************************************************************
 import datetime
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults
 import subprocess
 
 
-#Main function to collect data from DB's, run Rosetta
+#Main function
+#*************
 def Testing(request):
-    if request.method == 'POST':   #if run is pressed....
+    if request.method == 'POST':   #if Run is pressed....
 
         #SQL to make query objects for each table
         #****************************************
@@ -74,9 +75,12 @@ def Testing(request):
         GridR = '-fiber_diffraction:grid_r '+ str(Qobject4.gridR)     #Grid size r, should be bigger than radius of molecule
         GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4.gridZ)     #Grid size z, should be bigger than molecule span in z direction
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4.gridPhi)    #Grid size phi, change if higher accuracy is needed
-        OUT = '-fiber_diffraction:output'
-
-        #make a list of all variables
+        #path to output
+        fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibPDB')
+        LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #For LLpic, stored in user's folder'
+        Score = '-out:file:scorefile ' + PathMaker(Qobject.username, 'score.sc')
+        scoreWeights = '-score:weights Storage/fiberdiff.txt'  #unused output, ignore
+        #make a list of the above variables
         ParameterList = [PDB,
                          EXP,
                          Units,
@@ -95,7 +99,10 @@ def Testing(request):
                          GridR,
                          GridZ,
                          GridPhi,
-                         OUT]
+                         fibPDBout,
+                         LLout,
+                         Score,
+                         scoreWeights]
 
         #make the Flags file, tagged with username, placed in user's folder
         filename = Qobject.username + '_Flags'
@@ -113,46 +120,37 @@ def Testing(request):
         #*********************
         #input units/rise/turns/N=40, plus optional files, returns helix_denovo.sdef- symmetry info for Rosetta
 
-        #optional local files to use when needed, placed in /Storage
+        #Virtual Residuals file to be used by admin when needed, placed in /Storage
         import os.path
         #can try import os, os.system('bash script')
-        if os.path.isfile('Storage/symmetry_definition_file'):
-            symDef = ' -o ' + 'Storage/symmetry_definition_file'
-        else:
-            symDef = ''
         if os.path.isfile('Storage/virtual_residues_file'):
             virResid = ' -r ' + 'Storage/virtual_residues_file'
         else:
             virResid = ''
 
-        #just for testing on windows
-        command = 'python.exe trydjango18\make_helix_denovo.py' #for testing
-        subprocess.call(command, shell=True)
-        #make a path variable to denovo for dbResults
-        denovoPath = str(PathMaker(Qobject.username, 'helix_denovo.sdef'))
 
-        #for Server
+        #Path variables for dbResults  **make sure their creation also points to same
+        denovoPath = str(PathMaker(Qobject.username, 'helix_denovo.sdef'))
+        fibrilPDBPath = str(PathMaker(Qobject.username, 'fibPDB'))
+        scorePath = str(PathMaker(Qobject.username, 'score.sc'))
+        intensityPath = str(PathMaker(Qobject.username, 'intensity.txt'))
+        LLpicPath = str(PathMaker(Qobject.username, 'LLoutputPic'))
+
         try:
             #make commandline and run  eg, './make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L'
-            command = 'python3 trydjango18/make_helix_denovo.py' + \
+            command = './make_helix_denovo.py' + \
                       ' -p ' + Qobject4.rise + \
                       ' -u ' + Qobject4.units + \
                       ' -n 40' + \
                       ' -v ' + Qobject4.turns + \
                       ' -c ' + Qobject4.LorR + \
-                      symDef + virResid  #optional files, if they exist in Storage/
-                      #consider adding mv to user's folder as tail string:
-                      #first need denovoPath2 = str(PathMaker(Qobject.username, ''))
-                      #  + 'mv Storage/helix_denovo.sdef Storage/' + denovoPath2
+                      ' -o ' + denovoPath + \
+                      virResid  #optional file, see above
 
             subprocess.call(command, shell=True)
 
-            #make a path variable to denovo for dbResults
-            denovoPath = str(PathMaker(Qobject.username, 'helix_denovo.sdef'))
-
         except:  #subprocess.CalledProcessError:    !causes error if added!
             pass
-
 
 
         #run Rosetta
@@ -161,51 +159,30 @@ def Testing(request):
         query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject5 = dbPara.objects.raw(query)[0]
 
+        #'./score.linuxgccrelease @FlagFilePath'
+        try:
+            command = './score.linuxgccrelease ' + \
+                      '@' + str(Qobject5.FlagFile) + \
+                      ' -input ' + denovoPath + \
+                      ' -v ' + chosenPDB
+                        #fibPDB and intensity.txt output specified in flagfile
+            subprocess.call(command, shell=True)
 
-        #Determine if Run is with or without experimental LL
-        #***************************************************
-        if Qobject3.EXPupload == 'none':  #if without:
-
-            #just for testing on windows
-            #send flagfile,username, denovoPath to FakeRosetta and get back a fake LLoutput and chisq
-            both = (LLoutputPath, fakeChi) = fakeRosetta(Qobject5.FlagFile, Qobject.username)
-            #note: returns a tuple: access LLoutputPath, fakeChi from both by LLoutput=both[0], chisq=both[1]
-
-          #for Server
-            #'./score.linuxgccrelease @FlagFilePath'
-            try:
-                command = 'python3 RosettaTest.py ' + str(Qobject5.FlagFile)
-                subprocess.call(command, shell=True)
-
-            except:  #subprocess.CalledProcessError:    !causes error if added!
-                pass
+        except:  #subprocess.CalledProcessError:    !causes error if added!
+            pass
 
 
-        #if experimental LL included:
-        else:
+        #LayerLinesToImage
+        try:
+            command = './LayerLinesToImage.py' + \
+                      ' –e ' + Qobject3.EXPupload + \
+                      ' –s ' + intensityPath + \
+                      ' -o ' + LLpicPath
 
-            #just for testing on windows
-            #send flagfile,username, denovoPath to FakeRosetta and get back a fake LLoutput and chisq
-            both = (LLoutputPath, fakeChi) = fakeRosetta(Qobject5.FlagFile, Qobject.username)
-            #note: returns a tuple: access LLoutputPath, fakeChi from both by LLoutput=both[0], chisq=both[1]
+            subprocess.call(command, shell=True)
 
-
-            #for Server
-            #'./score.linuxgccrelease @FlagFilePath'
-            try:
-                command = 'python3 RosettaTest.py ' + str(Qobject5.FlagFile)
-                subprocess.call(command, shell=True)
-
-            except:  #subprocess.CalledProcessError:    !causes error if added!
-                pass
-
-
-            #LayerLinesToImage
-            #*****************
-            #and a pic that actually will come from LLoutput after processing
-            LLoutputPicLocation = 'Storage/bunny.jpg'
-
-
+        except:  #subprocess.CalledProcessError:    !causes error if added!
+            pass
 
 
         #Save Results
@@ -230,12 +207,18 @@ def Testing(request):
                                gridR = Qobject4.gridR,
                                gridZ= Qobject4.gridZ,
                                gridPhi = Qobject4.gridPhi,
-                               LLoutput=both[0],   #LLoutput and chisq has unique format to get first in the tuple outputted by FakeRosetta
-                               LLoutputPic=LLoutputPicLocation,  #derived from LLoutput processing
-                               chisq=both[1],
+                               fibrilPDB = fibrilPDBPath,
+                               LLoutput=intensityPath,  #derived from Rosetta
+                               LLoutputPic=LLpicPath,  #derived from LLoutput processing
                                FlagFile=Qobject5.FlagFile,
-                               denovo = denovoPath)
+                               denovo = denovoPath,
+                               Score = scorePath)
+                               #Chisq is saved using the findChisq function after parsing Score
         addResults.save()
+
+        #Deriving Chisq
+        findChisq(scorePath,Qobject.username)   #parses Score file, which was produced by Rosetta
+
 
 
 #functions
@@ -280,3 +263,26 @@ def fakeRosetta(flagfile, username):
     FakeChisq = '5.5'
     #return both the path to help LLoutput get inputed into dbResults and the ChiSq
     return (Path, FakeChisq)  #note:returns a tuple
+
+#convert Score file to chi-square value
+def findChisq(Path, username):
+    FH = open(Path, 'r')
+    lineNo=0
+    for line in FH:
+        if lineNo == 0:
+            lineNo= lineNo +1
+            line = line.rstrip()
+            words = str.split(' ')
+            i=0
+            for word in words:
+                if word == 'fiberdiffraction':
+                    index = i
+                i=i+1
+        else:
+            line = line.rstrip()
+            words = str.split(' ')
+            Chisq = float(words[index])
+            addResults = dbResults(username=username,chisq=Chisq)
+            addResults.save()
+    FH.close()
+
