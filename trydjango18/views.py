@@ -75,11 +75,12 @@ def Testing(request):
         GridR = '-fiber_diffraction:grid_r '+ str(Qobject4.gridR)     #Grid size r, should be bigger than radius of molecule
         GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4.gridZ)     #Grid size z, should be bigger than molecule span in z direction
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4.gridPhi)    #Grid size phi, change if higher accuracy is needed
-        #path to output
+        #output for Rosetta
         fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibPDB')
-        LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #For LLpic, stored in user's folder'
+        LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #to make LLpic, stored in user's folder'
         Score = '-out:file:scorefile ' + PathMaker(Qobject.username, 'score.sc')
         scoreWeights = '-score:weights Storage/fiberdiff.txt'  #unused output, ignore
+
         #make a list of the above variables
         ParameterList = [PDB,
                          EXP,
@@ -139,11 +140,11 @@ def Testing(request):
         try:
             #make commandline and run  eg, './make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L'
             command = './make_helix_denovo.py' + \
-                      ' -p ' + Qobject4.rise + \
-                      ' -u ' + Qobject4.units + \
+                      ' -p ' + str(Qobject4.rise) + \
+                      ' -u ' + str(Qobject4.units) + \
                       ' -n 40' + \
-                      ' -v ' + Qobject4.turns + \
-                      ' -c ' + Qobject4.LorR + \
+                      ' -v ' + str(Qobject4.turns) + \
+                      ' -c ' + str(Qobject4.LorR) + \
                       ' -o ' + denovoPath + \
                       virResid  #optional file, see above
 
@@ -164,8 +165,8 @@ def Testing(request):
             command = './score.linuxgccrelease ' + \
                       '@' + str(Qobject5.FlagFile) + \
                       ' -input ' + denovoPath + \
-                      ' -v ' + chosenPDB
-                        #fibPDB and intensity.txt output specified in flagfile
+                      ' -v ' + chosenPDB   #???????????????????????????????? v?
+                        #fibPDB, intensity.txt(LLout) and Score (for making chi-sq)+ scoreweights (ignore) outputs specified in flagfile
             subprocess.call(command, shell=True)
 
         except:  #subprocess.CalledProcessError:    !causes error if added!
@@ -175,8 +176,8 @@ def Testing(request):
         #LayerLinesToImage
         try:
             command = './LayerLinesToImage.py' + \
-                      ' –e ' + Qobject3.EXPupload + \
-                      ' –s ' + intensityPath + \
+                      ' -e ' + str(Qobject3.EXPupload) + \
+                      ' -s ' + intensityPath + \
                       ' -o ' + LLpicPath
 
             subprocess.call(command, shell=True)
@@ -207,17 +208,29 @@ def Testing(request):
                                gridR = Qobject4.gridR,
                                gridZ= Qobject4.gridZ,
                                gridPhi = Qobject4.gridPhi,
+                               FlagFile=Qobject5.FlagFile,
+                               denovo = denovoPath,
                                fibrilPDB = fibrilPDBPath,
                                LLoutput=intensityPath,  #derived from Rosetta
                                LLoutputPic=LLpicPath,  #derived from LLoutput processing
-                               FlagFile=Qobject5.FlagFile,
-                               denovo = denovoPath,
                                Score = scorePath)
-                               #Chisq is saved using the findChisq function after parsing Score
+                               #chisq is saved using the findChisq function after parsing Score
         addResults.save()
 
         #Deriving Chisq
-        findChisq(scorePath,Qobject.username)   #parses Score file, which was produced by Rosetta
+        findChisq(scorePath, Qobject.username)   #parses Score file, which was produced by Rosetta
+
+
+    #Return to mainpage
+    #Display next to RUN button
+    #**************************
+    return render(request, 'main.html',
+         {'PrintEXPupload': Qobject3.EXPupload,
+         'PrintParaT': Qobject4.turns,
+         'PrintParaU': Qobject4.units,
+         'PrintParaR': Qobject4.rise,
+         'PrintChosen': chosenPDB        #this is the PDB sent to Rosetta
+         })
 
 
 
@@ -247,23 +260,6 @@ def fetch_pdb(Qobject):
     return Path
 
 
-#fake Rosetta until project moved to server
-def fakeRosetta(flagfile, username):
-    #first open users Flagfile in user's folder
-    FHin = open(flagfile, 'r')
-    #'FakeLL.txt' outfile to the user's folder
-    Path= PathMaker(username, 'FakeLL.txt')
-    FHout = open(Path, 'w')
-    for line in FHin:
-        line = line.rstrip()
-        FHout.write(line + '\n')
-    FHin.close()
-    FHout.close()
-    #and a fake Chisq value....
-    FakeChisq = '5.5'
-    #return both the path to help LLoutput get inputed into dbResults and the ChiSq
-    return (Path, FakeChisq)  #note:returns a tuple
-
 #convert Score file to chi-square value
 def findChisq(Path, username):
     FH = open(Path, 'r')
@@ -272,7 +268,7 @@ def findChisq(Path, username):
         if lineNo == 0:
             lineNo= lineNo +1
             line = line.rstrip()
-            words = str.split(' ')
+            words = line.split()
             i=0
             for word in words:
                 if word == 'fiberdiffraction':
@@ -280,7 +276,7 @@ def findChisq(Path, username):
                 i=i+1
         else:
             line = line.rstrip()
-            words = str.split(' ')
+            words = line.split()
             Chisq = float(words[index])
             addResults = dbResults(username=username,chisq=Chisq)
             addResults.save()
