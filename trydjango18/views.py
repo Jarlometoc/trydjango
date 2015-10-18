@@ -1,6 +1,6 @@
 #main views to load the various pages
 from django.shortcuts import render
-
+from django.core.mail import EmailMessage
 def home(request):
   return render(request, 'home.html', {}) #context)
 
@@ -117,25 +117,17 @@ def Testing(request):
         addFlag.save()
 
 
-        #Run make_helix_denovo
-        #*********************
-        #input units/rise/turns/N=40, plus optional files, returns helix_denovo.sdef- symmetry info for Rosetta
-
-        #Virtual Residuals file to be used by admin when needed, placed in /Storage
-        import os.path
-        #can try import os, os.system('bash script')
-        if os.path.isfile('Storage/virtual_residues_file'):
-            virResid = ' -r ' + 'Storage/virtual_residues_file'
-        else:
-            virResid = ''
-
-
-        #Path variables for dbResults  **make sure their creation also points to same
+        #Path variables for dbResults  **make sure their -creation- also points to same
         denovoPath = str(PathMaker(Qobject.username, 'helix_denovo.sdef'))
         fibrilPDBPath = str(PathMaker(Qobject.username, 'fibPDB'))
         scorePath = str(PathMaker(Qobject.username, 'score.sc'))
         intensityPath = str(PathMaker(Qobject.username, 'intensity.txt'))
         LLpicPath = str(PathMaker(Qobject.username, 'LLoutputPic'))
+
+
+        #Run make_helix_denovo
+        #*********************
+        #input units/rise/turns/N=40, plus optional files, returns helix_denovo.sdef- symmetry info for Rosetta
 
         try:
             #make commandline and run  eg, './make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L'
@@ -146,44 +138,56 @@ def Testing(request):
                       ' -v ' + str(Qobject4.turns) + \
                       ' -c ' + str(Qobject4.LorR) + \
                       ' -o ' + denovoPath + \
-                      virResid  #optional file, see above
+                      ' -r Storage/virtual_residues_file'
+                      #-o is output of helix_denovo.sdef
+                      #virtual_residues_file also made each run: for diagnostics
 
             subprocess.call(command, shell=True)
 
         except:  #subprocess.CalledProcessError:    !causes error if added!
             pass
+
+
+        #modifying grit.dat here prior to use with Rosetta
 
 
         #run Rosetta
         #***********
         #qQuery dbFlag and make an object containing everything
-        query = 'SELECT * FROM Inputs_dbFlag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
-        Qobject5 = dbPara.objects.raw(query)[0]
+        query = 'SELECT * FROM Inputs_dbflag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+        Qobject5 = dbFlag.objects.raw(query)[0]
 
         #'./score.linuxgccrelease @FlagFilePath'
         try:
             command = './score.linuxgccrelease ' + \
                       '@' + str(Qobject5.FlagFile) + \
-                      ' -input ' + denovoPath + \
-                      ' -v ' + chosenPDB   #???????????????????????????????? v?
+                      ' -input ' + denovoPath
+                        #flagfile takes care of inputed chosenPDB, expLL, paramters
+                        #-input is helix_denovo.sdef on command line
                         #fibPDB, intensity.txt(LLout) and Score (for making chi-sq)+ scoreweights (ignore) outputs specified in flagfile
             subprocess.call(command, shell=True)
 
-        except:  #subprocess.CalledProcessError:    !causes error if added!
+        except:  #subprocess.CalledProcessError:  !causes error if added!
             pass
 
 
         #LayerLinesToImage
         try:
+            #will run from this dir, so local output
             command = './LayerLinesToImage.py' + \
                       ' -e ' + str(Qobject3.EXPupload) + \
                       ' -s ' + intensityPath + \
-                      ' -o ' + LLpicPath
+                      ' -o ' + LLpicPath   #need to modify program or have it dump in local dir and mod path
 
             subprocess.call(command, shell=True)
 
         except:  #subprocess.CalledProcessError:    !causes error if added!
             pass
+
+
+        #Derive Chisq
+        #note! if no expLL (just grid.dat) , then score should be empty and no chisq made!!!!!
+        Chisq=findChisq(scorePath, Qobject.username)   #parses Score file, which was produced by Rosetta
 
 
         #Save Results
@@ -213,12 +217,13 @@ def Testing(request):
                                fibrilPDB = fibrilPDBPath,
                                LLoutput=intensityPath,  #derived from Rosetta
                                LLoutputPic=LLpicPath,  #derived from LLoutput processing
-                               Score = scorePath)
-                               #chisq is saved using the findChisq function after parsing Score
+                               Score = scorePath,
+                               chisq = Chisq)  #derived from score (see chisq function)
         addResults.save()
 
-        #Deriving Chisq
-        findChisq(scorePath, Qobject.username)   #parses Score file, which was produced by Rosetta
+    #Make Results object for printing to main
+    query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+    Qobject6 = dbResults.objects.raw(query)[0]
 
 
     #Return to mainpage
@@ -229,8 +234,40 @@ def Testing(request):
          'PrintParaT': Qobject4.turns,
          'PrintParaU': Qobject4.units,
          'PrintParaR': Qobject4.rise,
-         'PrintChosen': chosenPDB        #this is the PDB sent to Rosetta
+         'PrintChosen': chosenPDB,
+         'PrintChi': Qobject6.chisq
          })
+
+
+def Clear(request):
+    if request.method == 'POST':   #if clear is pressed....
+        #Add to tables so default values are most recent entry
+        #'run' empty so nothing in Jmol, LL or chisq
+        return render(request, 'main.html', {})
+
+def EmailResults(request):
+    if request.method == 'POST':
+        #run ZipIt to open dbResults, pull out fibPDB, LLPic and chisq, zip it, store in user's dir
+        Path = ZipIt(request)
+        #Email zipped file to user
+        from django.conf import settings
+        from django.core.mail.message import EmailMessage
+        emailResults = EmailMessage(subject='Results of FAT analysis',
+                                    body='Here are your requested results',
+                                   from_email= settings.EMAIL_HOST_USER,
+                                    to=['shburleigh@gmail.com'],
+                                   )
+        emailResults.attach_file(Path)  #attach the zip file
+        emailResults.send()            #need to .send()
+
+        #return to mainpage
+        return render(request, 'main.html', {})
+
+
+def DownloadResults(request):
+    if request.method == 'POST':
+        #zip Jmol, LL, chisq (score.sc) to email and download
+        return render(request, 'main.html', {})
 
 
 
@@ -254,7 +291,7 @@ def fetch_pdb(Qobject):
     filename = Qobject.PDBdown + '.pdb'
     Path = PathMaker(Qobject.username, filename)
     Fout = open(Path, 'w')
-    Fout.write(text)# string
+    Fout.write(text)# string.txt
     FH.close()
     Fout.close()
     return Path
@@ -278,7 +315,29 @@ def findChisq(Path, username):
             line = line.rstrip()
             words = line.split()
             Chisq = float(words[index])
-            addResults = dbResults(username=username,chisq=Chisq)
-            addResults.save()
+            return Chisq
     FH.close()
+
+
+
+def ZipIt(request):
+    import zipfile
+    from Inputs.models import dbResults
+    #Make Results object
+    query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+    Qobject6 = dbResults.objects.raw(query)[0]
+    #select table columns you want to send
+    fibfile = str(Qobject6.fibrilPDB)
+    LLout = str(Qobject6.LLoutputPic)
+    score= str(Qobject6.Score)
+    #give file a name and location in user's dir
+    Path = PathMaker(request.user.username, 'results.zip')
+    #make zipcontainer and fill with zipped files
+    zipped = zipfile.ZipFile(Path, 'w')
+    zipped.write('C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage/bunny.jpg')
+    #zipped.write(fibfile)  #fibrilPDB
+    #zipped.write(LLout)  #LLPic
+    #zipped.write(score) #chi-sq
+    zipped.close()
+    return Path
 

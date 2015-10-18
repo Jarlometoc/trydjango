@@ -129,7 +129,7 @@ function downcode(slug) {
 
 function URLify(s, num_chars) {
     // changes, e.g., "Petty theft" to "petty_theft"
-    // remove all these words from the string before urlifying
+    // remove all these words from the string.txt before urlifying
     s = downcode(s);
     var removelist = [
         "a", "an", "as", "at", "before", "but", "by", "for", "from", "is",

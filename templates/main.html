@@ -124,11 +124,19 @@ Also 'includes' jmol functionality from jmol.html-->
  </form>
 <br>
 <br>
-<button type="Submit" class = 'btn btn-success'>Save and Send</button>
+<form id = "noRefresh" action= "{% url "urlEmailR" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-success'>Email Results</button>
+</form>
 <br>
 <br>
+<form id = "noRefresh" action= "{% url "urlDownR" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-success'>Download Results</button>
+</form>
+<br>
+<br>
+<form id = "noRefresh" action= "{% url "urlClear" %}" method="POST">{% csrf_token %}
 <input type="submit" class="btn btn-warning" value="Clear">
-
+</form>
 </div>
 
 
@@ -143,9 +151,10 @@ Also 'includes' jmol functionality from jmol.html-->
 % include 'jmol.html' %}-->
 <br>
 
-<div>
-<H2>Chi-Square</H2>
-<input type="text" name="Chi-Square:" size="10" maxlength="20">
+
+<div class='col-sm-4 pull-left'>
+<h3>Chi-square</h3>
+    <h4>Value: {{ PrintChi }}</h4>
 </div>
 
 {% endblock %}

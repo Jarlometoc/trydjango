@@ -36,7 +36,7 @@
     var nextIndex = parseInt(totalForms.val(), 10);
     var maxForms = $("#id_" + options.prefix + "-MAX_NUM_FORMS").prop("autocomplete", "off");
     // only show the add button if we are allowed to add more items,
-        // note that max_num = None translates to a blank string.
+        // note that max_num = None translates to a blank string.txt.
     var showAddButton = maxForms.val() === '' || (maxForms.val()-totalForms.val()) > 0;
     $this.each(function(i) {
       $(this).not("." + options.emptyCssClass).addClass(options.formCssClass);

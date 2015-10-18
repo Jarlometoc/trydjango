@@ -110,9 +110,9 @@ var CalendarNamespace = {
 
 // Calendar -- A calendar instance
 function Calendar(div_id, callback, selected) {
-    // div_id (string) is the ID of the element in which the calendar will
+    // div_id (string.txt) is the ID of the element in which the calendar will
     //     be displayed
-    // callback (string) is the name of a JavaScript function that will be
+    // callback (string.txt) is the name of a JavaScript function that will be
     //     called with the parameters (year, month, day) when a day in the
     //     calendar is clicked
     this.div_id = div_id;

@@ -3,9 +3,9 @@
         /*
             Depends on urlify.js
             Populates a selected field with the values of the dependent fields,
-            URLifies and shortens the string.
+            URLifies and shortens the string.txt.
             dependencies - array of dependent fields ids
-            maxLength - maximum length of the URLify'd string
+            maxLength - maximum length of the URLify'd string.txt
         */
         return this.each(function() {
             var prepopulatedField = $(this);

@@ -26,12 +26,14 @@ ALLOWED_HOSTS = []  #production
 
 #For Email
 #***********
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   #not sure this is needed
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'bioinformaticsproject42@gmail.com'   #From Email:see Views Contact   #need to unlock Captcha under accounts.google.com/displayunlockcaptcha
 EMAIL_HOST_PASSWORD = 'Slulo1970'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-#ACCOUNT_EMAIL_VERIFICATION = 'none'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER #not sure this is needed
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 #***********
 
 

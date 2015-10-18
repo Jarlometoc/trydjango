@@ -2,7 +2,7 @@
 // and Add Another links.
 
 function html_unescape(text) {
-    // Unescape a string that was escaped using django.utils.html.escape.
+    // Unescape a string.txt that was escaped using django.utils.html.escape.
     text = text.replace(/&lt;/g, '<');
     text = text.replace(/&gt;/g, '>');
     text = text.replace(/&quot;/g, '"');
