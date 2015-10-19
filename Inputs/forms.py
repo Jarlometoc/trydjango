@@ -7,6 +7,7 @@ from django import forms   #for validation errors and hiddenfields
 #******
 
 #download from RCSB
+
 class PDBdownForm(ModelForm):
     class Meta:
         model = dbPDBdown

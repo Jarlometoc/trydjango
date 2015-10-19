@@ -303,10 +303,11 @@ def Clear(request):
         defUp.save()
         defEXP = dbEXPupload(username=request.user.username, EXPupload='optional experimental LL')
         defEXP.save()
-        defPara = dbPara(username=request.user.username, turns='5', units='5', rise='5', bfactor='5', bfactorSolv='5',
-                         bfactorSolvK='5', gridPhi='5', gridR='5', gridZ='5', qfhtK1='5', qfhtK2='5', rfactor='5',
-                         rescutH='5', rescutL='5', scscaling='5', LorR='R')
+        defPara = dbPara(username=request.user.username, turns=5, units=27, rise=2.9, rescutL=0.0833333333, rescutH=0.3333333333, LorR='R')
         defPara.save()
+        defPara2 = dbPara2(username=request.user.username, bfactor=20.0, bfactorSolv=400, bfactorSolvK=0.4, gridPhi=128,
+                           gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor=False, scscaling=0.92)
+        defPara2.save()
         #now run to default everything
         Testing(request)
         return render(request, 'main.html', {})
