@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.forms import ModelForm
-from .models import dbPDBdown, dbPDBup, dbEXPupload, dbPara, dbResults
+from .models import dbPDBdown, dbPDBup, dbEXPupload, dbPara, dbPara2
 from django import forms   #for validation errors and hiddenfields
 
 #Forms
@@ -77,3 +77,11 @@ class ParaForm(ModelForm):
       # if LorR != 'L' or LorR != 'R' or LorR != 'l' or LorR != 'r':
           #raise forms.ValidationError("Enter L or R")
       # return LorR
+
+#additional parameters
+class AddParaForm(ModelForm):
+    class Meta:
+        model = dbPara2
+        widgets = {'username': forms.HiddenInput()}
+        fields =['username', 'rfactor', 'bfactor', 'bfactorSolv', 'bfactorSolvK', 'qfhtK1',
+                    'qfhtK2', 'scscaling', 'gridR', 'gridZ', 'gridPhi']

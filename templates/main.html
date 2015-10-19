@@ -81,6 +81,16 @@ Also 'includes' jmol functionality from jmol.html-->
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
+<br>
+<br>
+<!-- additional parameters is a dropdown menu -->
+<h4>Additional Parameters</h4>
+<form action="{% url "urlPara2" %}" method="post">{% csrf_token %}
+{{ AddHTML.as_p }}
+<input type="hidden" name = "username" value = "{{ user.get_username }}">
+<input type="submit" class="btn btn-primary" value="Set">
+</form>
+
 
 <!--radio buttons
   <br><br>

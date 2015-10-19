@@ -17,8 +17,7 @@ def main(request):
 #Collect data from various databases, run denovo, Rosetta, LayerLinesToImage and save results to results DB
 #**********************************************************************************************************
 import datetime
-from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults
-from django.contrib.auth import get_user_model
+from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults, dbPara2
 import subprocess
 
 
@@ -45,6 +44,9 @@ def Testing(request):
         query = 'SELECT * FROM Inputs_dbpara WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject4 = dbPara.objects.raw(query)[0]
 
+        #Additional Parameters
+        query = 'SELECT * FROM Inputs_dbpara2 WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+        Qobject4B = dbPara2.objects.raw(query)[0]
 
         #Identify the most current upload or download by timestamp, choose most recent
         if Qobject.timestamp > Qobject2.timestamp:
@@ -65,17 +67,17 @@ def Testing(request):
         Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12Å
         Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3Å
         LorR = '-fiber_diffraction:LorR '+ str(Qobject4.LorR)   #Left or Right handed
-       #These are currently default
-        Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
-        AtomicBF = '-fiber_diffraction::b_factor '+ str(Qobject4.bfactor)    #Atomic B-factor
-        Solv = '-fiber_diffraction::b_factor_solv '+ str(Qobject4.bfactorSolv)   #temperature factor that accounts for the disordered solvent
-        SolvK = '-fiber_diffraction::b_factor_solv_K '+ str(Qobject4.bfactorSolvK)   #scale factor that adjust average solvent scattering intensity
-        K1 = '-fiber_diffraction:qfht_K1 '+ str(Qobject4.qfhtK1)    #Hankel transform K1 parameter
-        K2 = '-fiber_diffraction:qfht_K2 '+ str(Qobject4.qfhtK2)      #Hankel transform K1 parameter
-        SC = '-edensity:sc_scaling '+ str(Qobject4.scscaling)    #Hankel transform K1 parameter
-        GridR = '-fiber_diffraction:grid_r '+ str(Qobject4.gridR)     #Grid size r, should be bigger than radius of molecule
-        GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4.gridZ)     #Grid size z, should be bigger than molecule span in z direction
-        GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4.gridPhi)    #Grid size phi, change if higher accuracy is needed
+       #Additional Parameters
+        Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4B.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
+        AtomicBF = '-fiber_diffraction::b_factor '+ str(Qobject4B.bfactor)    #Atomic B-factor
+        Solv = '-fiber_diffraction::b_factor_solv '+ str(Qobject4B.bfactorSolv)   #temperature factor that accounts for the disordered solvent
+        SolvK = '-fiber_diffraction::b_factor_solv_K '+ str(Qobject4B.bfactorSolvK)   #scale factor that adjust average solvent scattering intensity
+        K1 = '-fiber_diffraction:qfht_K1 '+ str(Qobject4B.qfhtK1)    #Hankel transform K1 parameter
+        K2 = '-fiber_diffraction:qfht_K2 '+ str(Qobject4B.qfhtK2)      #Hankel transform K1 parameter
+        SC = '-edensity:sc_scaling '+ str(Qobject4B.scscaling)    #Hankel transform K1 parameter
+        GridR = '-fiber_diffraction:grid_r '+ str(Qobject4B.gridR)     #Grid size r, should be bigger than radius of molecule
+        GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4B.gridZ)     #Grid size z, should be bigger than molecule span in z direction
+        GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4B.gridPhi)    #Grid size phi, change if higher accuracy is needed
         #output for Rosetta
         fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibril.pdb')
         LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #to make LLpic, stored in user's folder'
@@ -203,16 +205,16 @@ def Testing(request):
                                rescutL=Qobject4.rescutL,
                                rescutH=Qobject4.rescutH,
                                LorR=Qobject4.LorR,
-                               rfactor=Qobject4.rfactor,
-                               bfactor=Qobject4.bfactor,
-                               bfactorSolv=Qobject4.bfactorSolv,
-                               bfactorSolvK=Qobject4.bfactorSolvK,
-                               qfhtK1 = Qobject4.qfhtK1,
-                               qfhtK2 = Qobject4.qfhtK2,
-                               scscaling = Qobject4.scscaling,
-                               gridR = Qobject4.gridR,
-                               gridZ= Qobject4.gridZ,
-                               gridPhi = Qobject4.gridPhi,
+                               rfactor=Qobject4B.rfactor,
+                               bfactor=Qobject4B.bfactor,
+                               bfactorSolv=Qobject4B.bfactorSolv,
+                               bfactorSolvK=Qobject4B.bfactorSolvK,
+                               qfhtK1 = Qobject4B.qfhtK1,
+                               qfhtK2 = Qobject4B.qfhtK2,
+                               scscaling = Qobject4B.scscaling,
+                               gridR = Qobject4B.gridR,
+                               gridZ= Qobject4B.gridZ,
+                               gridPhi = Qobject4B.gridPhi,
                                FlagFile=Qobject5.FlagFile,
                                denovo = denovoPath,
                                fibrilPDB = fibrilPDBPath,
