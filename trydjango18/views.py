@@ -270,8 +270,19 @@ def DownloadResults(request):
 #clear button defaults all inputs
 def Clear(request):
     if request.method == 'POST':   #if clear is pressed....
-        #Add to tables so default values are most recent entry
-        #'run' empty so nothing in Jmol, LL or chisq
+        #default all possible choices, save to appropriate db
+        defDown = dbPDBdown(username=request.user.username, PDBdown='download from RCSB')
+        defDown.save()
+        defUp = dbPDBup(username=request.user.username, PDBup='upload from local dir')
+        defUp.save()
+        defEXP = dbEXPupload(username=request.user.username, EXPupload='optional experimental LL')
+        defEXP.save()
+        defPara = dbPara(username=request.user.username, turns='5', units='5', rise='5', bfactor='5', bfactorSolv='5',
+                         bfactorSolvK='5', gridPhi='5', gridR='5', gridZ='5', qfhtK1='5', qfhtK2='5', rfactor='5',
+                         rescutH='5', rescutL='5', scscaling='5', LorR='R')
+        defPara.save()
+        #now run to default everything
+        Testing(request)
         return render(request, 'main.html', {})
 
 
@@ -327,6 +338,7 @@ def findChisq(Path, username):
 
 #zips the three results files: fibril.pdb, LayerLines.jpg and score.sc (chisq)
 #places results.zip in user's folder
+#returns path to file
 def ZipIt(request):
     import zipfile
     from Inputs.models import dbResults
