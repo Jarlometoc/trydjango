@@ -76,7 +76,7 @@ def Testing(request):
         GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4.gridZ)     #Grid size z, should be bigger than molecule span in z direction
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4.gridPhi)    #Grid size phi, change if higher accuracy is needed
         #output for Rosetta
-        fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibPDB')
+        fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibril.pdb')
         LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #to make LLpic, stored in user's folder'
         Score = '-out:file:scorefile ' + PathMaker(Qobject.username, 'score.sc')
         scoreWeights = '-score:weights Storage/fiberdiff.txt'  #unused output, ignore
@@ -119,7 +119,7 @@ def Testing(request):
 
         #Path variables for dbResults  **make sure their -creation- also points to same
         denovoPath = str(PathMaker(Qobject.username, 'helix_denovo.sdef'))
-        fibrilPDBPath = str(PathMaker(Qobject.username, 'fibPDB'))
+        fibrilPDBPath = str(PathMaker(Qobject.username, 'fibril.pdb'))
         scorePath = str(PathMaker(Qobject.username, 'score.sc'))
         intensityPath = str(PathMaker(Qobject.username, 'intensity.txt'))
         LLpicPath = str(PathMaker(Qobject.username, 'LLoutputPic'))
@@ -164,7 +164,7 @@ def Testing(request):
                       ' -input ' + denovoPath
                         #flagfile takes care of inputed chosenPDB, expLL, paramters
                         #-input is helix_denovo.sdef on command line
-                        #fibPDB, intensity.txt(LLout) and Score (for making chi-sq)+ scoreweights (ignore) outputs specified in flagfile
+                        #fibril.pdb, intensity.txt(LLout) and Score (for making chi-sq)+ scoreweights (ignore) outputs specified in flagfile
             subprocess.call(command, shell=True)
 
         except:  #subprocess.CalledProcessError:  !causes error if added!
@@ -239,21 +239,19 @@ def Testing(request):
          })
 
 
-def Clear(request):
-    if request.method == 'POST':   #if clear is pressed....
-        #Add to tables so default values are most recent entry
-        #'run' empty so nothing in Jmol, LL or chisq
-        return render(request, 'main.html', {})
+#Zip and Send, Zip and download and Clear buttons
+#************************************************
 
+#Zips and sends to users email
 def EmailResults(request):
     if request.method == 'POST':
-        #run ZipIt to open dbResults, pull out fibPDB, LLPic and chisq, zip it, store in user's dir
+        #run ZipIt to open dbResults, pull out fibril.pdb, LLPic and chisq, zip it, store in user's dir
         Path = ZipIt(request)
         #Email zipped file to user
         from django.conf import settings
         from django.core.mail.message import EmailMessage
         emailResults = EmailMessage(subject='Results of FAT analysis',
-                                    body='Here are your requested results',
+                                    body='Here are your requested results',  #add chisq, but only if exp
                                    from_email= settings.EMAIL_HOST_USER,
                                     to=['shburleigh@gmail.com'],
                                    )
@@ -263,11 +261,19 @@ def EmailResults(request):
         #return to mainpage
         return render(request, 'main.html', {})
 
-
+#Zips and brings up download window
 def DownloadResults(request):
     if request.method == 'POST':
         #zip Jmol, LL, chisq (score.sc) to email and download
         return render(request, 'main.html', {})
+
+#clear button defaults all inputs
+def Clear(request):
+    if request.method == 'POST':   #if clear is pressed....
+        #Add to tables so default values are most recent entry
+        #'run' empty so nothing in Jmol, LL or chisq
+        return render(request, 'main.html', {})
+
 
 
 
@@ -319,7 +325,8 @@ def findChisq(Path, username):
     FH.close()
 
 
-
+#zips the three results files: fibril.pdb, LayerLines.jpg and score.sc (chisq)
+#places results.zip in user's folder
 def ZipIt(request):
     import zipfile
     from Inputs.models import dbResults
@@ -334,10 +341,10 @@ def ZipIt(request):
     Path = PathMaker(request.user.username, 'results.zip')
     #make zipcontainer and fill with zipped files
     zipped = zipfile.ZipFile(Path, 'w')
-    zipped.write('C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage/bunny.jpg')
-    #zipped.write(fibfile)  #fibrilPDB
-    #zipped.write(LLout)  #LLPic
-    #zipped.write(score) #chi-sq
+    #zipped.write('C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage/bunny.jpg')
+    zipped.write(fibfile)  #fibrilPDB
+    zipped.write(LLout)  #LLPic
+    zipped.write(score) #chi-sq
     zipped.close()
-    return Path
+    return Path  #just need to return path, since zip is stored there
 

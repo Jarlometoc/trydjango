@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="464528393">
-    <data-source source="LOCAL" name="Django default" uuid="90ceb2bd-4a4b-4092-b821-d36fa8fa4c4a">
+  <component name="DataSourceManagerImpl" format="xml" hash="3935522847">
+    <data-source source="LOCAL" name="Django default" uuid="e437b424-3ee6-4524-a003-6b189c7b2647">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\Stephen\Dropbox\PycharmProjects\trydjango18\db.sqlite3</jdbc-url>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/xerial-sqlite-license.txt</url>
-        </library>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/sqlite-jdbc-3.8.9.jar</url>
-        </library>
-      </libraries>
+      <libraries />
     </data-source>
   </component>
 </project>
