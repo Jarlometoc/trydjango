@@ -1,7 +1,7 @@
 <!-- Server page; gets basic format (navbar, jumbotron, content block) and statics from base.html
 Also 'includes' jmol functionality from jmol.html-->
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block jumbotron_content %}
 <div class="jumbotron">
 <div class="row">
@@ -42,10 +42,10 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class="container">
 <div class="row">
 
-<div  class='col-sm-4 pull-left'>
+<div  class='col-lg-3 pull-left'>
 <h4>Fetch a PDB from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
-<form action="{% url "urlPDBdown" %}" method="post" >{% csrf_token %}
-{{ PDBdownHTML }}
+<form action="{% url "urlPDBdown" %}" method="post" class="uniForm">{% csrf_token %}
+{{ PDBdownHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Fetch">
 </form>
@@ -57,36 +57,36 @@ Also 'includes' jmol functionality from jmol.html-->
 <h4>Upload a PDB </h4>
 
 <form id = "noRefresh" action="{% url "urlPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ PDBupHTML }}
+{{ PDBupHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Upload">
 </form>
 </div>
 
-<div  class='col-sm-4 '>
+<div  class='col-lg-3'>
 <h4>Upload optional</h4>
 <h4>experimental LayerLines</h4>
 <form id = "noRefresh" action="{% url "urlEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ EXPHTML }}
+{{ EXPHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Upload">
 </form>
 </div>
 
 
-<div class='col-sm-4 pull-right'>
+<div class='col-lg-3'>
 <h4>Set Rosetta Parameters</h4>
 <form action="{% url "urlParameters" %}" method="post">{% csrf_token %}
-{{ ParaHTML.as_p }}
+{{ ParaHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
-<br>
-<br>
+    </div>
+<div class='col-lg-3 pull-right'>
 <!-- additional parameters is a dropdown menu -->
 <h4>Additional Parameters</h4>
 <form action="{% url "urlPara2" %}" method="post">{% csrf_token %}
-{{ AddHTML.as_p }}
+{{ AddHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
 </form>

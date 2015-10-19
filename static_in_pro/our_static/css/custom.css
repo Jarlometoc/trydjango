@@ -1,2 +1,8 @@
 
-/* h3 {color:greenyellow;} */
+/* For testing: h3 {color:greenyellow;} */
+
+
+/*for crispyforms */
+.asteriskField {
+    display: none;
+}

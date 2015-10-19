@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="Django default" uuid="540e567e-8ba7-4e28-b7cb-b70cf3b1718d">
+  <data-source name="Django default2" uuid="efed31ae-d38e-4825-84fe-b52fc63bb0af">
     <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
@@ -25,19 +25,25 @@
       <column name="turns" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="units" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="rise" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
+      <column name="LorR" sqlType="VARCHAR(1)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="rescutH" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
+      <column name="rescutL" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="Inputs_dbpara2" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="timestamp" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR(10)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="rfactor" sqlType="VARCHAR(10)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="bfactor" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="bfactorSolv" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="bfactorSolvK" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="gridPhi" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="gridR" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="gridZ" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="qfhtK1" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="qfhtK2" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="rescutH" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="rescutL" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="rfactor" sqlType="VARCHAR(10)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="scscaling" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="LorR" sqlType="VARCHAR(1)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="gridR" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
+      <column name="gridZ" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
+      <column name="gridPhi" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <primary-key columns="id"/>
     </table>
     <table name="Inputs_dbpdbdown" schema="" catalog="" type="TABLE">
