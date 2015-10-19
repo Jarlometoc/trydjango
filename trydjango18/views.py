@@ -1,5 +1,5 @@
 #main views to load the various pages
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.core.mail import EmailMessage
 def home(request):
   return render(request, 'home.html', {}) #context)
@@ -261,11 +261,29 @@ def EmailResults(request):
         #return to mainpage
         return render(request, 'main.html', {})
 
+
 #Zips and brings up download window
 def DownloadResults(request):
-    if request.method == 'POST':
+    if request.method == 'POST':   #if download is pressed.....
         #zip Jmol, LL, chisq (score.sc) to email and download
-        return render(request, 'main.html', {})
+        import os, tempfile, zipfile
+        from django.http import HttpResponse
+        from django.core.servers.basehttp import FileWrapper
+        filename = PathMaker(request.user.username, 'results.zip')
+        wrapper = FileWrapper(open(filename, 'rb'))  #'rb' is windows fix
+        response = HttpResponse(wrapper, content_type='text/plain')
+        response['Content-Length'] = os.path.getsize(filename)  #loads in chunks: see FileWrapper
+        return response
+
+        #from django.utils.encoding import smart_str
+        #file='results.zip'
+       # path='C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage/QQQ/10'
+        #response = HttpResponse(mimetype='application/force-download')
+       # response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file)
+        #response['X-Sendfile'] = smart_str(path)
+       # return response
+
+
 
 #clear button defaults all inputs
 def Clear(request):
