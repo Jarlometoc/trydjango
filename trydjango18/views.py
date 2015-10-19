@@ -18,6 +18,7 @@ def main(request):
 #**********************************************************************************************************
 import datetime
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults
+from django.contrib.auth import get_user_model
 import subprocess
 
 
@@ -250,10 +251,15 @@ def EmailResults(request):
         #Email zipped file to user
         from django.conf import settings
         from django.core.mail.message import EmailMessage
+        from django.contrib.auth.models import User
+        #get user email from auth_user db
+        query = 'SELECT * FROM auth_user WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+        Qobject8 =User.objects.raw(query)[0] #db called User in Django, auth_user in SQL
+        userEmail = str(Qobject8.email)
         emailResults = EmailMessage(subject='Results of FAT analysis',
                                     body='Here are your requested results',  #add chisq, but only if exp
                                    from_email= settings.EMAIL_HOST_USER,
-                                    to=['shburleigh@gmail.com'],
+                                    to=[userEmail]
                                    )
         emailResults.attach_file(Path)  #attach the zip file
         emailResults.send()            #need to .send()
