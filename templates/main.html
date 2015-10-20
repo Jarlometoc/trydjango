@@ -82,6 +82,8 @@ Also 'includes' jmol functionality from jmol.html-->
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
     </div>
+
+
 <div class='col-lg-3 pull-right'>
 <!-- additional parameters is a dropdown menu -->
 <h4>Additional Parameters</h4>
@@ -90,22 +92,11 @@ Also 'includes' jmol functionality from jmol.html-->
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
-
-
-<!--radio buttons
-  <br><br>
-<h4>Left or right handed</h4>
-    <form id = "noRefresh" action="% url "urlRadio" %}" method="post">% csrf_token %}
-    <input type="hidden" name = "username" value = "{ user.get_username }}">
-    <input type="radio" name="left" value="Left">Left<br>
-    <input type="radio" name="right" value="Right">Right
-    </form>-->
-
-
 </div>
 
 </div>
 </div>
+
 
 <br><br><br>
 <div class="page-header">
@@ -114,15 +105,26 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class="container">
 <div class="row">
 
-<div class='col-sm-4 pull-left'>
-<h3>Your parameters</h3>
+<div class='col-lg-6 pull-left'>
+<h3>Your parameters</h3><br>
     
-    <h4>Chosen PDB:{{ PrintChosen }}</h4>
-    <h4>Optional Experimental data:{{ PrintEXPupload }}</h4>
-   <h4>Turns:{{ PrintParaT }}</h4>
-    <h4>Units:{{ PrintParaU }}</h4>
-    <h4>Rise:{{ PrintParaR }}</h4>
-    <button id="about-btn"> Jquery test</button>
+    <h4>{{ PrintChosen }}</h4>
+    <h4>{{ PrintEXPupload }}</h4>
+    <h4>{{ PrintParaT }}</h4>
+    <h4>{{ PrintParaU }}</h4>
+    <h4>{{ PrintParaR }}</h4>
+    <h4>{{ PrintRescutL }}</h4>
+    <h4>{{ PrintRescutH }}</h4>
+    <h4>{{ PrintLorR }}</h4>
+    <h4>{{ PrintBfactor }}</h4>
+    <h4>{{ PrintBfactorSolv }}</h4>
+    <h4>{{ PrintBfactorSolvK }}</h4>
+    <h4>{{ PrintqfhtK1 }}</h4>
+    <h4>{{ PrintqfhtK2 }}</h4>
+    <h4>{{ Printscscaling }}</h4>
+    <h4>{{ PrintgridR }}</h4>
+    <h4>{{ PrintgridZ}}</h4>
+    <h4>{{ PrintgridPhi }}</h4>
 
 </div>
 

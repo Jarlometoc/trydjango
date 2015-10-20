@@ -232,15 +232,35 @@ def Testing(request):
     #Return to mainpage
     #Display next to RUN button
     #**************************
-    return render(request, 'main.html',
-         {'PrintEXPupload': Qobject3.EXPupload,
-         'PrintParaT': Qobject4.turns,
-         'PrintParaU': Qobject4.units,
-         'PrintParaR': Qobject4.rise,
-         'PrintChosen': chosenPDB,
-         'PrintChi': Qobject6.chisq
-         })
 
+    UsedParam = {'PrintChosen': 'PDB: ' + str(Qobject6.PDBused),
+          'PrintEXPupload': 'Optional experimental layerlines: ' + str(Qobject6.experimentalData),
+          'PrintParaT': 'Turns: ' + str(Qobject6.turns),
+          'PrintParaU': 'Units: ' + str(Qobject6.units),
+          'PrintParaR': 'Rise: ' + str(Qobject6.rise),
+          'PrintRescutL': 'Resolution (L): ' + str(Qobject6.rescutL),
+          'PrintRescutH': 'Resolution (H): ' + str(Qobject6.rescutH),
+          'PrintLorR': 'Handedness: ' + str(Qobject6.LorR)}
+    if Qobject6.bfactor != 20.0:
+        UsedParam['PrintBfactor'] = 'Bfactor: ' + str(Qobject6.bfactor)
+    if Qobject6.bfactorSolv != 400:
+        UsedParam['PrintBfactorSolv'] = 'BfactorSolv: ' + str(Qobject6.bfactorSolv)
+    if Qobject6.bfactorSolvK != 0.4:
+        UsedParam['PrintBfactorSolvK'] = 'BfactorSolvK: ' + str(Qobject6.bfactorSolvK)
+    if Qobject6.qfhtK1 != 2.0:
+        UsedParam['PrintqfhtK1'] = 'qfhtK1: ' + str(Qobject6.qfhtK1)
+    if Qobject6.qfhtK2 != 2.2:
+        UsedParam['PrintqfhtK2'] = 'qfhtK2: ' + str(Qobject6.qfhtK2)
+    if Qobject6.scscaling != 0.92:
+        UsedParam['Printscscaling'] = 'sc_scaling: ' + str(Qobject6.scscaling)
+    if Qobject6.gridR != 256:
+        UsedParam['PrintgridR'] = 'gridR: ' + str(Qobject6.gridR)
+    if Qobject6.gridZ != 128:
+        UsedParam['PrintgridZ'] = 'gridZ: ' + str(Qobject6.gridZ)
+    if Qobject6.gridPhi != 128:
+        UsedParam['PrintgridPhi'] = 'gridPhi: ' + str(Qobject6.gridPhi)
+
+    return render(request, 'main.html', UsedParam)
 
 #Zip and Send, Zip and download and Clear buttons
 #************************************************
@@ -297,16 +317,16 @@ def DownloadResults(request):
 def Clear(request):
     if request.method == 'POST':   #if clear is pressed....
         #default all possible choices, save to appropriate db
-        defDown = dbPDBdown(username=request.user.username, PDBdown='download from RCSB')
+        defDown = dbPDBdown(username=request.user.username, PDBdown='none chosen')
         defDown.save()
-        defUp = dbPDBup(username=request.user.username, PDBup='upload from local dir')
+        defUp = dbPDBup(username=request.user.username, PDBup='none chosen')
         defUp.save()
-        defEXP = dbEXPupload(username=request.user.username, EXPupload='optional experimental LL')
+        defEXP = dbEXPupload(username=request.user.username, EXPupload='none chosen')
         defEXP.save()
         defPara = dbPara(username=request.user.username, turns=5, units=27, rise=2.9, rescutL=0.0833333333, rescutH=0.3333333333, LorR='R')
         defPara.save()
         defPara2 = dbPara2(username=request.user.username, bfactor=20.0, bfactorSolv=400, bfactorSolvK=0.4, gridPhi=128,
-                           gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor=False, scscaling=0.92)
+                           gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92)
         defPara2.save()
         #now run to default everything
         Testing(request)
