@@ -229,38 +229,10 @@ def Testing(request):
     Qobject6 = dbResults.objects.raw(query)[0]
 
 
-    #Return to mainpage
-    #Display next to RUN button
-    #**************************
-
-    UsedParam = {'PrintChosen': 'PDB: ' + str(Qobject6.PDBused),
-          'PrintEXPupload': 'Optional experimental layerlines: ' + str(Qobject6.experimentalData),
-          'PrintParaT': 'Turns: ' + str(Qobject6.turns),
-          'PrintParaU': 'Units: ' + str(Qobject6.units),
-          'PrintParaR': 'Rise: ' + str(Qobject6.rise),
-          'PrintRescutL': 'Resolution (L): ' + str(Qobject6.rescutL),
-          'PrintRescutH': 'Resolution (H): ' + str(Qobject6.rescutH),
-          'PrintLorR': 'Handedness: ' + str(Qobject6.LorR)}
-    if Qobject6.bfactor != 20.0:
-        UsedParam['PrintBfactor'] = 'Bfactor: ' + str(Qobject6.bfactor)
-    if Qobject6.bfactorSolv != 400:
-        UsedParam['PrintBfactorSolv'] = 'BfactorSolv: ' + str(Qobject6.bfactorSolv)
-    if Qobject6.bfactorSolvK != 0.4:
-        UsedParam['PrintBfactorSolvK'] = 'BfactorSolvK: ' + str(Qobject6.bfactorSolvK)
-    if Qobject6.qfhtK1 != 2.0:
-        UsedParam['PrintqfhtK1'] = 'qfhtK1: ' + str(Qobject6.qfhtK1)
-    if Qobject6.qfhtK2 != 2.2:
-        UsedParam['PrintqfhtK2'] = 'qfhtK2: ' + str(Qobject6.qfhtK2)
-    if Qobject6.scscaling != 0.92:
-        UsedParam['Printscscaling'] = 'sc_scaling: ' + str(Qobject6.scscaling)
-    if Qobject6.gridR != 256:
-        UsedParam['PrintgridR'] = 'gridR: ' + str(Qobject6.gridR)
-    if Qobject6.gridZ != 128:
-        UsedParam['PrintgridZ'] = 'gridZ: ' + str(Qobject6.gridZ)
-    if Qobject6.gridPhi != 128:
-        UsedParam['PrintgridPhi'] = 'gridPhi: ' + str(Qobject6.gridPhi)
-
-    return render(request, 'main.html', UsedParam)
+    #Return used parameters to mainpage
+    #**********************************
+    toreturn= UsedParam(Qobject6)
+    return render(request, 'main.html', toreturn)
 
 #Zip and Send, Zip and download and Clear buttons
 #************************************************
@@ -381,6 +353,44 @@ def findChisq(Path, username):
             Chisq = float(words[index])
             return Chisq
     FH.close()
+
+#List of parameters chosen for a given run:
+#used for printing on Main.html and made into file for zipping
+def UsedParam(Qobject6):
+    used = {'PrintChosen': 'PDB: ' + str(Qobject6.PDBused),
+          'PrintEXPupload': 'Optional experimental layerlines: ' + str(Qobject6.experimentalData),
+          'PrintParaT': 'Turns: ' + str(Qobject6.turns),
+          'PrintParaU': 'Units: ' + str(Qobject6.units),
+          'PrintParaR': 'Rise: ' + str(Qobject6.rise),
+          'PrintRescutL': 'Resolution (L): ' + str(Qobject6.rescutL),
+          'PrintRescutH': 'Resolution (H): ' + str(Qobject6.rescutH),
+          'PrintLorR': 'Handedness: ' + str(Qobject6.LorR)}
+    if Qobject6.bfactor != 20.0:
+        used['PrintBfactor'] = 'Bfactor: ' + str(Qobject6.bfactor)
+    if Qobject6.bfactorSolv != 400:
+        used['PrintBfactorSolv'] = 'BfactorSolv: ' + str(Qobject6.bfactorSolv)
+    if Qobject6.bfactorSolvK != 0.4:
+        used['PrintBfactorSolvK'] = 'BfactorSolvK: ' + str(Qobject6.bfactorSolvK)
+    if Qobject6.qfhtK1 != 2.0:
+        used['PrintqfhtK1'] = 'qfhtK1: ' + str(Qobject6.qfhtK1)
+    if Qobject6.qfhtK2 != 2.2:
+        used['PrintqfhtK2'] = 'qfhtK2: ' + str(Qobject6.qfhtK2)
+    if Qobject6.scscaling != 0.92:
+        used['Printscscaling'] = 'sc_scaling: ' + str(Qobject6.scscaling)
+    if Qobject6.gridR != 256:
+        used['PrintgridR'] = 'gridR: ' + str(Qobject6.gridR)
+    if Qobject6.gridZ != 128:
+        used['PrintgridZ'] = 'gridZ: ' + str(Qobject6.gridZ)
+    if Qobject6.gridPhi != 128:
+        used['PrintgridPhi'] = 'gridPhi: ' + str(Qobject6.gridPhi)
+    return used
+
+
+
+
+
+
+
 
 
 #zips the three results files: fibril.pdb, LayerLines.jpg and score.sc (chisq)
