@@ -421,6 +421,7 @@ def ParamUsedFile(Qobject6, used):
 #places results.zip in user's folder
 def ZipIt(request):
     import zipfile
+    from io import StringIO
     #remove old
     import os
     try:
@@ -438,19 +439,17 @@ def ZipIt(request):
     LLout = str(Qobject6.LLoutputPic)
     parampath = PathMaker(request.user.username, 'parameters.txt')
 
-    #remove paths
-    #fibfile2 = removePath(fibfile)
-   #LLout2 = removePath(LLout)
-    #parampath2 = removePath(parampath)
-
     #give file a name and location in user's dir
     Path = PathMaker(request.user.username, 'results.zip')
 
-    #make zipcontainer and fill with zipped files
+    #remove paths
+    from os.path import basename
+    #buffer = StringIO()
     zipped = zipfile.ZipFile(Path, 'w')
-    zipped.write(fibfile)  #fibrilPDB
-    zipped.write(LLout)  #LLPic
-    zipped.write(parampath)  #parameters used
+    zipped.write(fibfile, basename(fibfile))
+    zipped.write(LLout, basename(LLout))
+    zipped.write(parampath, basename(parampath))
     zipped.close()
+
 
 
