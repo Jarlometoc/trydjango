@@ -357,8 +357,8 @@ def findChisq(Path, username):
 #List of parameters chosen for a given run:
 #used for printing on Main.html and made into file for zipping
 def UsedParam(Qobject6):
-    used = {'PrintChosen': 'PDB: ' + str(Qobject6.PDBused),
-          'PrintEXPupload': 'Optional experimental layerlines: ' + str(Qobject6.experimentalData),
+    used = {'PrintChosen': 'PDB: ' + removePath(str(Qobject6.PDBused)),
+          'PrintEXPupload': 'Optional experimental layerlines: ' + removePath(str(Qobject6.experimentalData)),
           'PrintParaT': 'Turns: ' + str(Qobject6.turns),
           'PrintParaU': 'Units: ' + str(Qobject6.units),
           'PrintParaR': 'Rise: ' + str(Qobject6.rise),
@@ -383,15 +383,24 @@ def UsedParam(Qobject6):
         used['PrintgridZ'] = 'gridZ: ' + str(Qobject6.gridZ)
     if Qobject6.gridPhi != 128:
         used['PrintgridPhi'] = 'gridPhi: ' + str(Qobject6.gridPhi)
+    if Qobject6.experimentalData != 'none chosen':
+         used['PrintChi'] = 'Chi-square: ' + str(Qobject6.chisq)
+
+    #Make a .txt file containing all run parameters
+    ParamUsedFile(Qobject6, used)   #saves parameters.txt to user's dir
+
     return used
 
-
-
-
-
-
-
-
+#Make UsedParameters a .txt file for downloading
+def ParamUsedFile(Qobject6, used):
+    Path = PathMaker(Qobject6.username, 'parameters.txt')
+    FH = open(Path, 'w')
+    FH.write('Files and Parameters used for FAT Run Number ' + str(Qobject6.id))
+    FH.write("\n\n")
+    for key in used:
+        FH.write(used[key])
+        FH.write("\n")
+    FH.close()
 
 #zips the three results files: fibril.pdb, LayerLines.jpg and score.sc (chisq)
 #places results.zip in user's folder
@@ -417,3 +426,8 @@ def ZipIt(request):
     zipped.close()
     return Path  #just need to return path, since zip is stored there
 
+#Remove paths from files for the zipped results
+def removePath(path):
+    import ntpath
+    trimmed = ntpath.basename(path)  #carefule: does not deal with 'file.txt/' syntax
+    return trimmed
