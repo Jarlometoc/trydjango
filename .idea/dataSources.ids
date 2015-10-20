@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="Django default2" uuid="efed31ae-d38e-4825-84fe-b52fc63bb0af">
+  <data-source name="Django default" uuid="2823e39d-ea9b-477b-a20e-f715667af70e">
     <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
@@ -68,6 +68,7 @@
       <column name="LLoutput" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="PDBused" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="FlagFile" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="experimentalData" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="rise" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="turns" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="units" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
@@ -83,12 +84,11 @@
       <column name="qfhtK2" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="rescutH" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="rescutL" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
-      <column name="rfactor" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="scscaling" sqlType="REAL" precision="2000000000" scale="10" nullable="false" jdbcType="6"/>
       <column name="denovo" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="Score" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="fibrilPDB" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
-      <column name="experimentalData" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="rfactor" sqlType="BOOL" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
     </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
