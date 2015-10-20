@@ -229,20 +229,24 @@ def Testing(request):
     Qobject6 = dbResults.objects.raw(query)[0]
 
 
+    #make the zipfile in advance, cause it takes a while
+    ZipIt(request)
+
+
     #Return used parameters to mainpage
     #**********************************
     toreturn= UsedParam(Qobject6)
     return render(request, 'main.html', toreturn)
+
+
+
 
 #Zip and Send, Zip and download and Clear buttons
 #************************************************
 
 #Zips and sends to users email
 def EmailResults(request):
-    if request.method == 'POST':
-        #run ZipIt to open dbResults, pull out fibril.pdb, LLPic and chisq, zip it, store in user's dir
-        Path = ZipIt(request)
-        #Email zipped file to user
+    if request.method == 'POST':  #when send results button pushed....
         from django.conf import settings
         from django.core.mail.message import EmailMessage
         from django.contrib.auth.models import User
@@ -255,6 +259,8 @@ def EmailResults(request):
                                    from_email= settings.EMAIL_HOST_USER,
                                     to=[userEmail]
                                    )
+        #attach results.zip
+        Path = PathMaker(request.user.username, 'results.zip')
         emailResults.attach_file(Path)  #attach the zip file
         emailResults.send()            #need to .send()
 
@@ -266,7 +272,7 @@ def EmailResults(request):
 def DownloadResults(request):
     if request.method == 'POST':   #if download is pressed.....
         #zip Jmol, LL, chisq (score.sc) to email and download
-        import os, tempfile, zipfile
+        import os, zipfile
         from django.http import HttpResponse
         from django.core.servers.basehttp import FileWrapper
         filename = PathMaker(request.user.username, 'results.zip')
@@ -277,12 +283,11 @@ def DownloadResults(request):
 
         #from django.utils.encoding import smart_str
         #file='results.zip'
-       # path='C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage/QQQ/10'
-        #response = HttpResponse(mimetype='application/force-download')
+        #path=PathMaker(request.user.username, 'results.zip')
+       # response = HttpResponse(mimetype='application/force-download')
        # response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file)
         #response['X-Sendfile'] = smart_str(path)
        # return response
-
 
 
 #clear button defaults all inputs
@@ -315,6 +320,12 @@ def PathMaker(name, filename):
     TodaysDate = datetime.date.today()
     Month = str(TodaysDate.month)
     return '/'.join(['C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage', name, Month, filename])
+
+#Remove paths from files for the zipped results
+def removePath(path):
+    import ntpath
+    trimmed = ntpath.basename(path)  #carefule: does not deal with 'file.txt/' syntax
+    return trimmed
 
 
 #Fetch PDB from RBSC
@@ -396,38 +407,50 @@ def ParamUsedFile(Qobject6, used):
     Path = PathMaker(Qobject6.username, 'parameters.txt')
     FH = open(Path, 'w')
     FH.write('Files and Parameters used for FAT Run Number ' + str(Qobject6.id))
+    FH.write("\n")
+    FH.write('User: ' + str(Qobject6.username))
+    FH.write("\n")
+    FH.write('Timestamp: ' + str(Qobject6.timestamp))
     FH.write("\n\n")
     for key in used:
         FH.write(used[key])
         FH.write("\n")
     FH.close()
 
-#zips the three results files: fibril.pdb, LayerLines.jpg and score.sc (chisq)
+#zips the three results files: fibril.pdb, LayerLines.jpg and parameters.txt
 #places results.zip in user's folder
-#returns path to file
 def ZipIt(request):
     import zipfile
+    #remove old
+    import os
+    try:
+        pathtoold = PathMaker(request.user.username, 'results.zip')
+        os.remove(pathtoold)
+    except OSError:
+        pass
     from Inputs.models import dbResults
     #Make Results object
     query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
     Qobject6 = dbResults.objects.raw(query)[0]
-    #select table columns you want to send
+
+    #select table columns to send
     fibfile = str(Qobject6.fibrilPDB)
     LLout = str(Qobject6.LLoutputPic)
-    score= str(Qobject6.Score)
+    parampath = PathMaker(request.user.username, 'parameters.txt')
+
+    #remove paths
+    #fibfile2 = removePath(fibfile)
+   #LLout2 = removePath(LLout)
+    #parampath2 = removePath(parampath)
+
     #give file a name and location in user's dir
     Path = PathMaker(request.user.username, 'results.zip')
+
     #make zipcontainer and fill with zipped files
     zipped = zipfile.ZipFile(Path, 'w')
-    #zipped.write('C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage/bunny.jpg')
     zipped.write(fibfile)  #fibrilPDB
     zipped.write(LLout)  #LLPic
-    zipped.write(score) #chi-sq
+    zipped.write(parampath)  #parameters used
     zipped.close()
-    return Path  #just need to return path, since zip is stored there
 
-#Remove paths from files for the zipped results
-def removePath(path):
-    import ntpath
-    trimmed = ntpath.basename(path)  #carefule: does not deal with 'file.txt/' syntax
-    return trimmed
+
