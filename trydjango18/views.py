@@ -254,8 +254,12 @@ def EmailResults(request):
         query = 'SELECT * FROM auth_user WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject8 =User.objects.raw(query)[0] #db called User in Django, auth_user in SQL
         userEmail = str(Qobject8.email)
+        #get user run info
+        query2 = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+        Qobject6 =dbResults.objects.raw(query2)[0]
+        bodytext = 'Here are your requested results for Run Number ' + str(Qobject6.id) + ' carried out on ' + str(Qobject6.timestamp)
         emailResults = EmailMessage(subject='Results of FAT analysis',
-                                    body='Here are your requested results',  #add chisq, but only if exp
+                                    body=bodytext,
                                    from_email= settings.EMAIL_HOST_USER,
                                     to=[userEmail]
                                    )
@@ -290,6 +294,58 @@ def DownloadResults(request):
        # return response
 
 
+
+
+#Rerun button: User enters previous run number (if none, defaults to regular run)
+def ReRun(request):
+    if request.method == 'POST':
+        #runnum = request.POST.get('RunNum')
+        try:
+            #runnum = int(runnum)
+            #make sure its just an integer
+            #get results corresponding to the entered run number
+            query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" AND id =7' #+ str(runnum) #back to string, but clean
+            Qobject8 = dbResults.objects.raw(query)[0]
+            #Bring Forward the selected results,  place in 'first place' in tables with updated timestamp
+            adddown= dbPDBdown(username=Qobject8.username,
+                               PDBdown=Qobject8.PDBused)
+            adddown.save()
+            addup= dbPDBup(username=Qobject8.username,
+                           PDBup=Qobject8.PDBused)
+            addup.save()
+            addEXP= dbEXPupload(username=Qobject8.username,
+                                EXPupload=Qobject8.experimentalData)
+            addEXP.save()
+            addPara= dbPara(username=Qobject8.username,
+                                 turns=Qobject8.turns,
+                                 units=Qobject8.units,
+                                 rise=Qobject8.rise,
+                                 rescutL=Qobject8.rescutL,
+                                 rescutH=Qobject8.rescutH,
+                                 LorR=Qobject8.LorR)
+            addPara.save()
+            addPara2= dbPara2(username=Qobject8.username,
+                             rfactor=Qobject8.rfactor,
+                             bfactor=Qobject8.bfactor,
+                             bfactorSolv=Qobject8.bfactorSolv,
+                             bfactorSolvK=Qobject8.bfactorSolvK,
+                             qfhtK1 = Qobject8.qfhtK1,
+                             qfhtK2 = Qobject8.qfhtK2,
+                             scscaling = Qobject8.scscaling,
+                             gridR = Qobject8.gridR,
+                             gridZ= Qobject8.gridZ,
+                             gridPhi = Qobject8.gridPhi)
+            addPara2.save()
+            return render(request, 'main.html', {})
+        except:
+            return render(request, 'home.html', {})
+
+    else:
+        return render(request, 'contact.html', {})
+
+
+
+
 #clear button defaults all inputs
 def Clear(request):
     if request.method == 'POST':   #if clear is pressed....
@@ -306,7 +362,7 @@ def Clear(request):
                            gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92)
         defPara2.save()
         #now run to default everything
-        Testing(request)
+        Testing(request)   #not sure this part works
         return render(request, 'main.html', {})
 
 
