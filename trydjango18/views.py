@@ -17,14 +17,15 @@ def main(request):
 #Collect data from various databases, run denovo, Rosetta, LayerLinesToImage and save results to results DB
 #**********************************************************************************************************
 import datetime
-from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults, dbPara2
+from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults, dbPara2, dbReRun
+from Inputs.forms import ReRunForm
 import subprocess
 
 
 #Main function
 #*************
-def Testing(request):
-    if request.method == 'POST':   #if Run is pressed....
+def Testing(request, auto=0):
+    if request.method == 'POST' or auto == 1:   #if Run is pressed....
 
         #SQL to make query objects for each table
         #****************************************
@@ -293,55 +294,6 @@ def DownloadResults(request):
         #response['X-Sendfile'] = smart_str(path)
        # return response
 
-
-
-
-#Rerun button: User enters previous run number (if none, defaults to regular run)
-def ReRun(request):
-    if request.method == 'POST':
-        #runnum = request.POST.get('RunNum')
-        try:
-            #runnum = int(runnum)
-            #make sure its just an integer
-            #get results corresponding to the entered run number
-            query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" AND id =7' #+ str(runnum) #back to string, but clean
-            Qobject8 = dbResults.objects.raw(query)[0]
-            #Bring Forward the selected results,  place in 'first place' in tables with updated timestamp
-            adddown= dbPDBdown(username=Qobject8.username,
-                               PDBdown=Qobject8.PDBused)
-            adddown.save()
-            addup= dbPDBup(username=Qobject8.username,
-                           PDBup=Qobject8.PDBused)
-            addup.save()
-            addEXP= dbEXPupload(username=Qobject8.username,
-                                EXPupload=Qobject8.experimentalData)
-            addEXP.save()
-            addPara= dbPara(username=Qobject8.username,
-                                 turns=Qobject8.turns,
-                                 units=Qobject8.units,
-                                 rise=Qobject8.rise,
-                                 rescutL=Qobject8.rescutL,
-                                 rescutH=Qobject8.rescutH,
-                                 LorR=Qobject8.LorR)
-            addPara.save()
-            addPara2= dbPara2(username=Qobject8.username,
-                             rfactor=Qobject8.rfactor,
-                             bfactor=Qobject8.bfactor,
-                             bfactorSolv=Qobject8.bfactorSolv,
-                             bfactorSolvK=Qobject8.bfactorSolvK,
-                             qfhtK1 = Qobject8.qfhtK1,
-                             qfhtK2 = Qobject8.qfhtK2,
-                             scscaling = Qobject8.scscaling,
-                             gridR = Qobject8.gridR,
-                             gridZ= Qobject8.gridZ,
-                             gridPhi = Qobject8.gridPhi)
-            addPara2.save()
-            return render(request, 'main.html', {})
-        except:
-            return render(request, 'home.html', {})
-
-    else:
-        return render(request, 'contact.html', {})
 
 
 

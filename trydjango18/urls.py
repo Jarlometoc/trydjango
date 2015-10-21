@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^Inputs', include('Inputs.urls')),  #link to the Inputs urls
     url(r'^Testing/$', 'trydjango18.views.Testing', name='urlTesting'),  #link to Testing function to run Rosetta
     url(r'^Clear/$', 'trydjango18.views.Clear', name='urlClear'),
-    url(r'^ReRun/$', 'trydjango18.views.ReRun', name='urlReRun'),
+    #url(r'^ReRun/$', 'trydjango18.views.ReRun', name='urlReRun'),
     url(r'^EmailResults/$', 'trydjango18.views.EmailResults', name='urlEmailR'),
     url(r'^DownloadResults/$', 'trydjango18.views.DownloadResults', name='urlDownR'),
 ]

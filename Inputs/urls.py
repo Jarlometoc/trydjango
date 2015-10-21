@@ -8,6 +8,7 @@ urlpatterns = patterns('Inputs.views',
     url(r'^importEXP/$', 'importEXP', name='urlEXP'),
     url(r'^importParameters/$', 'importParameters', name='urlParameters'),
     url(r'^importPara2/$', 'importPara2', name='urlPara2'),   #extra parameters
+    url(r'^ReRun/$', 'ReRun', name='urlReRun'),
     #Regex view-url matcher     inputs.views.xxx function   HTTP url name
 )
 
