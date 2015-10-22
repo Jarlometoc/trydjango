@@ -231,7 +231,7 @@ def Testing(request, auto=0):
 
 
     #make the zipfile in advance, cause it takes a while
-    ZipIt(request)
+    ZipIt(request, Qobject6)
 
 
     #Return used parameters to mainpage
@@ -280,22 +280,12 @@ def DownloadResults(request):
         import os, zipfile
         from django.http import HttpResponse
         from django.core.servers.basehttp import FileWrapper
+        #get most recent zip of results
         filename = PathMaker(request.user.username, 'results.zip')
         wrapper = FileWrapper(open(filename, 'rb'))  #'rb' is windows fix
         response = HttpResponse(wrapper, content_type='text/plain')
         response['Content-Length'] = os.path.getsize(filename)  #loads in chunks: see FileWrapper
         return response
-
-        #from django.utils.encoding import smart_str
-        #file='results.zip'
-        #path=PathMaker(request.user.username, 'results.zip')
-       # response = HttpResponse(mimetype='application/force-download')
-       # response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(file)
-        #response['X-Sendfile'] = smart_str(path)
-       # return response
-
-
-
 
 
 #clear button defaults all inputs
@@ -314,7 +304,6 @@ def Clear(request):
                            gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92)
         defPara2.save()
         #now run to default everything
-        Testing(request)   #not sure this part works
         return render(request, 'main.html', {})
 
 
@@ -376,7 +365,9 @@ def findChisq(Path, username):
 #List of parameters chosen for a given run:
 #used for printing on Main.html and made into file for zipping
 def UsedParam(Qobject6):
-    used = {'PrintChosen': 'PDB: ' + removePath(str(Qobject6.PDBused)),
+    used = {'PrintRunNum': 'Current run number: ' + str(Qobject6.id),
+          'PrintRunDate': 'Run date: ' + str(Qobject6.timestamp),
+          'PrintChosen': 'PDB: ' + removePath(str(Qobject6.PDBused)),
           'PrintEXPupload': 'Optional experimental layerlines: ' + removePath(str(Qobject6.experimentalData)),
           'PrintParaT': 'Turns: ' + str(Qobject6.turns),
           'PrintParaU': 'Units: ' + str(Qobject6.units),
@@ -407,7 +398,7 @@ def UsedParam(Qobject6):
 
     #Make a .txt file containing all run parameters
     ParamUsedFile(Qobject6, used)   #saves parameters.txt to user's dir
-
+    #supply this dict to fill in Parameters Used located next to Run button
     return used
 
 #Make UsedParameters a .txt file for downloading
@@ -427,9 +418,8 @@ def ParamUsedFile(Qobject6, used):
 
 #zips the three results files: fibril.pdb, LayerLines.jpg and parameters.txt
 #places results.zip in user's folder
-def ZipIt(request):
+def ZipIt(request, Qobject6):
     import zipfile
-    from io import StringIO
     #remove old
     import os
     try:
@@ -439,8 +429,8 @@ def ZipIt(request):
         pass
     from Inputs.models import dbResults
     #Make Results object
-    query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
-    Qobject6 = dbResults.objects.raw(query)[0]
+   # query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+    #Qobject6 = dbResults.objects.raw(query)[0]
 
     #select table columns to send
     fibfile = str(Qobject6.fibrilPDB)
