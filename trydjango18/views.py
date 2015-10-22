@@ -230,10 +230,6 @@ def Testing(request, auto=0):
     Qobject6 = dbResults.objects.raw(query)[0]
 
 
-    #make the zipfile in advance, cause it takes a while
-    ZipIt(request, Qobject6)
-
-
     #Return used parameters to mainpage
     #**********************************
     toreturn= UsedParam(Qobject6)
@@ -264,8 +260,11 @@ def EmailResults(request):
                                    from_email= settings.EMAIL_HOST_USER,
                                     to=[userEmail]
                                    )
+
+        #make the zipfile
+        Path = ZipIt(request, Qobject6)
+
         #attach results.zip
-        Path = PathMaker(request.user.username, 'results.zip')
         emailResults.attach_file(Path)  #attach the zip file
         emailResults.send()            #need to .send()
 
@@ -280,11 +279,18 @@ def DownloadResults(request):
         import os, zipfile
         from django.http import HttpResponse
         from django.core.servers.basehttp import FileWrapper
+
         #get most recent zip of results
-        filename = PathMaker(request.user.username, 'results.zip')
-        wrapper = FileWrapper(open(filename, 'rb'))  #'rb' is windows fix
+        query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
+        Qobject6 =dbResults.objects.raw(query)[0]
+
+        #make the zipfile
+        file = ZipIt(request, Qobject6)
+
+        #code for downloading a file
+        wrapper = FileWrapper(open(file, 'rb'))  #'rb' is windows fix
         response = HttpResponse(wrapper, content_type='text/plain')
-        response['Content-Length'] = os.path.getsize(filename)  #loads in chunks: see FileWrapper
+        response['Content-Length'] = os.path.getsize(file)  #loads in chunks: see FileWrapper
         return response
 
 
@@ -438,7 +444,8 @@ def ZipIt(request, Qobject6):
     parampath = PathMaker(request.user.username, 'parameters.txt')
 
     #give file a name and location in user's dir
-    Path = PathMaker(request.user.username, 'results.zip')
+    filename = 'results.zip'
+    Path = PathMaker(request.user.username, filename)
 
     #remove paths
     from os.path import basename
@@ -448,6 +455,8 @@ def ZipIt(request, Qobject6):
     zipped.write(LLout, basename(LLout))
     zipped.write(parampath, basename(parampath))
     zipped.close()
+
+    return Path
 
 
 
