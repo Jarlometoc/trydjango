@@ -22,14 +22,16 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class="container">
 <div class="row">
 
-<div class="col-md-8">
-<p style="font-size:120%">RETRIEVE a PDB, either locally or get it from the RCSB Protein Data Bank. </p>
-<p style="font-size:120%">Select PARAMETERS, RUN and wait. This will take a few minutes.</p>
+<div class="col-md-12">
+<p style="font-size:120%">FETCH a PDB from the RCSB Protein Data Ban, or UPLOAD it locally. </p>
+<p style="font-size:120%">Optionally UPLOAD experimental Layer Lines data. </p>
+<p style="font-size:120%">Select PARAMETERS, optional ADDITIONAL PARAMETERS, hit RUN and wait. This will take a few minutes.</p>
 <p style="font-size:120%">Examine the results.</p>
-<p style="font-size:120%">Adjust parameters and RUN the query again.</p>
-<p style="font-size:120%">Press SAVE to send your results to your Email address.</p>
-<p style="font-size:120%">Press CLEAR to start over with a new file.</p>
-<p style="font-size:120%">Modify the run using the JMOL SLIDER and RERUN</p>
+<p style="font-size:120%">Adjust and carry out the the query again if you like.</p>
+<p style="font-size:120%">ReRun any old results by entering the run number.</p>
+<p style="font-size:120%">Save by DOWNLOAD RESULTS or EMAIL RESULTS.</p>
+<p style="font-size:120%">Press CLEAR to start over.</p>
+
 </div>
 
 </div>
@@ -172,14 +174,15 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class="page-header">
 <h1>Results</h1>
 </div>
-<!-- Keep Jmol code on its own
-% include 'jmol.html' %}-->
+<!-- Keep Jmol code on its own-->
+    {% include 'jmol.html' %}
 <br>
-
-
-<div class='col-sm-4 pull-left'>
-<h3>Chi-square</h3>
-    <h4>Value: {{ PrintChi }}</h4>
+<div class="container">
+<div class="row">
+<div class='col-sm-4 pull-right'>
+<h3>Layer Lines Chi-square</h3>
+    <h4>{{ PrintChi }}</h4>
 </div>
-
+</div>
+</div>
 {% endblock %}
