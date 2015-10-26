@@ -24,7 +24,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <div class="col-md-12">
 <p style="font-size:120%">FETCH a PDB from the RCSB Protein Data Ban, or UPLOAD it locally. </p>
-<p style="font-size:120%">Optionally UPLOAD experimental Layer Lines data. </p>
+<p style="font-size:120%">Optionally UPLOAD experimental layerlines data. </p>
 <p style="font-size:120%">Select PARAMETERS, optional ADDITIONAL PARAMETERS, hit RUN and wait. This will take a few minutes.</p>
 <p style="font-size:120%">Examine the results.</p>
 <p style="font-size:120%">Adjust and carry out the the query again if you like.</p>
@@ -46,7 +46,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <div  class='col-lg-3 pull-left'>
 <h4>Fetch a PDB from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
-<form action="{% url "urlPDBdown" %}" method="post" class="uniForm">{% csrf_token %}
+<form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
 {{ PDBdownHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Fetch">
@@ -78,7 +78,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <div class='col-lg-3'>
 <h4>Set Rosetta Parameters</h4>
-<form action="{% url "urlParameters" %}" method="post">{% csrf_token %}
+<form id = "H" action="{% url "urlParameters" %}" method="post">{% csrf_token %}
 {{ ParaHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
@@ -89,7 +89,7 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class='col-lg-3 pull-right'>
 <!-- additional parameters is a dropdown menu -->
 <h4>Additional Parameters</h4>
-<form action="{% url "urlPara2" %}" method="post">{% csrf_token %}
+<form id = "noRefresh" action="{% url "urlPara2" %}" method="post">{% csrf_token %}
 {{ AddHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
@@ -142,7 +142,7 @@ Also 'includes' jmol functionality from jmol.html-->
 <br>
 
 
-<form action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
+<form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
    {{ ReRunHTML|crispy }}
    <input type="hidden" name = "username" value = "{{ user.get_username }}">
   <input type="submit" class="btn btn-primary" value="ReRun">
@@ -185,4 +185,7 @@ Also 'includes' jmol functionality from jmol.html-->
 </div>
 </div>
 </div>
+
+
+
 {% endblock %}
