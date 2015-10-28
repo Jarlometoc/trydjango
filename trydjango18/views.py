@@ -126,7 +126,7 @@ def Testing(request, auto=0):
         fibrilPDBPath = str(PathMaker(Qobject.username, 'fibril.pdb'))
         scorePath = str(PathMaker(Qobject.username, 'score.sc'))
         intensityPath = str(PathMaker(Qobject.username, 'intensity.txt'))
-        LLpicPath = str(PathMaker(Qobject.username, 'LLoutputPic'))
+        LLpicPath = str(PathMaker(Qobject.username, 'layerlines.jpg'))
 
 
         #Run make_helix_denovo
@@ -414,8 +414,6 @@ def ParamUsedFile(Qobject6, used):
     FH.write('Files and Parameters used for FAT Run Number ' + str(Qobject6.id))
     FH.write("\n")
     FH.write('User: ' + str(Qobject6.username))
-    FH.write("\n")
-    FH.write('Timestamp: ' + str(Qobject6.timestamp))
     FH.write("\n\n")
     for key in used:
         FH.write(used[key])
