@@ -47,7 +47,8 @@ Also 'includes' jmol functionality from jmol.html-->
 <div  class='col-lg-3 pull-left'>
 <h4>Fetch a PDB from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
 <form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
-{{ PDBdownHTML|crispy }}
+{{ PDBdownHTML }}
+    {{ form }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Fetch">
 </form>
@@ -174,18 +175,7 @@ Also 'includes' jmol functionality from jmol.html-->
 <div class="page-header">
 <h1>Results</h1>
 </div>
-<!-- Keep Jmol code on its own-->
+<!-- Keep Results (Jmol+Chisq) code on its own-->
     {% include 'jmol.html' %}
-<br>
-<div class="container">
-<div class="row">
-<div class='col-sm-4 pull-right'>
-<h3>Layer Lines Chi-square</h3>
-    <h4>{{ PrintChi }}</h4>
-</div>
-</div>
-</div>
-
-
 
 {% endblock %}

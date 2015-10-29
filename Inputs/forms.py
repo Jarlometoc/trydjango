@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.forms import ModelForm
-from .models import dbPDBdown, dbPDBup, dbEXPupload, dbPara, dbPara2, dbReRun
+from .models import dbPDBdown, dbPDBup, dbEXPupload, dbPara, dbPara2
 from django import forms   #for validation errors and hiddenfields
 
 #Forms
@@ -87,8 +87,6 @@ class AddParaForm(ModelForm):
                     'qfhtK2', 'scscaling', 'gridR', 'gridZ', 'gridPhi']
 
 #ReRun form (allows for user to request a specific run number
-class ReRunForm(ModelForm):
-    class Meta:
-        model = dbReRun
-        widgets = {'username': forms.HiddenInput()}
-        fields =['username', 'runNum']
+class ReRunForm(forms.Form):
+    runNum = forms.CharField(max_length=4)
+

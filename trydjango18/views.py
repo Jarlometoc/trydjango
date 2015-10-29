@@ -1,5 +1,5 @@
 #main views to load the various pages
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.core.mail import EmailMessage
 def home(request):
   return render(request, 'home.html', {}) #context)
@@ -17,7 +17,7 @@ def main(request):
 #Collect data from various databases, run denovo, Rosetta, LayerLinesToImage and save results to results DB
 #**********************************************************************************************************
 import datetime
-from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults, dbPara2, dbReRun
+from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbFlag, dbPara, dbResults, dbPara2
 from Inputs.forms import ReRunForm
 import subprocess
 

@@ -1,11 +1,11 @@
-Files and Parameters used for FAT Run Number 75
+Files and Parameters used for FAT Run Number 77
 User: QQQ
 
-Current run number: 75
+Current run number: 77
 PDB: none chosen
-Run date: 2015-10-28 15:40:21.272096+00:00
+Run date: 2015-10-28 20:17:43.495442+00:00
 Resolution (H): 0.3333333333
-Optional experimental layerlines: ATT00003
+Optional experimental layerlines: ATT00001_RxjmZ66
 Resolution (L): 0.0833333333
 Rise: 2.9
 Turns: 5.0
