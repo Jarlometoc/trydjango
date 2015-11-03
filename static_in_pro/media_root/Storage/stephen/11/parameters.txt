@@ -1,0 +1,15 @@
+Files and Parameters used for FAT Run Number 28
+User: stephen
+
+Current run number: 28
+Run date: 2015-11-02 07:57:24.346302+00:00
+Turns: 5.0
+Resolution (H): 0.3333333333
+Rise: 2.9
+gridPhi: 256.0
+Resolution (L): 0.0833333333
+Units: 27.0
+PDB: ATT00001_tWFh5a6
+Chi-square: 0.33
+Handedness: L
+Optional experimental layerlines: ATT00005
