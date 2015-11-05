@@ -37,57 +37,64 @@ Also 'includes' jmol functionality from jmol.html-->
 </div>
 </div>
 
-<br><br><br>
+<br>
+
+
 <div class="page-header">
-<h1>Getting ready</h1>
+<h1>Running the program</h1>
 </div>
+
 <div class="container">
 <div class="row">
+<div style="float:left; width:50%;">
 
-<div  class='col-lg-3 pull-left'>
-<h4>Fetch a PDB from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
+<div class="row">
+<div  class='col-lg-3'>
+
+<h4>Fetch from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
 <form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
 {{ PDBdownHTML }}
     {{ form }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Fetch">
 </form>
-<br>
-<br>
-<h3>Or</h3>
-<br>
+    </div>
 
+<div  class='col-lg-2 '>
+    <br><br><br>
+ <h4>&nbsp;&nbsp;&nbsp;&nbsp;Or</h4>
+</div>
+
+ <div  class='col-lg-4'>
+     <br>
 <h4>Upload a PDB </h4>
-
 <form id = "noRefresh" action="{% url "urlPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
 {{ PDBupHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Upload">
 </form>
 </div>
+</div>  <!-- close row -->
 
-<div  class='col-lg-3'>
-<h4>Upload optional</h4>
-<h4>experimental LayerLines</h4>
+<br><br><br>
+    <div  class='col-lg-3 pull-left'>
+<h4>Optional LayerLines</h4>
 <form id = "noRefresh" action="{% url "urlEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
 {{ EXPHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Upload">
 </form>
-</div>
 
 
-<div class='col-lg-3'>
+<br><br>
 <h4>Set Rosetta Parameters</h4>
 <form id = "H" action="{% url "urlParameters" %}" method="post">{% csrf_token %}
 {{ ParaHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
-    </div>
 
-
-<div class='col-lg-3 pull-right'>
+<br><br>
 <!-- additional parameters is a dropdown menu -->
 <h4>Additional Parameters</h4>
 <form id = "noRefresh" action="{% url "urlPara2" %}" method="post">{% csrf_token %}
@@ -96,23 +103,12 @@ Also 'includes' jmol functionality from jmol.html-->
 <input type="submit" class="btn btn-primary" value="Set">
 </form>
 </div>
-
-</div>
 </div>
 
+<div style="float:left; width:40%; margin-left:10px;">
 
-<br><br><br>
-<div class="page-header">
-<h1>Running the program</h1>
-</div>
-<div class="container">
-<div class="row">
+ <h3>Your parameters for the upcoming run:</h3>
 
-<div class='col-lg-6 pull-left'>
-<h3>Your parameters for the current run</h3><br>
-
-    <h4>{{ PrintRunNum }}</h4>
-    <h4>{{ PrintRunDate }}</h4>
     <h4>{{ PrintChosen }}</h4>
     <h4>{{ PrintEXPupload }}</h4>
     <h4>{{ PrintParaT }}</h4>
@@ -130,52 +126,117 @@ Also 'includes' jmol functionality from jmol.html-->
     <h4>{{ PrintgridR }}</h4>
     <h4>{{ PrintgridZ}}</h4>
     <h4>{{ PrintgridPhi }}</h4>
-
 </div>
+</div>
+    </div>
 
-
-<div class='col-sm-4 pull-right'>
-<h3>Run</h3>
+    <div class="row">
+<div class='col-sm-2 pull-right'>
  <form id = "noRefresh" action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
       <button type="submit" class="btn btn-primary">Run</button>
  </form>
-<br>
-<br>
-
-
-<form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
-   {{ ReRunHTML|crispy }}
-   <input type="hidden" name = "username" value = "{{ user.get_username }}">
-  <input type="submit" class="btn btn-primary" value="ReRun">
- </form>
-<br>
-<br>
-
-
-<form id = "noRefresh" action= "{% url "urlEmailR" %}" method="POST">{% csrf_token %}
-<button type="Submit" class = 'btn btn-success'>Email Results</button>
-</form>
-<br>
-<br>
-<form id = "noRefresh" action= "{% url "urlDownR" %}" method="POST">{% csrf_token %}
-<button type="Submit" class = 'btn btn-success'>Download Results</button>
-</form>
-<br>
-<br>
+  </div>
+<div class='col-sm-2 pull-right'>
 <form id = "noRefresh" action= "{% url "urlClear" %}" method="POST">{% csrf_token %}
 <input type="submit" class="btn btn-warning" value="Clear">
 </form>
 </div>
 
-
-</div>
  </div>
 
-<br><br><br>
+
+<!--Loading the results to be viewed -->
 <div class="page-header">
-<h1>Results</h1>
+<h1>Loading results</h1>
 </div>
-<!-- Keep Results (Jmol+Chisq) code on its own-->
+
+<div class="container">
+<div class="row">
+<div style="float:left; width:50%;">
+<br>
+ <!-- Loading needs Load button, send buttons, exit -->
+  <form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
+   {{ ReRunHTML|crispy }}
+   <input type="hidden" name = "username" value = "{{ user.get_username }}">
+  <input type="submit" class="btn btn-primary" value="Load most recent">
+ </form>
+<br>
+<br>
+
+ <form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
+   {{ ReRunHTML|crispy }}
+   <input type="hidden" name = "username" value = "{{ user.get_username }}">
+  <input type="submit" class="btn btn-primary" value="Choose an older run">
+ </form>
+<br>
+<br>
+</div>
+
+
+ <div style="float:left; width:40%; margin-left:10px;">
+
+ <h3>Loaded {{ PrintRunNum }}</h3>
+
+    <h4>{{ PrintRunDate }}</h4>
+    <h4>{{ PrintChosen }}</h4>
+    <h4>{{ PrintEXPupload }}</h4>
+     <h4> {{ PrintChi }}</h4>
+    <h4>{{ PrintParaT }}</h4>
+    <h4>{{ PrintParaU }}</h4>
+    <h4>{{ PrintParaR }}</h4>
+    <h4>{{ PrintRescutL }}</h4>
+    <h4>{{ PrintRescutH }}</h4>
+    <h4>{{ PrintLorR }}</h4>
+    <h4>{{ PrintBfactor }}</h4>
+    <h4>{{ PrintBfactorSolv }}</h4>
+    <h4>{{ PrintBfactorSolvK }}</h4>
+    <h4>{{ PrintqfhtK1 }}</h4>
+    <h4>{{ PrintqfhtK2 }}</h4>
+    <h4>{{ Printscscaling }}</h4>
+    <h4>{{ PrintgridR }}</h4>
+    <h4>{{ PrintgridZ}}</h4>
+    <h4>{{ PrintgridPhi }}</h4>
+</div>
+
+
+
+    </div>  <!-- close button row -->
+    </div>  <!-- close container -->
+
+
+
+<!-- Examining results -->
+<div class="container">
+<div class="page-header">
+<h1>Examining the results</h1>
+</div>
+
+
+  <!-- Keep Results (Jmol+Chisq) code on its own-->
     {% include 'jmol.html' %}
 
+
+<br><br><br>
+
+    <form action= "{% url "urlEmailR" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-success'>Email Results</button>
+</form>
+
+<br>
+<br>
+<form action= "{% url "urlDownR" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-success'>Download Results</button>
+</form>
+<br>
+<br>
+ <form action= "{% url 'auth_logout'%}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-danger'>Logoff</button>
+</form>
+<br>
+<br>
+
+
+</div>
+
 {% endblock %}
+

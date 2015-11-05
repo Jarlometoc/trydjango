@@ -14,6 +14,9 @@ def main(request):
         return render(request, 'home.html', {})
 
 
+#update tag!  11:16 Another test
+
+
 #Collect data from various databases, run denovo, Rosetta, LayerLinesToImage and save results to results DB
 #**********************************************************************************************************
 import datetime
@@ -25,7 +28,7 @@ import subprocess
 #Main function
 #*************
 def Testing(request, auto=0):
-    if request.method == 'POST' or auto == 1:   #if Run is pressed....
+    if request.method == 'POST':   #if Run is pressed....
 
         #SQL to make query objects for each table
         #****************************************
@@ -65,8 +68,8 @@ def Testing(request, auto=0):
         Units = '-fiber_diffraction:a '+ str(Qobject4.units)     #number of units
         Turns = '-fiber_diffraction:b '+ str(Qobject4.turns)    #number of turns
         Rise = '-fiber_diffraction:p '+ str(Qobject4.rise)     #If specified, subunit rise is taken from input, otherwise is calculated by the program
-        Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12Å
-        Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3Å
+        Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12ï¿½
+        Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3ï¿½
         LorR = '-fiber_diffraction:LorR '+ str(Qobject4.LorR)   #Left or Right handed
        #Additional Parameters
         Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4B.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
@@ -134,7 +137,7 @@ def Testing(request, auto=0):
         #input units/rise/turns/N=40, plus optional files, returns helix_denovo.sdef- symmetry info for Rosetta
 
         try:
-            #make commandline and run  eg, './make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 –c L'
+            #make commandline and run  eg, './make_helix_denovo.py -p 2.9 -n 40 -v 5 -u 27 ï¿½c L'
             command = './make_helix_denovo.py' + \
                       ' -p ' + str(Qobject4.rise) + \
                       ' -u ' + str(Qobject4.units) + \
@@ -175,7 +178,7 @@ def Testing(request, auto=0):
             pass
 
 
-        #LayerLinesToImage
+        #LayerLinesToImage  always -s, -e if exists
         try:
             #will run from this dir, so local output
             command = './LayerLinesToImage.py' + \
@@ -224,6 +227,9 @@ def Testing(request, auto=0):
                                Score = scorePath,
                                chisq = Chisq)  #derived from score (see chisq function)
         addResults.save()
+
+
+    #new retrieveResults() goes in Inputs.views
 
     #Make Results object for printing to main
     query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
@@ -322,7 +328,7 @@ def Clear(request):
 def PathMaker(name, filename):
     TodaysDate = datetime.date.today()
     Month = str(TodaysDate.month)
-    return '/'.join(['C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/media_root/Storage', name, Month, filename])
+    return '/'.join(['static_in_pro/media_root/Storage', name, Month, filename])  #need 'static_in_pro/media_root'
 
 #Remove paths from files for the zipped results
 def removePath(path):
@@ -371,7 +377,7 @@ def findChisq(Path, username):
 #List of parameters chosen for a given run:
 #used for printing on Main.html and made into file for zipping
 def UsedParam(Qobject6):
-    used = {'PrintRunNum': 'Current run number: ' + str(Qobject6.id),
+    used = {'PrintRunNum': 'run number: ' + str(Qobject6.id),
           'PrintRunDate': 'Run date: ' + str(Qobject6.timestamp),
           'PrintChosen': 'PDB: ' + removePath(str(Qobject6.PDBused)),
           'PrintEXPupload': 'Optional experimental layerlines: ' + removePath(str(Qobject6.experimentalData)),
