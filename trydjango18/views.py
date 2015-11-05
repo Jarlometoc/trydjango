@@ -228,13 +228,15 @@ def Testing(request, auto=0):
                                chisq = Chisq)  #derived from score (see chisq function)
         addResults.save()
 
+    #Return to mainpage after run
+    #**********************************
+    #return render(request, 'main.html', {})
+
 
     #new retrieveResults() goes in Inputs.views
-
     #Make Results object for printing to main
     query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
     Qobject6 = dbResults.objects.raw(query)[0]
-
 
     #Return used parameters to mainpage
     #**********************************

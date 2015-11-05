@@ -1,13 +1,23 @@
-Files and Parameters used for FAT Run Number 113
+Files and Parameters used for FAT Run Number 117
 User: stephen
 
-run number: 113
-Handedness: R
-Resolution (L): 0.0833333333
-Rise: 2.9
-Units: 27.0
-Resolution (H): 0.3333333333
-Optional experimental layerlines: none chosen
-PDB: ATT00001_yu6km1O
-Run date: 2015-11-05 10:53:49.852519+00:00
 Turns: 5.0
+PDB: ATT00001_ast7Wf9
+sc_scaling: 1.0
+Handedness: L
+Units: 1.0
+Chi-square: 0.33
+Resolution (H): 1.0
+Optional experimental layerlines: ATT00001_z2OHg2l
+gridZ: 1.0
+Resolution (L): 1.0
+gridPhi: 1.0
+BfactorSolvK: 1.0
+Rise: 1.0
+run number: 117
+BfactorSolv: 1.0
+gridR: 1.0
+qfhtK1: 1.0
+Run date: 2015-11-05 15:39:41.788988+00:00
+Bfactor: 1.0
+qfhtK2: 1.0

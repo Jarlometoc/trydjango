@@ -108,24 +108,10 @@ Also 'includes' jmol functionality from jmol.html-->
 <div style="float:left; width:40%; margin-left:10px;">
 
  <h3>Your parameters for the upcoming run:</h3>
+   {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
+    <h4>{{ key }}:{{ value }}</h4>
+    {%  endfor %}
 
-    <h4>{{ PrintChosen }}</h4>
-    <h4>{{ PrintEXPupload }}</h4>
-    <h4>{{ PrintParaT }}</h4>
-    <h4>{{ PrintParaU }}</h4>
-    <h4>{{ PrintParaR }}</h4>
-    <h4>{{ PrintRescutL }}</h4>
-    <h4>{{ PrintRescutH }}</h4>
-    <h4>{{ PrintLorR }}</h4>
-    <h4>{{ PrintBfactor }}</h4>
-    <h4>{{ PrintBfactorSolv }}</h4>
-    <h4>{{ PrintBfactorSolvK }}</h4>
-    <h4>{{ PrintqfhtK1 }}</h4>
-    <h4>{{ PrintqfhtK2 }}</h4>
-    <h4>{{ Printscscaling }}</h4>
-    <h4>{{ PrintgridR }}</h4>
-    <h4>{{ PrintgridZ}}</h4>
-    <h4>{{ PrintgridPhi }}</h4>
 </div>
 </div>
     </div>
