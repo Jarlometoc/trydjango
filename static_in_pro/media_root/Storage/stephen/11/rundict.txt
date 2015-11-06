@@ -1,1 +1,1 @@
-{"units": 27, "experimental data": "none chosen", "rise": 2.9, "turns": 5, "PDB": "ATT00004", "handedness": "R", "resolution (L)": 0.0833333333, "resolution (H)": 0.3333333333}
+{"units": 27, "turns": 5, "PDB": "5d1w", "experimental data": "ATT00002_m0wtCQj", "handedness": "R", "bfactorSolvK": "10000.0", "resolution (H)": 0.3333333333, "rise": 2.9, "resolution (L)": 0.0833333333}

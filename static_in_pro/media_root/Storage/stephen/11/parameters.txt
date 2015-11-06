@@ -1,13 +1,15 @@
-Files and Parameters used for FAT Run Number 122
+Files and Parameters used for FAT Run Number 125
 User: stephen
 
-PDB: ATT00004
-run number: 122
 Turns: 5.0
+run number: 125
 Resolution (L): 0.0833333333
-Run date: 2015-11-06 13:16:41.205186+00:00
 Resolution (H): 0.3333333333
-Handedness: R
-Optional experimental layerlines: none chosen
+Run date: 2015-11-06 14:23:35.610420+00:00
+Chi-square: 0.33
+BfactorSolvK: 10000.0
+Optional experimental layerlines: ATT00002_m0wtCQj
 Units: 27.0
+PDB: 5d1w.pdb
+Handedness: R
 Rise: 2.9

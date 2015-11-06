@@ -433,6 +433,22 @@ def UsedParam(Qobject6):
     #Make a .txt file containing all run parameters
     ParamUsedFile(Qobject6, used)   #saves parameters.txt to user's dir
     #supply this dict to fill in Parameters Used located next to Run button
+
+
+    #also load rundict.txt (pre-run files and param)
+    #resets the rundict.txt to default
+    import json
+    thefile = PathMaker(Qobject6.username, 'rundict.txt')
+    FHin = open(thefile, 'r')
+    try:
+        ToBeRunDict = json.load(FHin)
+    except:  #return default values
+        ToBeRunDict = {'PDB': 'none chosen', 'experimental data': 'none chosen', 'turns':5, 'units':27, 'rise':2.9, 'resolution (L)':0.0833333333, 'resolution (H)':0.3333333333, 'handedness':'R'}
+    FHin.close()
+    #now add to used dict for display on mainpage at runtime
+    used['ToBeRunHTML'] = ToBeRunDict
+
+    #return to Testing for display on mainpage
     return used
 
 #Make UsedParameters a .txt file for downloading
@@ -484,8 +500,7 @@ def ZipIt(request, Qobject6):
 
     return Path
 
-
-
+#temp functions found in Inputs.view
 #resets the rundict.txt to default
 def newrundict(username):   #need it for both clear button and to start a fresh rundict.txt with first run of toberun
     import json
@@ -494,3 +509,109 @@ def newrundict(username):   #need it for both clear button and to start a fresh 
     default= {'PDB': 'none chosen', 'experimental data': 'none chosen', 'turns':5, 'units':27, 'rise':2.9, 'resolution (L)':0.0833333333, 'resolution (H)':0.3333333333, 'handedness':'R'}
     json.dump(default,FHout)
     FHout.close()
+
+#makes run Dict of parameters
+def toberun(object):
+    username = object.username  #need name for finding correct user dir
+    #open rundict.txt, open the dictionary
+    import json
+    thefile = PathMaker(username, 'rundict.txt')
+    try:
+        FHin = open(thefile, 'r')
+    except:
+        newrundict(username) #if you cant open above, just make new file in user's dir and month with default settings
+        FHin = open(thefile, 'r')  #now open the new file
+    #take out the dict
+    theDict = json.load(FHin)
+    #open the object, take out whats needed
+    #PDBdown
+    if hasattr(object, 'PDBdown'):
+        key = 'PDB'
+        value= str(object.PDBdown)
+        value = removePath(value)
+        theDict[key]=value
+    #PDBup
+    if hasattr(object, 'PDBup'):
+        key = 'PDB'
+        value= str(object.PDBup)
+        value = removePath(value)
+        theDict[key]=value
+    #Experimental
+    if hasattr(object, 'EXPupload'):
+        key = 'experimental data'
+        value= str(object.EXPupload)
+        value = removePath(value)
+        theDict[key]=value
+    #parameters
+    if hasattr(object, 'turns'):
+        key = 'turns'
+        value= str(object.turns)
+        theDict[key]=value
+    if hasattr(object, 'units'):
+        key = 'units'
+        value= str(object.units)
+        theDict[key]=value
+    if hasattr(object, 'rise'):
+        key = 'rise'
+        value= str(object.rise)
+        theDict[key]=value
+    if hasattr(object, 'rescutH'):
+        key = 'resolution (H)'
+        value= str(object.rescutH)
+        theDict[key]=value
+    if hasattr(object, 'rescutL'):
+        key = 'resolution (L)'
+        value= str(object.rescutL)
+        theDict[key]=value
+    if hasattr(object, 'LorR'):
+        key = 'handedness'
+        value= str(object.LorR)
+        theDict[key]=value
+    #extra parameters (these should be added to dict only if not default vals)
+    if hasattr(object, 'rfactor') and str(object.rfactor) != 'False':
+        key = 'rfactor'
+        value= str(object.rfactor)
+        theDict[key]=value
+    if hasattr(object, 'bfactor') and str(object.bfactor) != '20.0':
+        key = 'bfactor'
+        value= str(object.bfactor)
+        theDict[key]=value
+    if hasattr(object, 'bfactorSolv') and str(object.bfactorSolv) != '400.0':
+        key = 'bfactorSolv'
+        value= str(object.bfactorSolv)
+        theDict[key]=value
+    if hasattr(object, 'bfactorSolvK') and str(object.bfactorSolvK) != '0.4':
+        key = 'bfactorSolvK'
+        value= str(object.bfactorSolvK)
+        theDict[key]=value
+    if hasattr(object, 'qfhtK1') and str(object.qfhtK1) != '2.0':
+        key = 'qfhtK1'
+        value= str(object.qfhtK1)
+        theDict[key]=value
+    if hasattr(object, 'qfhtK2') and str(object.qfhtK2) != '2.2':
+        key = 'qfhtK2'
+        value= str(object.qfhtK2)
+        theDict[key]=value
+    if hasattr(object, 'scscaling') and str(object.scscaling) != '0.92':
+        key = 'scscaling'
+        value= str(object.scscaling)
+        theDict[key]=value
+    if hasattr(object, 'gridR') and str(object.gridR) != '256.0':
+        key = 'gridR'
+        value= str(object.gridR)
+        theDict[key]=value
+    if hasattr(object, 'gridZ') and str(object.gridZ) != '128.0':
+        key = 'gridZ'
+        value= str(object.gridZ)
+        theDict[key]=value
+    if hasattr(object, 'gridPhi') and str(object.gridPhi) != '128.0':
+        key = 'gridPhi'
+        value= str(object.gridPhi)
+        theDict[key]=value
+    #save the dict to the file and close
+    fout = open(thefile, 'w')
+    json.dump(theDict,fout)
+    FHin.close()
+    fout.close()
+    #return saved dictionary
+    return theDict
