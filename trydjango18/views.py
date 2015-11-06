@@ -240,7 +240,7 @@ def Testing(request, auto=0):
 
     #Return used parameters to mainpage
     #**********************************
-    toreturn= UsedParam(Qobject6)
+    toreturn= UsedParam(Qobject6)      #note! UsedParam also includes rundict.txt results for 'to be run' files/para
     return render(request, 'main.html', toreturn)
 
 
@@ -317,8 +317,28 @@ def Clear(request):
         defPara2 = dbPara2(username=request.user.username, bfactor=20.0, bfactorSolv=400, bfactorSolvK=0.4, gridPhi=128,
                            gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92)
         defPara2.save()
+
+        #need to erase rundict.txt to reset onscreen 'upcoming run' parameters
+        import os
+        try:
+            pathtorundict = PathMaker(request.user.username, 'rundict.txt')
+            os.remove(pathtorundict)
+        except OSError:
+            pass
+        #now make a new rundict.txt with default values
+        import json
+        newrundict(request.user.username)  #use the function newrundict to make a new default dict
+        #retrieve the rundict.txt to display 'to be run' files and parameters
+        thefile = PathMaker(request.user.username, 'rundict.txt')
+        FHin = open(thefile, 'r')  #now open the new file
+        #take out the dict
+        theDict = json.load(FHin)
+        FHin.close()
+
+
         #now run to default everything
-        return render(request, 'main.html', {})
+        return render(request, 'main.html', {
+            'ToBeRunHTML' : theDict})
 
 
 
@@ -335,7 +355,7 @@ def PathMaker(name, filename):
 #Remove paths from files for the zipped results
 def removePath(path):
     import ntpath
-    trimmed = ntpath.basename(path)  #carefule: does not deal with 'file.txt/' syntax
+    trimmed = ntpath.basename(path)  #careful: does not deal with 'file.txt/' syntax
     return trimmed
 
 
@@ -466,3 +486,11 @@ def ZipIt(request, Qobject6):
 
 
 
+#resets the rundict.txt to default
+def newrundict(username):   #need it for both clear button and to start a fresh rundict.txt with first run of toberun
+    import json
+    thefile = PathMaker(username, 'rundict.txt')
+    FHout = open(thefile, 'w')
+    default= {'PDB': 'none chosen', 'experimental data': 'none chosen', 'turns':5, 'units':27, 'rise':2.9, 'resolution (L)':0.0833333333, 'resolution (H)':0.3333333333, 'handedness':'R'}
+    json.dump(default,FHout)
+    FHout.close()

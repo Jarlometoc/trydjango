@@ -107,9 +107,23 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <div style="float:left; width:40%; margin-left:10px;">
 
- <h3>Your parameters for the upcoming run:</h3>
+ <h3>Files and parameters for the upcoming run:</h3>
+    <br> <h4>Files:</h4>
    {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
-    <h4>{{ key }}:{{ value }}</h4>
+       {% if key == 'PDB' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+       {%  endif %}
+       {% if key == 'experimental data' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+       {%  endif %}
+     {%  endfor %}
+    <br> <h4>Parameters:</h4>
+     {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
+         {% if key != 'PDB' %}
+           {% if key != 'experimental data' %}
+                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+             {% endif %}
+         {% endif %}
     {%  endfor %}
 
 </div>
