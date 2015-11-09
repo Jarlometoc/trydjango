@@ -155,11 +155,9 @@ Also 'includes' jmol functionality from jmol.html-->
 <div style="float:left; width:50%;">
 <br>
  <!-- Loading needs Load button, send buttons, exit -->
-  <form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
-   {{ ReRunHTML|crispy }}
-   <input type="hidden" name = "username" value = "{{ user.get_username }}">
-  <input type="submit" class="btn btn-primary" value="Load most recent">
- </form>
+     <form action= "{% url "urlLoadRun" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-primary'>Load Run</button>
+</form>
 <br>
 <br>
 

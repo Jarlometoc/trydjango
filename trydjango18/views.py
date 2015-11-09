@@ -19,7 +19,9 @@ def main(request):
         return render(request, 'home.html', {})
 
 
+
 #generic functions
+#*****************
 
 #Takes username and file, returns a path to user's Storage file (by month)
 def PathMaker(name, filename):
