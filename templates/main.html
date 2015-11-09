@@ -78,7 +78,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <br><br><br>
     <div  class='col-lg-3 pull-left'>
-<h4>Optional LayerLines</h4>
+<h4>Optional Exp. LayerLines</h4>
 <form id = "noRefresh" action="{% url "urlEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
 {{ EXPHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
@@ -108,19 +108,19 @@ Also 'includes' jmol functionality from jmol.html-->
 <div style="float:left; width:40%; margin-left:10px;">
 
  <h3>Files and parameters for the upcoming run:</h3>
-    <br> <h4>Files:</h4>
+    <br> <h4>Files to be used:</h4>
    {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
        {% if key == 'PDB' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
-       {% if key == 'experimental data' %}
+       {% if key == 'Optional exp. layerlines' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
      {%  endfor %}
-    <br> <h4>Parameters:</h4>
+    <br> <h4>Parameters to be used:</h4>
      {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
          {% if key != 'PDB' %}
-           {% if key != 'experimental data' %}
+           {% if key != 'Optional exp. layerlines' %}
                 <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
              {% endif %}
          {% endif %}
@@ -175,7 +175,28 @@ Also 'includes' jmol functionality from jmol.html-->
 
  <div style="float:left; width:40%; margin-left:10px;">
 
- <h3>Loaded {{ PrintRunNum }}</h3>
+ <h3>Loaded Run Number: &nbsp;{{ PrintRunNum }}</h3>
+ <h4>{{ PrintRunDate }}</h4>
+    <br> <h4>Files used:</h4>
+   {% for key, value in toberun.items %}{% csrf_token %}
+       {% if key == 'PDB' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+       {%  endif %}
+       {% if key == 'Optional exp. layerlines' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+       {%  endif %}
+     {%  endfor %}
+    <br> <h4>Parameters used:</h4>
+     {% for key, value in toberun.items %}{% csrf_token %}
+         {% if key != 'PDB' %}
+           {% if key != 'Optional exp. layerlines' %}
+                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+             {% endif %}
+         {% endif %}
+    {%  endfor %}
+
+
+
 
     <h4>{{ PrintRunDate }}</h4>
     <h4>{{ PrintChosen }}</h4>

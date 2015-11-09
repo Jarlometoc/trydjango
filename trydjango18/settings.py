@@ -52,6 +52,8 @@ INSTALLED_APPS = (
     #my apps
     'UserAccounts',
     'Inputs',
+    'Run',
+    'Results',
 
 )
 
