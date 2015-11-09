@@ -152,7 +152,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <div class="container">
 <div class="row">
-<div style="float:left; width:50%;">
+<div style="float:left; width:10%;">
 <br>
  <!-- Loading needs Load button, send buttons, exit -->
      <form action= "{% url "urlLoadRun" %}" method="POST">{% csrf_token %}
@@ -171,51 +171,42 @@ Also 'includes' jmol functionality from jmol.html-->
 </div>
 
 
- <div style="float:left; width:40%; margin-left:10px;">
-
- <h3>Loaded Run Number: &nbsp;{{ PrintRunNum }}</h3>
- <h4>{{ PrintRunDate }}</h4>
+ <div style="float:Right; width:50%; margin-left:10px;">
+{% for key, value in resultsHTML.items %}{% csrf_token %}
+  {% if key == 'ID: ' %}
+    <h3>Loaded Run Number &nbsp;{{ value }}</h3>
+    {%  endif %}
+      {%  endfor %}
+ {% for key, value in resultsHTML.items %}{% csrf_token %}
+  {% if key == 'Run date: ' %}
+  <h4>{{ value }}</h4>
+  {%  endif %}
+{%  endfor %}
     <br> <h4>Files used:</h4>
-   {% for key, value in toberun.items %}{% csrf_token %}
-       {% if key == 'PDB' %}
+{% for key, value in resultsHTML.items %}{% csrf_token %}
+       {% if key == 'PDB: ' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
-       {% if key == 'Optional exp. layerlines' %}
+       {% if key == 'Optional exp. layerlines: ' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
      {%  endfor %}
     <br> <h4>Parameters used:</h4>
-     {% for key, value in toberun.items %}{% csrf_token %}
-         {% if key != 'PDB' %}
-           {% if key != 'Optional exp. layerlines' %}
+     {% for key, value in resultsHTML.items %}{% csrf_token %}
+         {% if key != 'PDB: ' %}
+           {% if key != 'Optional exp. layerlines: ' %}
+               {% if key != 'Run date: ' %}
+                   {% if key != 'ToBeRunHTML' %}
+                       {% if key != 'forJmol' %}
+                           {% if key != 'forLLpic' %}
                 <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+                            {% endif %}
+                           {% endif %}
+                        {% endif %}
+                   {% endif %}
              {% endif %}
          {% endif %}
     {%  endfor %}
-
-
-
-
-    <h4>{{ PrintRunDate }}</h4>
-    <h4>{{ PrintChosen }}</h4>
-    <h4>{{ PrintEXPupload }}</h4>
-     <h4> {{ PrintChi }}</h4>
-    <h4>{{ PrintParaT }}</h4>
-    <h4>{{ PrintParaU }}</h4>
-    <h4>{{ PrintParaR }}</h4>
-    <h4>{{ PrintRescutL }}</h4>
-    <h4>{{ PrintRescutH }}</h4>
-    <h4>{{ PrintLorR }}</h4>
-    <h4>{{ PrintBfactor }}</h4>
-    <h4>{{ PrintBfactorSolv }}</h4>
-    <h4>{{ PrintBfactorSolvK }}</h4>
-    <h4>{{ PrintqfhtK1 }}</h4>
-    <h4>{{ PrintqfhtK2 }}</h4>
-    <h4>{{ Printscscaling }}</h4>
-    <h4>{{ PrintgridR }}</h4>
-    <h4>{{ PrintgridZ}}</h4>
-    <h4>{{ PrintgridPhi }}</h4>
-</div>
 
 
 

@@ -1,1 +1,1 @@
-{"Optional exp. layerlines": "ATT00004_DrEBo2c", "resolution (L)": "0.0833333333", "units": "1000.0", "bfactorSolvK": "1000.0", "handedness": "R", "rise": "2.9", "resolution (H)": "0.3333333333", "PDB": "ATT00003_a2Rc71Y", "turns": "5.0"}
+{"PDB": "ATT00005", "turns": 5, "Optional exp. layerlines": "none chosen", "units": 27, "handedness": "R", "resolution (L)": 0.0833333333, "resolution (H)": 0.3333333333, "rise": 2.9}
