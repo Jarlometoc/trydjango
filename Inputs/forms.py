@@ -86,7 +86,4 @@ class AddParaForm(ModelForm):
         fields =['username', 'rfactor', 'bfactor', 'bfactorSolv', 'bfactorSolvK', 'qfhtK1',
                     'qfhtK2', 'scscaling', 'gridR', 'gridZ', 'gridPhi']
 
-#ReRun form (allows for user to request a specific run number: need a (form to accept data from the input box)
-class ReRunForm(forms.Form):
-    runNum = forms.CharField(max_length=4)
 

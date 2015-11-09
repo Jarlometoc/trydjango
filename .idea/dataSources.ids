@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="Django default" uuid="08684723-c561-4075-8fe8-bcc14efae86d">
+  <data-source name="Django default" uuid="d37f4cbc-b2aa-4a48-93b0-04fd80f06023">
     <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
