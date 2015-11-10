@@ -1,14 +1,19 @@
-Files and Parameters used for FAT Run Number 134
+Files and Parameters used for FAT Run Number 34
 User: stephen
+Date: 2015-11-10 19:55:38.360173+00:00
 
-Resolution (H): 0.3333333333
-gridPhi: 1000.0
-PDB: none chosen
-Run date: 2015-11-09 09:18:15.193357+00:00
-Turns: 5.0
-134
-Units: 27.0
-Handedness: R
-Rise: 2.9
-Optional exp. layerlinesnone chosen
-Resolution (L): 0.0833333333
+
+Files:
+	PDB: ATT00005_0Ahwlgt
+	Optional exp. layerlines: ATT00001_oOOvVnM
+
+
+Parameters:
+	Units: 100.0
+	Turns: 5.0
+	Chi-square: 0.33
+	Resolution (L): 0.0833333333
+	Handedness: R
+	Bfactor: 1000.0
+	Rise: 2.9
+	Resolution (H): 0.3333333333

@@ -54,7 +54,6 @@ Also 'includes' jmol functionality from jmol.html-->
 <h4>Fetch from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
 <form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
 {{ PDBdownHTML }}
-    {{ form }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
 <input type="submit" class="btn btn-primary" value="Fetch">
 </form>
@@ -185,21 +184,23 @@ Also 'includes' jmol functionality from jmol.html-->
     <br> <h4>Files used:</h4>
 {% for key, value in resultsHTML.items %}{% csrf_token %}
        {% if key == 'PDB: ' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}&nbsp;{{ value }}</h4>
        {%  endif %}
        {% if key == 'Optional exp. layerlines: ' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}&nbsp;{{ value }}</h4>
        {%  endif %}
      {%  endfor %}
     <br> <h4>Parameters used:</h4>
      {% for key, value in resultsHTML.items %}{% csrf_token %}
          {% if key != 'PDB: ' %}
+              {% if key != 'ID: ' %}
            {% if key != 'Optional exp. layerlines: ' %}
                {% if key != 'Run date: ' %}
                    {% if key != 'ToBeRunHTML' %}
                        {% if key != 'forJmol' %}
                            {% if key != 'forLLpic' %}
-                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}&nbsp;{{ value }}</h4>
+                                {% endif %}
                             {% endif %}
                            {% endif %}
                         {% endif %}
