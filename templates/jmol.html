@@ -2,28 +2,34 @@
  This pages feeds into the Mainpage using 'include'-->
  {% load static %}
 
-
-{% if PrintChosen and PrintChosen != 'PDB: none chosen' %}
+<!-- function to show blanks, users PDB+.dat, or PDB and userLL -->
 <table border="1" cellpadding="10"><tbody><tr>
-    <td>Jmol<div style="width:650px;height:600px"><script src="http://chemapps.stolaf.edu/jmol/jmol.php?model=caffeine&amp;inline=1"></script><div id="jmolApplet0_appletinfotablediv" style="width:600px;height:600px;position:relative;font-size:14px;text-align:left"><div id="jmolApplet0_appletdiv" style="z-index: 9000; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; display: block;"><canvas width="600" height="600" id="jmolApplet0_canvas2d" style="width: 100%; height: 100%; z-index: 9002;"></canvas></div><div id="jmolApplet0_2dappletdiv" style="position:absolute;width:100%;height:100%;overflow:hidden;display:none"></div><div id="jmolApplet0_infotablediv" style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; display: none;"><div id="jmolApplet0_infoheaderdiv" style="height: 20px; width: 100%; display: none; background: yellow;"><span id="jmolApplet0_infoheaderspan">Jmol._Canvas2D (Jmol) "jmolApplet0"</span><span id="jmolApplet0_infocheckboxspan" style="position:absolute;text-align:right;right:1px;"><a href="javascript:Jmol.showInfo(jmolApplet0,false)">[x]</a></span></div><div id="jmolApplet0_infodiv" style="position:absolute;top:20px;bottom:0px;width:100%;height:100%;overflow:auto"><div style="white-space: nowrap;"><span style="white-space: nowrap;">script 1 started</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">The Resolver thinks Mol</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">C8H10N4O2</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">APtclcactv09181516503D 0   0.00000     0.00000</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;"> </span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">reading 24 atoms</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">ModelSet: haveSymmetry:false haveUnitcells:false haveFractionalCoord:false</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">1 model in this collection. Use getProperty "modelInfo" or getProperty "auxiliaryInfo" to inspect them.</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">Default Van der Waals type for model set to Babel</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">24 atoms created</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">ModelSet: not autobonding; use  forceAutobond=true  to force automatic bond creation</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">null</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">Script completed</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">Jmol script terminated</span></div><div style="white-space: nowrap;"><span style="white-space: nowrap;">loadClass J.awtjs2d.JmolJSPopup</span></div></div></div></div></div></td>
-{% if PrintChi %}
-    <td>
-        <img src="{% static 'images/layerlines.jpg' %}" alt = "hi!" style="width:650px;height:600px;">
-    </td>
-    </tr></tbody></table>
+    <!-- loop through loaded data dict -->
+    {% for key, value in resultsHTML.items %}{% csrf_token %}
+        <!-- user has PDB: display, otherwise blank -->
+        {% if key == 'PDB' and value != 'none chosen' %}
+            <td>
+                <img src="{% static 'images/Userjmol.png' %}" alt = "user jmol image" style="width:650px;height:600px;">
+            </td>
+            <!-- inner loop -->
+            {% for key, value in resultsHTML.items %}{% csrf_token %}
+                 <!-- user has LL, otherwise default (.dat) -->
+                {% if key == 'Optional_exp_layerlines' and value != 'none chosen' %}
+                    <td>
+                        <img src="{% static 'images/UserLL.jpg' %}" alt = "user LL image" style="width:650px;height:600px;">
+                    </td>
+                {% endif %}
+                {% if key == 'Optional_exp_layerlines' and value == 'none chosen' %}
+                    <td>
+                        <img src="{% static 'images/DefLL.jpg' %}" alt = "defLL image" style="width:650px;height:600px;">
+                    </td>
+                {% endif %}
+            {% endfor %}
 
-<br>
-
-
-
-     {% else %}
-    <td>
-        <img src="{% static 'images/bunny.jpg' %}" alt = "hi!" style="width:650px;height:600px;">
-    </td>
-
-{%  endif %}
+        {% endif %}
+    {% endfor %}
 </tr></tbody></table>
 
 
-{%  endif %}
+
 

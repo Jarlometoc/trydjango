@@ -1,1 +1,1 @@
-{"resolution (H)": "0.3333333333", "rise": "2.9", "turns": "5.0", "Optional exp. layerlines": "none chosen", "PDB": "none chosen", "handedness": "R", "resolution (L)": "0.0833333333", "units": "1000.0"}
+{"rise": 2.9, "units": 27, "PDB": "ATT00005", "turns": 5, "resolution (L)": 0.0833333333, "handedness": "R", "Optional_exp_layerlines": "ATT00002_1i5uh9O", "resolution (H)": 0.3333333333}

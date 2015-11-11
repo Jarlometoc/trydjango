@@ -112,14 +112,14 @@ Also 'includes' jmol functionality from jmol.html-->
        {% if key == 'PDB' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
-       {% if key == 'Optional exp. layerlines' %}
+       {% if key == 'Optional_exp_layerlines' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
      {%  endfor %}
     <br> <h4>Parameters to be used:</h4>
      {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
          {% if key != 'PDB' %}
-           {% if key != 'Optional exp. layerlines' %}
+           {% if key != 'Optional_exp_layerlines' %}
                 <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
              {% endif %}
          {% endif %}
@@ -172,34 +172,34 @@ Also 'includes' jmol functionality from jmol.html-->
 
  <div style="float:Right; width:50%; margin-left:10px;">
 {% for key, value in resultsHTML.items %}{% csrf_token %}
-  {% if key == 'ID: ' %}
+  {% if key == 'ID' %}
     <h3>Loaded Run Number &nbsp;{{ value }}</h3>
     {%  endif %}
       {%  endfor %}
  {% for key, value in resultsHTML.items %}{% csrf_token %}
-  {% if key == 'Run date: ' %}
+  {% if key == 'Run date' %}
   <h4>{{ value }}</h4>
   {%  endif %}
 {%  endfor %}
     <br> <h4>Files used:</h4>
 {% for key, value in resultsHTML.items %}{% csrf_token %}
-       {% if key == 'PDB: ' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}&nbsp;{{ value }}</h4>
+       {% if key == 'PDB' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
-       {% if key == 'Optional exp. layerlines: ' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}&nbsp;{{ value }}</h4>
+       {% if key == 'Optional_exp_layerlines' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
      {%  endfor %}
     <br> <h4>Parameters used:</h4>
      {% for key, value in resultsHTML.items %}{% csrf_token %}
-         {% if key != 'PDB: ' %}
-              {% if key != 'ID: ' %}
-           {% if key != 'Optional exp. layerlines: ' %}
-               {% if key != 'Run date: ' %}
+         {% if key != 'PDB' %}
+              {% if key != 'ID' %}
+           {% if key != 'Optional_exp_layerlines' %}
+               {% if key != 'Run date' %}
                    {% if key != 'ToBeRunHTML' %}
                        {% if key != 'forJmol' %}
                            {% if key != 'forLLpic' %}
-                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}&nbsp;{{ value }}</h4>
+                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
                                 {% endif %}
                             {% endif %}
                            {% endif %}
@@ -217,7 +217,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 
 <!-- Examining results -->
-<div class="container">
+
 <div class="page-header">
 <h1>Examining the results</h1>
 </div>
@@ -247,7 +247,6 @@ Also 'includes' jmol functionality from jmol.html-->
 <br>
 
 
-</div>
 
 {% endblock %}
 

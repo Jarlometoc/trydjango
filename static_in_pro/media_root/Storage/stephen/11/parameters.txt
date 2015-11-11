@@ -1,19 +1,18 @@
-Files and Parameters used for FAT Run Number 34
+Files and Parameters used for FAT Run Number 50
 User: stephen
-Date: 2015-11-10 19:55:38.360173+00:00
+Date: 2015-11-11 11:40:06.122037+00:00
 
 
 Files:
-	PDB: ATT00005_0Ahwlgt
-	Optional exp. layerlines: ATT00001_oOOvVnM
+	PDB: ATT00005
+	Optional exp. layerlines: ATT00002_1i5uh9O
 
 
 Parameters:
-	Units: 100.0
-	Turns: 5.0
-	Chi-square: 0.33
-	Resolution (L): 0.0833333333
-	Handedness: R
-	Bfactor: 1000.0
-	Rise: 2.9
-	Resolution (H): 0.3333333333
+	Chi-square0.33
+	Units27.0
+	Rise2.9
+	Turns5.0
+	Resolution (H)0.3333333333
+	HandednessR
+	Resolution (L)0.0833333333
