@@ -52,7 +52,7 @@ class ParaForm(ModelForm):
     class Meta:
         model = dbPara
         widgets = {'username': forms.HiddenInput()}
-        fields =['username', 'turns', 'units', 'rise', 'rescutL', 'rescutH', 'LorR']
+        fields =['username', 'jobname', 'turns', 'units', 'rise', 'rescutL', 'rescutH', 'LorR']
 
     def clean_turns(self):
         turns = self.cleaned_data.get('turns')

@@ -1,0 +1,16 @@
+Files and Parameters used for FAT Run Number 60
+User: stephen
+Date: 2015-11-12 13:19:10.663528+00:00
+
+
+Files:
+	PDB: none chosen
+	Optional exp. layerlines: none chosen
+
+
+Parameters:
+	Units27.0
+	HandednessR
+	Rise2.9
+	Turns5.0
+	Resolution (L)0.0833333333

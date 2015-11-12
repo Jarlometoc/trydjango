@@ -9,6 +9,7 @@ class dbResults(models.Model):
     username = models.CharField(max_length=10)
     PDBused = models.CharField(max_length=100)
     experimentalData = models.CharField(max_length=100)
+    jobname = models.CharField(max_length=50)
     turns = models.FloatField(default=5)
     units = models.FloatField(default=27)
     rise = models.FloatField(default=2.9)
@@ -37,6 +38,7 @@ class dbResults(models.Model):
     def __str__(self):
         return self.timestamp, \
                self.username, \
+               self.jobname, \
                self.PDBused, \
                self.experimentalData, \
                self.turns, \

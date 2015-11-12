@@ -1,0 +1,1 @@
+{"rise": "2.9", "turns": "5.0", "Optional_exp_layerlines": "none chosen", "jobname": "cat", "resolution (L)": "0.0833333333", "resolution (H)": "0.3333333333", "jobname": "this is a test", "PDB": "none chosen", "handedness": "R", "units": "27.0"}
