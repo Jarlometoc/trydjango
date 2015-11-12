@@ -8,6 +8,8 @@ $(document).ready( function() {
     });
 });
 
+
+
 //async form submission ( lets the user see what they filled in!)
 //add: id = "noRefresh" to <form ...
 //$(document).ready(function() {
