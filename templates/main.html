@@ -86,7 +86,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 
 <br><br>
-<h4>Set Rosetta Parameters</h4>
+<h4>Generic Settings</h4>
 <form id = "H" action="{% url "urlParameters" %}" method="post">{% csrf_token %}
 {{ ParaHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">
@@ -107,6 +107,11 @@ Also 'includes' jmol functionality from jmol.html-->
 <div style="float:left; width:40%; margin-left:10px;">
 
  <h3>Files and parameters for the upcoming run:</h3>
+      {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
+        {% if key == 'jobname' %}
+           <h4>{{ key }}:&nbsp;{{ value }}</h4>
+       {%  endif %}
+    {%  endfor %}
     <br> <h4>Files to be used:</h4>
    {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
        {% if key == 'PDB' %}
@@ -115,12 +120,14 @@ Also 'includes' jmol functionality from jmol.html-->
        {% if key == 'Optional_exp_layerlines' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
-     {%  endfor %}
+   {%  endfor %}
     <br> <h4>Parameters to be used:</h4>
      {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
          {% if key != 'PDB' %}
            {% if key != 'Optional_exp_layerlines' %}
+               {% if key != 'jobname' %}
                 <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+                {% endif %}
              {% endif %}
          {% endif %}
     {%  endfor %}
@@ -177,9 +184,13 @@ Also 'includes' jmol functionality from jmol.html-->
     {%  endif %}
       {%  endfor %}
  {% for key, value in resultsHTML.items %}{% csrf_token %}
-  {% if key == 'Run date' %}
-  <h4>{{ value }}</h4>
-  {%  endif %}
+      {% if key == 'Run date' %}
+            <h4>{{ value }}</h4>
+      {%  endif %}
+   {% if key == 'jobname' %}
+           <h4>{{ key }}:&nbsp;{{ value }}</h4>
+   {%  endif %}
+
 {%  endfor %}
     <br> <h4>Files used:</h4>
 {% for key, value in resultsHTML.items %}{% csrf_token %}
@@ -198,8 +209,10 @@ Also 'includes' jmol functionality from jmol.html-->
                {% if key != 'Run date' %}
                    {% if key != 'ToBeRunHTML' %}
                        {% if key != 'forJmol' %}
-                           {% if key != 'forLLpic' %}
+                           {% if key != 'forJmol' %}
+                             {% if key != 'jobname' %}
                 <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                            {% endif %}
