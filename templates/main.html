@@ -95,7 +95,7 @@ Also 'includes' jmol functionality from jmol.html-->
 
 <br><br>
 <!-- additional parameters is a dropdown menu -->
-<h4>Additional Parameters</h4>
+<h4>Additional Settings</h4>
 <form id = "noRefresh" action="{% url "urlPara2" %}" method="post">{% csrf_token %}
 {{ AddHTML|crispy }}
 <input type="hidden" name = "username" value = "{{ user.get_username }}">

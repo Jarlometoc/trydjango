@@ -3,7 +3,7 @@ from django.db import models
 #Model for results
 #note this model is used by Results.admin.py to display the Results table
 
-#Results files table (from Rosetta)
+#Results files table (from Rosetta_programs)
 class dbResults(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     username = models.CharField(max_length=10)

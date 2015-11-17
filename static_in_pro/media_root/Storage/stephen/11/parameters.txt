@@ -1,18 +1,17 @@
-Files and Parameters used for FAT Run Number 12
+Files and Parameters used for FAT Run Number 14
 User: stephen
-Date: 2015-11-13 08:23:51.282324+00:00
-jobname:  dog
+Date: 2015-11-13 15:08:08.455855+00:00
 
 
 Files:
-	PDB: ATT00003_e34pZ2t
+	PDB: 1QL1_monomer.pdb
 	Optional exp. layerlines: none chosen
 
 
 Parameters:
-	Handedness: L
-	Rise: 2.9
 	Units: 27.0
-	Turns: 5.0
-	Resolution (L): 0.0833333333
+	Rise: 2.9
 	Resolution (H): 0.3333333333
+	Resolution (L): 0.0833333333
+	Turns: 5.0
+	Handedness: R
