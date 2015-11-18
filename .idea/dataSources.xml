@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1441913205">
-    <data-source source="LOCAL" name="Django default" uuid="bcaff925-4fe2-4226-a96f-c8f8a96acb05">
+  <component name="DataSourceManagerImpl" format="xml" hash="2554746291">
+    <data-source source="LOCAL" name="Django default" uuid="79dc4dc5-1f70-4297-ba1f-77271de70c16">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
@@ -19,6 +19,17 @@
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/sqlite-jdbc-3.8.9.jar</url>
         </library>
       </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="Django default2" uuid="8a1d31c2-c83d-4131-b015-88aa3556b180">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/trydjango18/settings.py</remarks>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Stephen\Dropbox\PycharmProjects\trydjango18\db.sqlite3</jdbc-url>
+      <explain-plan-config>
+        <provider>com.intellij.database.plan.ExplainPlanProvider.NullExplainPlanProvider</provider>
+      </explain-plan-config>
     </data-source>
   </component>
 </project>

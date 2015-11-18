@@ -34,3 +34,12 @@ def removePath(path):
     import ntpath
     trimmed = ntpath.basename(path)  #careful: does not deal with 'file.txt/' syntax
     return trimmed
+
+#sound for debugging
+def Sound(i):  #beep number as argument
+    while i>0:
+        import winsound
+        Freq = 2000 # Set Frequency To 2500 Hertz
+        Dur = 100 # Set Duration To 1000 ms == 1 second
+        winsound.Beep(Freq,Dur)
+        i -= 1

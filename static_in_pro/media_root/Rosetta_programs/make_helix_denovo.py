@@ -23,6 +23,7 @@ from numpy import cos
 from numpy import sin
 from numpy.linalg import norm
 from math import radians
+from trydjango18.views import Sound
 
 
 class Virtual(object):
@@ -60,7 +61,7 @@ class Helixer(object):
     """
     Main function to generate helical symmetry
     """
-    def __init__(self, pitch, nsub, vturns, unit, name, virtuals_name):
+    def __init__(self, pitch, nsub, vturns, unit, name, virtuals_name):  #name is .sdef path
         self.pitch = pitch
         self.nsub = nsub
         self.vturns = vturns
@@ -71,15 +72,12 @@ class Helixer(object):
         self.jump_names = {}
         self.jump_sub_names = {}
 
-
-
-        Sound(1)
-        for i in range(-self.nsub/2, self.nsub/2+1):
+        for i in range(int(-self.nsub/2), int(self.nsub/2+1)):
             if i<0:
                 vrt_name = "VRT_0_n"+str(-i)+"_0_base"
                 jump_name = "JUMP_0_n"+str(-i)+"_0"
                 jump_sub_name = "JUMP_0_n"+str(-i)+"_0_to_subunit"
-                Sound(2)
+
             else:
                 vrt_name = "VRT_0_"+str(i)+"_0_base"
                 jump_name = "JUMP_0_"+str(i)+"_0"
@@ -87,7 +85,7 @@ class Helixer(object):
             self.vrt_names[i] = vrt_name
             self.jump_names[i] =jump_name
             self.jump_sub_names[i] =jump_sub_name
-            Sound(3)
+
         #List that stores all output lines
         self.output = []
         self.virtuals = []
@@ -120,7 +118,7 @@ class Helixer(object):
     def __setupEnergyLines(self):
         root_name = "VRT_0_0_0_base"
         E_line = "E = 1*"+root_name
-        for i in range(self.nsub/2+1):
+        for i in range(int(self.nsub/2+1)):
             if i!=0:
                 E_line+=" + 1*("+root_name+":"+self.vrt_names[i]+")"
         self.output.append(E_line+"\n")
@@ -137,7 +135,7 @@ class Helixer(object):
         #And here will be for loop from 1 to n iterating over negative and positive virtuals
         atomnum = 1
         resnum = 1
-        for i in range(-self.nsub/2, self.nsub/2+1):
+        for i in range(int(-self.nsub/2), int(self.nsub/2+1)):
             if i!=0:
                 zaxis = array([0,0,1])
                 angle = -i*360*float(self.vturns)/float(self.unit)
@@ -164,10 +162,10 @@ class Helixer(object):
 
     def __setupConnectLines(self):
         #inter-vrts connects
-        for i in range(-self.nsub/2, self.nsub/2):
+        for i in range(int(-self.nsub/2), int(self.nsub/2)):
             self.output.append("connect_virtual "+self.jump_names[i]+" "+self.vrt_names[i]+" "+self.vrt_names[i+1]+"\n")
         #vrts-subunits connects
-        for i in range(-self.nsub/2, self.nsub/2+1):
+        for i in range(int(-self.nsub/2), int(self.nsub/2+1)):
             self.output.append("connect_virtual "+self.jump_sub_names[i]+" "+self.vrt_names[i]+" SUBUNIT\n")
 
     def __setupDofs(self):
@@ -177,15 +175,15 @@ class Helixer(object):
     def __setupJumpGroups(self):
         jump_line1 = "set_jump_group JUMPGROUP1"
         jump_line3 = "set_jump_group JUMPGROUP3"
-        for i in range(self.nsub/2):
+        for i in range(int(self.nsub/2)):
             jump_line1+="  "+self.jump_names[i]+":"+str(i+1)
             jump_line3+="  "+self.jump_sub_names[i]
             if i>0:
                 jump_line1+="  "+self.jump_names[-i]
                 jump_line3+="  "+self.jump_sub_names[-i]
         #Ading last negative subuint - isn't a bit inconsitent?
-        jump_line1 +="  "+self.jump_names[-self.nsub/2]
-        jump_line3 +="  "+self.jump_sub_names[-self.nsub/2]+"  "+self.jump_sub_names[self.nsub/2]
+        jump_line1 +="  "+self.jump_names[int(-self.nsub/2)]
+        jump_line3 +="  "+self.jump_sub_names[int(-self.nsub/2)]+"  "+self.jump_sub_names[int(self.nsub/2)]
         self.output.append(jump_line1+"\n")
         self.output.append(jump_line3+"\n")
     
@@ -208,45 +206,3 @@ class Helixer(object):
         self.__setupConnectLines()
         self.__setupDofs()
         self.__setupJumpGroups()
-
-if '__main__' == __name__:
-    doc = """
-    Generates helices denovo based on parameters that can be obtained from fiber diffraction experiment
-    usage: python make_helix_denovo.py --help
-    """
-   #print(doc)
-    usage = "usage: %prog [options] args"
-    option_parser_class = optparse.OptionParser
-    parser = option_parser_class( usage = usage, version='0.1' )
-
-    parser.add_option("-p", "--rise", dest="rise", default = None,
-                      type = 'float',
-                      help="Helical axial rise [OBLIGATORY]")
-    parser.add_option("-u", "--unit", dest="unit", default =None,
-                      type = 'float',
-                      help="Unit rise, subunit axial transition")
-    parser.add_option("-v", "--vturns", dest="vturns", default =None,
-                      type = 'int',
-                      help="Number of turns in one repeat")
-    parser.add_option("-n", "--nsub", dest="nsub", default = None,
-                      type = 'int',
-                      help="number of subuints in final oligomeric model [OBLIGATORY]")
-    parser.add_option("-o", "--output", dest="name", default = "helix_denovo",
-                      help="symmetry output file name")
-    parser.add_option("-r", "--virtuals", dest="virtuals_name", default = "virtuals",
-                      help="virtuals residues in PDB format")
-    options, args = parser.parse_args()
-    helixer = Helixer(options.rise, options.nsub, options.vturns, options.unit, options.name, options.virtuals_name)
-    #Executing pipeline
-    helixer.execute()
-    helixer.write()
-    helixer.writePDBlines()
-        
-
-def Sound(i):
-    while i>0:
-        import winsound
-        Freq = 2000 # Set Frequency To 2500 Hertz
-        Dur = 100 # Set Duration To 1000 ms == 1 second
-        winsound.Beep(Freq,Dur)
-        i -= 1
