@@ -11,25 +11,10 @@
             <td>
                 <img src="{% static 'images/Userjmol.png' %}" alt = "user jmol image" style="width:650px;height:600px;">
             </td>
-            <!-- inner loop -->
-            {% for key, value in resultsHTML.items %}{% csrf_token %}
-                 <!-- user has LL, otherwise default (.dat) -->
-                {% if key == 'Optional_exp_layerlines' and value != 'none chosen' %}
-                    <td>
-                        <img src="{% static 'images/UserLL.jpg' %}" alt = "user LL image" style="width:650px;height:600px;">
-                    </td>
-                {% endif %}
-                {% if key == 'Optional_exp_layerlines' and value == 'none chosen' %}
-                    <td>
-                        <img src="{% static 'images/DefLL.jpg' %}" alt = "defLL image" style="width:650px;height:600px;">
-                    </td>
-                {% endif %}
-            {% endfor %}
-
+            <td>
+                <img src="{% static 'images/UserLL.png' %}" alt = "user LL image" style="width:650px;height:600px;">
+            </td>
         {% endif %}
     {% endfor %}
 </tr></tbody></table>
-
-
-
 

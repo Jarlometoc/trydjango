@@ -27,11 +27,7 @@ class dbResults(models.Model):
     gridZ= models.FloatField(default=128)
     gridPhi = models.FloatField(default=128)
     fibrilPDB = models.CharField(max_length=100, default='empty')
-    LLoutput = models.CharField(max_length=100, default='empty')
     LLoutputPic = models.CharField(max_length=100, default='Storage/bunny.jpg')
-    FlagFile = models.CharField(max_length=100, default='empty')
-    denovo = models.CharField(max_length=100, default='empty')
-    Score = models.CharField(max_length=100, default='empty')
     chisq = models.FloatField(default=0)
 
     #for class instances of the model
@@ -58,9 +54,5 @@ class dbResults(models.Model):
                self.gridZ, \
                self.gridPhi, \
                self.fibrilPDB, \
-               self.LLoutput,\
                self.LLoutputPic,\
-               self.FlagFile, \
-               self.denovo, \
-               self.Score, \
                self.chisq

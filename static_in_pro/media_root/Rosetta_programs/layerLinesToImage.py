@@ -18,28 +18,35 @@ import os
 import sys 
 import numpy as np
 import matplotlib.pyplot as plt
-
+from trydjango18.views import Sound
 
 def read_layer_lines(filename, simulated=False):
-	f = open(filename)
-	R_l = {}
-	I_l = {}
-	lines = f.readlines()
-	for line in lines:
-		line_arr = line.split(" ")
-		layer_index = int(line_arr[2].strip())
-		reciprocal_R = float(line_arr[1])
-		if simulated:
-			intensity = np.sqrt(float(line_arr[0]))
-		else:
-			intensity = float(line_arr[0])
-		if layer_index in R_l:
-			R_l[layer_index].append(reciprocal_R)
-			I_l[layer_index].append(intensity)
-		else:
-			R_l[layer_index] = [reciprocal_R]
-			I_l[layer_index] = [intensity]
-	return R_l, I_l
+
+    #path alterations to deal with Django pathfinding issues
+    if 'intensity' in filename:
+        path=filename   #path alteration to deal with Django pathfinding issues
+    else:
+        path='static_in_pro/media_root/' + filename
+
+    f = open(path)
+    R_l = {}
+    I_l = {}
+    lines = f.readlines()
+    for line in lines:
+        line_arr = line.split()
+        layer_index = int(line_arr[2].strip())
+        reciprocal_R = float(line_arr[1])
+        if simulated:
+            intensity = np.sqrt(float(line_arr[0]))
+        else:
+            intensity = float(line_arr[0])
+        if layer_index in R_l:
+            R_l[layer_index].append(reciprocal_R)
+            I_l[layer_index].append(intensity)
+        else:
+            R_l[layer_index] = [reciprocal_R]
+            I_l[layer_index] = [intensity]
+    return R_l, I_l
 
 
 def convert_to_image(ExpR, ExpI, SimR, SimI, output): #modded to add output
@@ -47,7 +54,7 @@ def convert_to_image(ExpR, ExpI, SimR, SimI, output): #modded to add output
 	Makes plots from layer lines and store them in image file
 	"""
 	layer_lines_no = len(ExpR.keys())
-	fig, axrr = plt.subplots(nrows=layer_lines_no)
+	fig, axrr = plt.subplots(nrows=layer_lines_no)      #!!!main thread is not in main loop
 
 	lindex = 0 #Should be the same as layer line but better play safe
 	for lline in ExpR.keys():

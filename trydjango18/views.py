@@ -4,6 +4,8 @@
 #imports
 import datetime
 from django.shortcuts import render
+import os
+
 
 #page views
 def home(request):
@@ -27,7 +29,24 @@ def main(request):
 def PathMaker(name, filename):
     TodaysDate = datetime.date.today()
     Month = str(TodaysDate.month)
+    #here you check if that name/Month dir exists, if not, create
+    if not os.path.exists('static_in_pro/media_root/Storage/'+ name + "/" + Month):
+        os.makedirs('static_in_pro/media_root/Storage/'+ name + "/" + Month)
+    #now return path to file
     return '/'.join(['static_in_pro/media_root/Storage', name, Month, filename])  #need 'static_in_pro/media_root'
+
+#Pathmaker specific for upload= function of models
+def PathMaker2(request, filename):
+    name = request.username
+    TodaysDate = datetime.date.today()
+    Month = str(TodaysDate.month)
+    #here you check if that name/Month dir exists, if not, create
+    if not os.path.exists('static_in_pro/media_root/Storage/'+ name + "/" + Month):
+        os.makedirs('static_in_pro/media_root/Storage/'+ name + "/" + Month)
+    #now return path to file
+    return '/'.join(['Storage', name, Month, filename])  #need 'static_in_pro/media_root'
+
+
 
 #Remove paths from files for the zipped results
 def removePath(path):
