@@ -5,7 +5,7 @@
 import datetime
 from django.shortcuts import render
 import os
-
+import json
 
 #page views
 def home(request):
@@ -16,6 +16,7 @@ def about(request):
 
 def main(request):
     if request.user.is_authenticated():
+        resetLoad(request.user.username)
         return render(request, 'main.html', {})   #mainpage with rosetta: only access if logged in
     else:
         return render(request, 'home.html', {})
@@ -53,6 +54,19 @@ def removePath(path):
     import ntpath
     trimmed = ntpath.basename(path)  #careful: does not deal with 'file.txt/' syntax
     return trimmed
+
+
+#reset Load at start
+def resetLoad(username):
+    try:
+        thefile = PathMaker(username, 'CurrentLoaded.txt')
+        FH = open(thefile, 'w')
+        dict ={}
+        json.dump(dict, FH)
+        FH.close()
+    except:
+        pass
+
 
 #sound for debugging
 def Sound(i):  #beep number as argument
