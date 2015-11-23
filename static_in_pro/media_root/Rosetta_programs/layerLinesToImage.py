@@ -9,7 +9,7 @@ layer_lines - text file containing containing three columns 1st: Intensity,
 2nd reciprocal Rs, 3rd: Number of Layer line
 
 """
-__author__ = "Wojtek Potrzebowski"
+__author__ = "Wojtek Potrzebowski, modded by Stephen Burleigh"
 __maintainer__ = "Wojtek Potrzebowski"
 __email__ = "Wojciech.Potrzebowski@biochemistry.lu.se"
 
