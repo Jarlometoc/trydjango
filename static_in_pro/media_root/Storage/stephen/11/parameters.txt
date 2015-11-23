@@ -1,18 +1,18 @@
-Files and Parameters used for FAT Run Number 57
+Files and Parameters used for FAT Run Number 59
 User: stephen
-Date: 2015-11-23 08:44:53.796061+00:00
+Date: 2015-11-23 09:04:03.548235+00:00
 
 
 Files:
-	PDB: 1gxp.pdb
-	Optional exp. layerlines: layer_lines_experimental_U92xnQz.dat
+	PDB: 1QL1_fibril.pdb
+	Optional exp. layerlines: layer_lines_experimental_xSFfLhh.dat
 
 
 Parameters:
-	Turns: 5.0
-	Rise: 2.9
 	Handedness: R
-	Resolution (L): 0.0833333333
 	Units: 27.0
-	Resolution (H): 0.3333333333
+	Turns: 5.0
 	Chi-square: 0.33
+	Rise: 2.9
+	Resolution (L): 0.0833333333
+	Resolution (H): 0.3333333333

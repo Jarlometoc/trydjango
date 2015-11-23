@@ -18,10 +18,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')  #!main thread is not in main loop error if not included
 import matplotlib.pyplot as plt             #this removes the previous plot from main thread
-
-
 from trydjango18.views import Sound
-
 
 class LLTI(object):
     """ class to run LLtoImage, avoid 'main thread is not in main loop' error"""
