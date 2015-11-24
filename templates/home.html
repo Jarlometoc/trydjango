@@ -1,6 +1,6 @@
 <!-- Landing page; gets basic format (navbar, jumbotron, content block) and statics from base.html -->
 {% extends "base.html" %}
-
+ {% load static %}
 {% block jumbotron_content %}
       <div class="jumbotron">
         <div class="row">
@@ -18,6 +18,7 @@
       </div>
     </div>
     </div>
+
 {% endblock %}
 
 
@@ -39,4 +40,46 @@
         </div>
     </div>
     </div>
+
+
+
+       <!--Powered by symbols and links -->
+<div class="page-header">
+<h1>Powered by </h1>
+</div>
+
+<div class="container">
+<div class="row">
+<div style="float:left; width:10%;">
+    <table cellpadding="100"><tbody><tr>
+        <td>
+            <img src="{% static 'images/django-neg.sh-600x600.png' %}" alt = "user jmol image" style="width:150px;height:150px;">
+       </td>
+        <td>
+            <img src="{% static 'images/bootstrap-logo.png' %}"  alt = "user LL image" style="width:110px;height:100px;">
+        </td>
+        <td>
+            <img src="{% static 'images/PyCharm_twitter.png' %}"  alt = "user LL image" style="width:110px;height:100px;">
+        </td>
+        <td>
+            <img src="{% static 'images/python.png' %}"  alt = "user LL image" style="width:110px;height:100px;">
+        </td>
+        <td>
+            <img src="{% static 'images/SQLite370.svg.png' %}"  alt = "user LL image" style="width:120px;height:100px;">
+        </td>
+         <td>
+            <img src="{% static 'images/Jmol_icon13.png' %}"  alt = "user LL image" style="width:110px;height:100px;">
+        </td>
+         <td>
+            <img src="{% static 'images/rcsb-pdb.png' %}"  alt = "user LL image" style="width:120px;height:100px;">
+        </td>
+         <td>
+            <img src="{% static 'images/github-mark.png' %}"  alt = "user LL image" style="width:140px;height:100px;">
+        </td>
+
+    </tr></tbody></table>
+    </div>
+</div>
+</div>
+</div>
 {% endblock %}

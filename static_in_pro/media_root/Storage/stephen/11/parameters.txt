@@ -1,18 +1,17 @@
-Files and Parameters used for FAT Run Number 59
+Files and Parameters used for FAT Run Number 77
 User: stephen
-Date: 2015-11-23 09:04:03.548235+00:00
+Date: 2015-11-24 15:06:49.712027+00:00
 
 
 Files:
-	PDB: 1QL1_fibril.pdb
-	Optional exp. layerlines: layer_lines_experimental_xSFfLhh.dat
+	PDB: none chosen
+	Optional exp. layerlines: none chosen
 
 
 Parameters:
 	Handedness: R
-	Units: 27.0
-	Turns: 5.0
-	Chi-square: 0.33
-	Rise: 2.9
 	Resolution (L): 0.0833333333
+	Rise: 2.9
+	Turns: 5.0
 	Resolution (H): 0.3333333333
+	Units: 27.0

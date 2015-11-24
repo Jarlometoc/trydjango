@@ -1,6 +1,5 @@
 // Site specific javascript and JQuery
 
-
 // Test Jquery code to make sure all is in order
 $(document).ready( function() {
     $("#about-btn").click( function(event) {
@@ -9,14 +8,8 @@ $(document).ready( function() {
 });
 
 
-
-//async form submission ( lets the user see what they filled in!)
-//add: id = "noRefresh" to <form ...
-//$(document).ready(function() {
-   // $("#H").click(function(event){
-       // event.preventDefault();
-      //  alert("its working!")
-
-   // });
-//});
-
+//refresh to same place on page
+//http://www.webdeveloper.com/forum/showthread.php?58146-Keeping-Scrollbar-Position-On-Refresh
+function readCookie(name){
+    return(document.cookie.match('(^|; )'+name+'=([^;]*)')||0)[2]
+}

@@ -19,8 +19,10 @@ in this case the navbar, one jumbotron block and a content block -->
 
   </head>
 
+    <!-- onScroll and onLoad used to maintain scroll position; see custom.js -->
+  <body onScroll="document.cookie='ypos=' + window.pageYOffset" onLoad="window.scrollTo(0,readCookie('ypos'))" >
 
-  <body>
+
   <!-- Load Project's navbar here -->
     {% include 'navbar.html' %}
 
@@ -32,12 +34,7 @@ in this case the navbar, one jumbotron block and a content block -->
         {% block content %}
         {% endblock %}
     </div>
-
     <!--Load project's javascript and JQuery-->
    {% include 'All_javascript.html' %}
-
   </body>
-
-<!-- footer --->
-
 </html>

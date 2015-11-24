@@ -40,7 +40,7 @@ class LLTI(object):
 
     def read_layer_lines(self, theFile):
 
-        #path modded since Django is crazy
+        #path modded since Django is crazy: if intensity.txt->short path. If experimental.dat->long path
         if 'intensity' in theFile:
             path=theFile   #path alteration to deal with Django pathfinding issues
         else:
