@@ -1,0 +1,1 @@
+{"Turns": "5.0", "PDB": "ATT00003_2ga3wSG", "Resolution (L)": "0.0833333333", "Units": "27.0", "Optional_exp_layerlines": "none chosen", "Run date": "2015-11-09 16:42:40.608132+00:00", "Rise": "2.9", "Resolution (H)": "0.3333333333", "ID": "3", "Handedness": "L"}

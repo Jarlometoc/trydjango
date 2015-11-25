@@ -1,0 +1,17 @@
+
+/* For testing: h3 {color:greenyellow;} */
+
+
+/*for crispyforms */
+.asteriskField {
+    display: none;
+}
+
+/*spacing between columns */
+td {
+    padding:0 15px 0 15px;
+}
+
+#shorthome {
+    max-height: 500px;
+}
