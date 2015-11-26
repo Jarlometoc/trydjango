@@ -1,17 +1,17 @@
-Files and Parameters used for FAT Run Number 77
+Files and Parameters used for FAT Run Number 5
 User: stephen
-Date: 2015-11-24 15:06:49.712027+00:00
+Date: 2015-11-26 08:45:37.482913+00:00
 
 
 Files:
-	PDB: none chosen
+	PDB: 1QL1_monomer_RkSLbKS_Erl2v8z.pdb
 	Optional exp. layerlines: none chosen
 
 
 Parameters:
 	Handedness: R
-	Resolution (L): 0.0833333333
-	Rise: 2.9
 	Turns: 5.0
-	Resolution (H): 0.3333333333
+	Rise: 2.9
 	Units: 27.0
+	Resolution (H): 0.3333333333
+	Resolution (L): 0.0833333333

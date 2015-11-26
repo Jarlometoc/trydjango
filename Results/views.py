@@ -25,10 +25,10 @@ def LoadRun(request):  # when Load is entered.....
     toreturn = UsedParam(Qobject6)
 
     #move current layerlines.png to static for rendering
-    source = 'C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/' + str(Qobject6.LLoutputPic)
+    source = str(Qobject6.LLoutputPic)
     #Django want pic in both our_static and root_static...
-    shutil.copyfile(source, 'C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/static_root/images/UserLL.png')
-    shutil.copyfile(source, 'C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/our_static/images/UserLL.png')
+    shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
+    shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
 
     #jmol display
     #************
@@ -63,9 +63,9 @@ def ReRun(request):
             toreturn = UsedParam(Qobject6)
 
             #move current layerlines.png to static for rendering
-            source = 'C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/' + str(Qobject6.LLoutputPic)
-            shutil.copyfile(source, 'C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/static_root/images/UserLL.png')
-            shutil.copyfile(source, 'C:/Users/Stephen/Dropbox/PycharmProjects/trydjango18/static_in_pro/our_static/images/UserLL.png')
+            source = str(Qobject6.LLoutputPic)
+            shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
+            shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
 
             #insert Jmol code from above
 

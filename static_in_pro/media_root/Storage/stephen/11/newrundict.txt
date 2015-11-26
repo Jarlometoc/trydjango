@@ -1,1 +1,1 @@
-{"handedness": "R", "resolution (L)": 0.0833333333, "turns": 5, "units": 27, "resolution (H)": 0.3333333333, "Optional_exp_layerlines": "none chosen", "rise": 2.9, "PDB": "none chosen"}
+{"handedness": "R", "rise": 2.9, "PDB": "1QL1_monomer_RkSLbKS_Erl2v8z.pdb", "turns": 5, "Optional_exp_layerlines": "none chosen", "resolution (L)": 0.0833333333, "resolution (H)": 0.3333333333, "units": 27}

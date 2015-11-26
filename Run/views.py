@@ -284,7 +284,7 @@ def tagOutput(request):
         Qobject6 = dbResults.objects.raw(query)[0]
         run = str(int(Qobject6.id)+1) #run id will be one more than last run id
     except:
-        run == '1'  #if first run
+        run = '1'  #if first run
     return run
 
 
