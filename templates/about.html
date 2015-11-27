@@ -1,6 +1,6 @@
 <!-- About page; gets basic format (navbar, jumbotron, content block) and statics from base.html -->
 {% extends "base.html" %}
-
+ {% load static %}
 {% block jumbotron_content %}
       <div class="jumbotron">
         <div class="row">
@@ -29,36 +29,41 @@
 </div>
 <br>
 
-       <div>
+      <div>
      <div class="page-header">
-     <h1>The developers</h1>
-        </div>
+        <h1>Andre Lab at Lund University</h1>
+      </div>
 
       <div class="row">
-        <div class="col-md-12">
-
-     <p style="font-size:150%">The delevopers.... </p>
-</div>
-</div>
-</div>
-
-     <br>
-
-       <div>
-     <div class="page-header">
-     <h1>Andre Lab at Lund University</h1>
-        </div>
-
-      <div class="row">
-        <div class="col-md-12">
-
-     <p style="font-size:150%">The Andre lab....</p>
-</div>
-</div>
+            <div class="col-lg-5 pull-left'">
+                <p style="font-size:150%">The Andre lab....</p>
+            </div>
+            <div class="col-lg-6 pull-right'">
+                <img src="{% static 'images/Andregroup.png' %}" alt = "Andre group" style="width:450px;height:250px;">
+            </div>
+      </div>
 </div>
 <br>
 
  <br>
+
+
+     <div>
+     <div class="page-header">
+        <h1>Lund Univeristy</h1>
+     </div>
+
+      <div class="row">
+           <div class="col-lg-5 pull-left'">
+               <p style="font-size:150%">Lund University.... </p>
+           </div>
+          <div class="col-lg-6 pull-right'">
+                <img src="{% static 'images/LundUniversity.jpg' %}" alt = "Lund Univeristy" style="width:450px;height:250px;">
+          </div>
+</div>
+</div>
+
+     <br>
 
        <div>
      <div class="page-header">
@@ -76,15 +81,11 @@
 <br>
 <br>
 
-
-<!-- Javascript call test-->
-<button onClick="alert('You clicked the button using Javascript.');">
+<!-- Javascript call test
+< button onClick="alert('You clicked the button using Javascript.');">
        Click Me - I run Javascript
 </button>
-
 <h3>Test of CSS from custom.css</h3>
-
-<!-- JQuery call test JQuery function in custom.js-->
-<button id="about-btn"> Jquery test</button>
-
+<!-- JQuery call test JQuery function in custom.js
+< button id="about-btn"> Jquery test</button > -->
 {% endblock %}

@@ -1,5 +1,5 @@
--in:file:s Storage/stephen/11/1QL1_monomer_RkSLbKS_Erl2v8z.pdb
--fiber_diffraction:layer_lines static_in_pro/media_root/Storage/stephen/11/grid.dat
+-in:file:s Storage/stephen/11/1QL1_monomer_RkSLbKS_Erl2v8z_YUco1Oz.pdb
+-fiber_diffraction:layer_lines Storage/stephen/11/layer_lines_experimental_ip70YBw_8Dg0Q8o.dat
 -fiber_diffraction:a 27.0
 -fiber_diffraction:b 5.0
 -fiber_diffraction:p 2.9
@@ -7,7 +7,7 @@
 -fiber_diffraction:resolution_cutoff_high 0.3333333333
 -fiber_diffraction:LorR R
 -fiber_diffraction:rfactor_refinement False
--fiber_diffraction::b_factor 20.0
+-fiber_diffraction::b_factor 22.0
 -fiber_diffraction::b_factor_solv 400.0
 -fiber_diffraction::b_factor_solv_K 0.4
 -fiber_diffraction:qfht_K1 2.0
@@ -16,7 +16,7 @@
 -fiber_diffraction:grid_r 256.0
 -fiber_diffraction:grid_z 128.0
 -fiber_diffraction:grid_phi 128.0
--out:file static_in_pro/media_root/Storage/stephen/11/fibril_run6.pdb
+-out:file static_in_pro/media_root/Storage/stephen/11/fibril_run16.pdb
 -fiber_diffraction:output_fiber_spectra static_in_pro/media_root/Storage/stephen/11/intensity.txt
 -out:file:scorefile static_in_pro/media_root/Storage/stephen/11/score.sc
 -score:weights static_in_pro/media_root/Storage/Rosetta_files/fiberdiff.txt

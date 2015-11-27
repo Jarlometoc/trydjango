@@ -1,1 +1,1 @@
-{}
+{"jobname": " new ", "Bfactor": "22.0", "Chi-square": "0.33", "Run date": "2015-11-26 10:54:22.700852+00:00", "Rise": "2.9", "PDB": "1QL1_monomer_RkSLbKS_Erl2v8z_YUco1Oz.pdb", "Turns": "5.0", "Handedness": "R", "ID": "16", "Resolution (L)": "0.0833333333", "Resolution (H)": "0.3333333333", "Optional_exp_layerlines": "layer_lines_experimental_ip70YBw_8Dg0Q8o.dat", "Units": "27.0"}

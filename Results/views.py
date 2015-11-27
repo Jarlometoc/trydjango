@@ -10,16 +10,17 @@ from trydjango18.views import PathMaker, removePath
 import json
 import shutil
 from trydjango18.views import Sound
+import urllib.request
 
 #Retrieve data from a run
 #*************************
 
 def LoadRun(request):  # when Load is entered.....
 
-    #include ToBeRun dictionary from inputs
+    #include ToBeRun dictionary from inputs, so they dont disappear during page refresh
     ToBeRunDict = getRunDict(request.user.username)
 
-    #Make Results object for printing to main
+    #Make Results object for printing to main:  MOST RECENT ENTRY!
     query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
     Qobject6 = dbResults.objects.raw(query)[0]
     toreturn = UsedParam(Qobject6)

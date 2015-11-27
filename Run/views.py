@@ -99,7 +99,7 @@ def Testing(request):
         GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4B.gridZ)     #Grid size z, should be bigger than molecule span in z direction
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4B.gridPhi)    #Grid size phi, change if higher accuracy is needed
         #output for Rosetta_programs
-        fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibril_run' + str(int(Qobject.id)+1) + '.pdb')
+        fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibril_run' + str(tagOutput(request)) + '.pdb')
         LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #to make LLpic, stored in user's folder'
         Score = '-out:file:scorefile ' + PathMaker(Qobject.username, 'score.sc')
         scoreWeights = '-score:weights static_in_pro/media_root/Storage/Rosetta_files/fiberdiff.txt'  #unused output, ignore
@@ -154,17 +154,16 @@ def Testing(request):
         #Run make_helix_denovo:
         #*********************
         #input: units/rise/turns/N=40, plus path to .sdef output, path to virtualPDB
-        try:
-            helixer = Helixer(float(Qobject4.rise), int(40), int(Qobject4.turns), int(Qobject4.units), denovoPath, virtualsPath)
-            #Executing pipeline
-            helixer.execute()
-            helixer.write()
-            helixer.writePDBlines()
-            #output of helix_denovo.sdef 'symmetry definition file'
-            #output of virtuals.pdb: virtual_residues_file also made each run: for diagnostics
+        
+        helixer = Helixer(float(Qobject4.rise), int(40), int(Qobject4.turns), int(Qobject4.units), denovoPath, virtualsPath)
+        #Executing pipeline
+        helixer.execute()
+        helixer.write()
+        helixer.writePDBlines()
+        #output of helix_denovo.sdef 'symmetry definition file'
+        #output of virtuals.pdb: virtual_residues_file also made each run: for diagnostics
 
-        except:  #subprocess.CalledProcessError:    !causes error if added!
-            Sound(1)
+       
 
 
         #run Rosetta
@@ -173,17 +172,18 @@ def Testing(request):
         query = 'SELECT * FROM Run_dbflag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject5 = dbFlag.objects.raw(query)[0]
 
-        try:
+        #try:
             #inputs: Flagfile parameters, including ChosenPDB and EXPLL (or grid.dat if none)
             #-input is helix_denovo.sdef
-            command = './score.linuxgccrelease ' + \
-                      '@' + str(Qobject5.FlagFile) + \
-                      ' -input ' + denovoPath
-            subprocess.call(command, shell=True)
+        command = '~/Project/trydjango/static_in_pro/media_root/Rosetta_programs/score.linuxgccrelease ' + \
+                  '@' + str(Qobject5.FlagFile) + \
+                  ' -input ' + denovoPath
+        subprocess.call(command, shell=True)
             #outputs: fibril.pdb, intensity.txt(LLout) and score.sc (for making chi-sq)+ scoreweights (ignore)
 
-        except:  #subprocess.CalledProcessError:  !causes error if added!
-            Sound(2)
+        #except: 
+            #subprocess.CalledProcessError  
+           # Sound(2)
 
         #Run LayerLinesToImage
         #*********************
@@ -191,12 +191,12 @@ def Testing(request):
         #output: layerlines.png stored in LLpic attribute
         output = PathMaker(Qobject.username, 'layerlines_run' + str(tagOutput(request)) + '.png')
         experimental = str(Qobject3.EXPupload)
-        try:
-            layerlines = LLTI(intensityPath, experimental, output)
-            layerlines.convert_to_image()
+        #try:
+        layerlines = LLTI(intensityPath, experimental, output)
+        layerlines.convert_to_image()
 
-        except:  #subprocess.CalledProcessError:    !causes error if added!
-            Sound(3)
+        #except:  
+          #  Sound(3)
 
         #Derive Chisq
         #note! if no expLL (just grid.dat) , then score should be empty and no chisq made!!!!!
