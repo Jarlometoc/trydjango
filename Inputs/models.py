@@ -65,9 +65,9 @@ class dbPara2(models.Model):
     qfhtK1 = models.FloatField(default=2.0)
     qfhtK2 = models.FloatField(default=2.2)
     scscaling = models.FloatField(default=0.92)
-    gridR = models.FloatField(default=256)
-    gridZ= models.FloatField(default=128)
-    gridPhi = models.FloatField(default=128)
+    gridR = models.IntegerField(default=256)
+    gridZ= models.IntegerField(default=128)
+    gridPhi = models.IntegerField(default=128)
 
     def __str__(self):
         return self.timestamp, self.username,  \

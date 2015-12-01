@@ -7,14 +7,13 @@ from django.shortcuts import render
 from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbPara, dbPara2
 from Results.models import dbResults
 from .models import dbFlag
-import subprocess
+import os
 from trydjango18.views import PathMaker
 from Results.views import getRunDict, getLoadDict
 from static_in_pro.media_root.Rosetta_programs.make_helix_denovo import Helixer
 from static_in_pro.media_root.Rosetta_programs.syn_grid import makeDefExp
 from static_in_pro.media_root.Rosetta_programs.layerLinesToImage import LLTI
-from trydjango18.views import Sound
-
+from trydjango18.views import removePath
 
 #Main function
 #*************
@@ -33,11 +32,19 @@ def Testing(request):
         #check here if no PDB
         #if ...
 
+        #calc run number for tagging Rosetta output
+        try:
+            query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
+            Qobject6 = dbResults.objects.raw(query)[0]
+            runNum=Qobject6.id
+        except:
+            runNum=1
+        
         #SQL to make query objects for each table
         #****************************************
         #download
         query = 'SELECT * FROM Inputs_dbpdbdown WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
-        Qobject = dbPDBdown.objects.raw(query)[0]
+        Qobject = dbResults.objects.raw(query)[0]
 
         #upload
         query = 'SELECT * FROM Inputs_dbpdbup WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
@@ -72,21 +79,26 @@ def Testing(request):
         #Make FlagsFile using the query objects
         #**************************************
         #place into variables
-        PDB = '-in:file:s '+ str(chosenPDB)   #the chosen PDB, based on most recent timestamp
-
+        #db path for rosetta, otherwise its default, somewhere on server
+        db = '-database /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/database'
+        #add sdef from helix_denovo output
+        sdef = '-symmetry:symmetry_definition ' + PathMaker(Qobject.username, 'helix_denovo.sdef')
+        #needed for some reason
+        extra = '-symmetry:initialize_rigid_body_dofs'      
+        #the chosen PDB, based on most recent timestamp
+        PDB = '-in:file:s '+ str(chosenPDB)   
         #if experimental is 'none chosen', grid.dat needs to be used in its place
         if 'none chosen' in str(Qobject3.EXPupload):
             EXP = '-fiber_diffraction:layer_lines '+ PathMaker(Qobject.username, 'grid.dat')
         else:
             EXP = '-fiber_diffraction:layer_lines '+ str(Qobject3.EXPupload)
-
+        #generic inputs
         Units = '-fiber_diffraction:a '+ str(Qobject4.units)     #number of units
         Turns = '-fiber_diffraction:b '+ str(Qobject4.turns)    #number of turns
         Rise = '-fiber_diffraction:p '+ str(Qobject4.rise)     #If specified, subunit rise is taken from input, otherwise is calculated by the program
         Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12�
         Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3�
-        LorR = '-fiber_diffraction:LorR '+ str(Qobject4.LorR)   #Left or Right handed
-
+       
        #Additional Parameters
         Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4B.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
         AtomicBF = '-fiber_diffraction::b_factor '+ str(Qobject4B.bfactor)    #Atomic B-factor
@@ -99,20 +111,24 @@ def Testing(request):
         GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4B.gridZ)     #Grid size z, should be bigger than molecule span in z direction
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4B.gridPhi)    #Grid size phi, change if higher accuracy is needed
         #output for Rosetta_programs
-        fibPDBout = '-out:file ' + PathMaker(Qobject.username, 'fibril_run' + str(tagOutput(request)) + '.pdb')
+        #sil = '-out:pdb ' #for silent output
+        fibPDBout = '-out:output ' #+ PathMaker(Qobject.username, 'fibril_run' + str(tagOutput(request)) + '.pdb')
         LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #to make LLpic, stored in user's folder'
         Score = '-out:file:scorefile ' + PathMaker(Qobject.username, 'score.sc')
         scoreWeights = '-score:weights static_in_pro/media_root/Storage/Rosetta_files/fiberdiff.txt'  #unused output, ignore
-
+        prefix = '-out:prefix ' + 'RUN' + str(runNum)
         #make a list of the above variables
-        ParameterList = [PDB,
+        ParameterList = [
+                         db,
+                         sdef,
+                         extra,
+                         PDB,
                          EXP,
                          Units,
                          Turns,
                          Rise,
                          Lcutoff,
                          Hcutoff,
-                         LorR,
                          Rfac,
                          AtomicBF,
                          Solv,
@@ -126,10 +142,11 @@ def Testing(request):
                          fibPDBout,
                          LLout,
                          Score,
+                         prefix,
                          scoreWeights]
 
         #make the Flags file, tagged with username, placed in user's folder
-        filename = Qobject.username + '_Flags'
+        filename = str(Qobject.username) + '_Flags'
         Path = PathMaker(Qobject.username, filename)
         FHout = open(Path, 'w')
         for item in ParameterList:
@@ -163,28 +180,26 @@ def Testing(request):
         #output of helix_denovo.sdef 'symmetry definition file'
         #output of virtuals.pdb: virtual_residues_file also made each run: for diagnostics
 
-       
-
-
+        
         #run Rosetta
         #***********
         #query dbFlag and make an object containing everything
         query = 'SELECT * FROM Run_dbflag WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
         Qobject5 = dbFlag.objects.raw(query)[0]
 
-        #try:
-            #inputs: Flagfile parameters, including ChosenPDB and EXPLL (or grid.dat if none)
-            #-input is helix_denovo.sdef
-        command = '~/Project/trydjango/static_in_pro/media_root/Rosetta_programs/score.linuxgccrelease ' + \
-                  '@' + str(Qobject5.FlagFile) + \
-                  ' -input ' + denovoPath
-        subprocess.call(command, shell=True)
-            #outputs: fibril.pdb, intensity.txt(LLout) and score.sc (for making chi-sq)+ scoreweights (ignore)
-
-        #except: 
-            #subprocess.CalledProcessError  
-           # Sound(2)
-
+        #inputs: see Flagfile
+        program = '/home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_programs/score.static.linuxgccrelease'
+        addflag = '@' + '/home/stephen/Project/trydjango/' + str(Qobject5.FlagFile) #need to add prefix path, since not django       
+        together = program + '  ' + addflag
+        Path2 = PathMaker(Qobject.username, 'cmd')
+        FHout2 = open(Path2, 'w')
+        FHout2.write("%s\n" % together)
+        FHout2.close()
+        os.system('chmod 775 ' + Path2)
+        os.system(Path2)
+        #outputs: fibril.pdb, intensity.txt(LLout), score.sc (for making chi-sq)+ scoreweights (ignore)
+       
+  
         #Run LayerLinesToImage
         #*********************
 

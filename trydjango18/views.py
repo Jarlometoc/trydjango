@@ -71,8 +71,14 @@ def resetLoad(username):
 #sound for debugging
 def Sound(i):  #beep number as argument
     while i>0:
-        import winsound
-        Freq = 2000 # Set Frequency To 2500 Hertz
-        Dur = 100 # Set Duration To 1000 ms == 1 second
-        winsound.Beep(Freq,Dur)
+        import os
+        a=0.1  #duration
+        b=2000  #freq
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % ( a, b))
+        
+        #for windows
+        #import winsound
+        #Freq = 2000 # Set Frequency To 2500 Hertz
+        #Dur = 100 # Set Duration To 1000 ms == 1 second
+        #winsound.Beep(Freq,Dur)
         i -= 1

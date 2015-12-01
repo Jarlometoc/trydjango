@@ -1,20 +1,17 @@
-Files and Parameters used for FAT Run Number 16
+Files and Parameters used for FAT Run Number 11
 User: stephen
-Date: 2015-11-26 10:54:22.700852+00:00
-jobname:  new 
+Date: 2015-11-30 12:43:51.091731+00:00
 
 
 Files:
-	PDB: 1QL1_monomer_RkSLbKS_Erl2v8z_YUco1Oz.pdb
-	Optional exp. layerlines: layer_lines_experimental_ip70YBw_8Dg0Q8o.dat
+	PDB: 1QL1_monomer_0BDEijH.pdb
+	Optional exp. layerlines: none chosen
 
 
 Parameters:
-	Bfactor: 22.0
-	Chi-square: 0.33
 	Rise: 2.9
 	Turns: 5.0
 	Handedness: R
-	Resolution (L): 0.0833333333
-	Resolution (H): 0.3333333333
 	Units: 27.0
+	Resolution (H): 0.3333333333
+	Resolution (L): 0.0833333333

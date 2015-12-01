@@ -1,0 +1,1 @@
+{"turns": 5, "Optional_exp_layerlines": "none chosen", "handedness": "R", "resolution (H)": 0.3333333333, "units": 27, "resolution (L)": 0.0833333333, "PDB": "1QL1_monomer.pdb", "rise": 2.9}
