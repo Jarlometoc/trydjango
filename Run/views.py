@@ -14,6 +14,7 @@ from static_in_pro.media_root.Rosetta_programs.make_helix_denovo import Helixer
 from static_in_pro.media_root.Rosetta_programs.syn_grid import makeDefExp
 from static_in_pro.media_root.Rosetta_programs.layerLinesToImage import LLTI
 from trydjango18.views import removePath
+import datetime
 
 #Main function
 #*************
@@ -32,13 +33,6 @@ def Testing(request):
         #check here if no PDB
         #if ...
 
-        #calc run number for tagging Rosetta output
-        try:
-            query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
-            Qobject6 = dbResults.objects.raw(query)[0]
-            runNum=Qobject6.id
-        except:
-            runNum=1
         
         #SQL to make query objects for each table
         #****************************************
@@ -66,7 +60,7 @@ def Testing(request):
         if Qobject.timestamp > Qobject2.timestamp:
             chosenPDB = fetch_pdb(Qobject)
         else:
-            chosenPDB = Qobject2.PDBup
+            chosenPDB = 'static_in_pro/media_root/' + str(Qobject2.PDBup)
 
 
         #make grid.dat
@@ -79,17 +73,19 @@ def Testing(request):
         #Make FlagsFile using the query objects
         #**************************************
         #place into variables
+        #overwrite for reruns
+        overwrite = '-out:overwrite'
         #db path for rosetta, otherwise its default, somewhere on server
         db = '-database /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/database'
         #add sdef from helix_denovo output
-        sdef = '-symmetry:symmetry_definition ' + PathMaker(Qobject.username, 'helix_denovo.sdef')
+        sdef = '-symmetry:symmetry_definition ' + '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'helix_denovo.sdef')
         #needed for some reason
         extra = '-symmetry:initialize_rigid_body_dofs'      
         #the chosen PDB, based on most recent timestamp
-        PDB = '-in:file:s '+ str(chosenPDB)   
+        PDB = '-in:file:s '+ '/home/stephen/Project/trydjango/' + str(chosenPDB)   
         #if experimental is 'none chosen', grid.dat needs to be used in its place
         if 'none chosen' in str(Qobject3.EXPupload):
-            EXP = '-fiber_diffraction:layer_lines '+ PathMaker(Qobject.username, 'grid.dat')
+            EXP = '-fiber_diffraction:layer_lines '+ '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'grid.dat')
         else:
             EXP = '-fiber_diffraction:layer_lines '+ str(Qobject3.EXPupload)
         #generic inputs
@@ -112,13 +108,15 @@ def Testing(request):
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4B.gridPhi)    #Grid size phi, change if higher accuracy is needed
         #output for Rosetta_programs
         #sil = '-out:pdb ' #for silent output
-        fibPDBout = '-out:output ' #+ PathMaker(Qobject.username, 'fibril_run' + str(tagOutput(request)) + '.pdb')
-        LLout = '-fiber_diffraction:output_fiber_spectra ' + PathMaker(Qobject.username, 'intensity.txt')   #to make LLpic, stored in user's folder'
-        Score = '-out:file:scorefile ' + PathMaker(Qobject.username, 'score.sc')
-        scoreWeights = '-score:weights static_in_pro/media_root/Storage/Rosetta_files/fiberdiff.txt'  #unused output, ignore
-        prefix = '-out:prefix ' + 'RUN' + str(runNum)
+        fibPDBout = '-out:output ' 
+        outputpath = '-out:path:pdb ' + PathMaker(Qobject.username, '')
+        LLout = '-fiber_diffraction:output_fiber_spectra' #+ PathMaker(Qobject.username, 'Intensity.txt')   #to make LLpic, stored in user's folder'
+        Score = '-out:file:scorefile ' + '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'score.sc')
+        scoreWeights = '-score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt'  #file is only “fiberdiffraction 1”
+        prefix = '-out:prefix ' + 'RUN' + str(tagOutput(request)) + '_'
         #make a list of the above variables
         ParameterList = [
+                         overwrite,
                          db,
                          sdef,
                          extra,
@@ -143,6 +141,7 @@ def Testing(request):
                          LLout,
                          Score,
                          prefix,
+                         outputpath,
                          scoreWeights]
 
         #make the Flags file, tagged with username, placed in user's folder
@@ -162,7 +161,7 @@ def Testing(request):
         virtualsPath = str(PathMaker(Qobject.username, 'virtuals.pdb'))
         #for Rosetta
         fibrilPDBPath = str(PathMaker(Qobject.username, 'fibril_run' + str(tagOutput(request)) + '.pdb')) #note: need to save this file for future load requests
-        intensityPath = str(PathMaker(Qobject.username, 'intensity.txt'))
+        intensityPath = str(PathMaker3(Qobject.username, 'Intensity.txt'))
         scorePath = str(PathMaker(Qobject.username, 'score.sc'))
         #for layerlinestoimage
         LLpicPath = str(PathMaker(Qobject.username, 'layerlines_run' + str(tagOutput(request)) + '.png')) #note: need to save this file for future load requests
@@ -190,7 +189,7 @@ def Testing(request):
         #inputs: see Flagfile
         program = '/home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_programs/score.static.linuxgccrelease'
         addflag = '@' + '/home/stephen/Project/trydjango/' + str(Qobject5.FlagFile) #need to add prefix path, since not django       
-        together = program + '  ' + addflag
+        together = program + ' ' + addflag
         Path2 = PathMaker(Qobject.username, 'cmd')
         FHout2 = open(Path2, 'w')
         FHout2.write("%s\n" % together)
@@ -198,6 +197,9 @@ def Testing(request):
         os.system('chmod 775 ' + Path2)
         os.system(Path2)
         #outputs: fibril.pdb, intensity.txt(LLout), score.sc (for making chi-sq)+ scoreweights (ignore)
+       
+        #move intensity.txt from Project/tryjango to user dir
+        moveInten(request)
        
   
         #Run LayerLinesToImage
@@ -302,4 +304,19 @@ def tagOutput(request):
         run = '1'  #if first run
     return run
 
+ #Temp fix for Intensity.txt landing in Project/trydjango/
+def moveInten(request):
+    try:
+        templocale = '/home/stephen/Project/trydjango/Intensity.txt'
+        genericpath = '/home/stephen/Project/trydjango/'
+        userdir = PathMaker(request.user.username, '')
+        fullpath = 'mv ' + templocale + ' ' + genericpath + userdir
+        os.system(fullpath)
+    except:
+        pass
 
+#Takes username and file, returns a path to user's Storage file (by month)
+def PathMaker3(name, filename):
+    TodaysDate = datetime.date.today()
+    Month = str(TodaysDate.month)
+    return '/'.join(['Storage', name, Month, filename])  #need 'static_in_pro/media_root'        

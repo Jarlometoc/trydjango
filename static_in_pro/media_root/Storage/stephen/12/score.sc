@@ -1,0 +1,11 @@
+SCORE:     score    fiberdiffraction    irms description
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
+SCORE:     3.342               3.342   0.000   empty_tag
