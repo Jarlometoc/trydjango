@@ -8,12 +8,11 @@ from Inputs.models import dbPDBdown, dbPDBup, dbEXPupload, dbPara, dbPara2
 from Results.models import dbResults
 from .models import dbFlag
 import os
-from trydjango18.views import PathMaker
+from trydjango18.views import PathMaker, removePath
 from Results.views import getRunDict, getLoadDict
 from static_in_pro.media_root.Rosetta_programs.make_helix_denovo import Helixer
 from static_in_pro.media_root.Rosetta_programs.syn_grid import makeDefExp
 from static_in_pro.media_root.Rosetta_programs.layerLinesToImage import LLTI
-from trydjango18.views import removePath
 import datetime
 
 #Main function
@@ -27,13 +26,12 @@ def Testing(request):
     #include ToBeRun dictionary from inputs
     ToBeRunDict = getRunDict(request.user.username)
 
-
-    if request.method == 'POST':   #if Run is pressed....
+    #if Run is pressed....
+    if request.method == 'POST':   
 
         #check here if no PDB
         #if ...
 
-        
         #SQL to make query objects for each table
         #****************************************
         #download
@@ -62,17 +60,14 @@ def Testing(request):
         else:
             chosenPDB = 'static_in_pro/media_root/' + str(Qobject2.PDBup)
 
-
         #make grid.dat
         #*************
         #default expLL: Need Hcutoff and Lcutoff (as floating numbers)
         #output is grid.dat, which is used to for making EXP in flag file
         makeDefExp(Qobject.username, float(Qobject4.rescutH), float(Qobject4.rescutL))
 
-
         #Make FlagsFile using the query objects
         #**************************************
-        #place into variables
         #overwrite for reruns
         overwrite = '-out:overwrite'
         #db path for rosetta, otherwise its default, somewhere on server
@@ -85,17 +80,16 @@ def Testing(request):
         PDB = '-in:file:s '+ '/home/stephen/Project/trydjango/' + str(chosenPDB)   
         #if experimental is 'none chosen', grid.dat needs to be used in its place
         if 'none chosen' in str(Qobject3.EXPupload):
-            EXP = '-fiber_diffraction:layer_lines '+ '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'grid.dat')
+            EXP = '-fiber_diffraction:layer_lines ' + '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'grid.dat')
         else:
-            EXP = '-fiber_diffraction:layer_lines '+ str(Qobject3.EXPupload)
+            EXP = '-fiber_diffraction:layer_lines ' + 'static_in_pro/media_root/' + str(Qobject3.EXPupload)
         #generic inputs
         Units = '-fiber_diffraction:a '+ str(Qobject4.units)     #number of units
         Turns = '-fiber_diffraction:b '+ str(Qobject4.turns)    #number of turns
         Rise = '-fiber_diffraction:p '+ str(Qobject4.rise)     #If specified, subunit rise is taken from input, otherwise is calculated by the program
         Lcutoff = '-fiber_diffraction:resolution_cutoff_low '+ str(Qobject4.rescutL)  #Resolution cutoff 12�
         Hcutoff = '-fiber_diffraction:resolution_cutoff_high '+ str(Qobject4.rescutH)  #Resolution cutoff 3�
-       
-       #Additional Parameters
+        #Additional Parameters
         Rfac = '-fiber_diffraction:rfactor_refinement '+ str(Qobject4B.rfactor)    #If set R factor instead of chi2 is used in scoring and derivatives calculations
         AtomicBF = '-fiber_diffraction::b_factor '+ str(Qobject4B.bfactor)    #Atomic B-factor
         Solv = '-fiber_diffraction::b_factor_solv '+ str(Qobject4B.bfactorSolv)   #temperature factor that accounts for the disordered solvent
@@ -107,13 +101,14 @@ def Testing(request):
         GridZ = '-fiber_diffraction:grid_z '+ str(Qobject4B.gridZ)     #Grid size z, should be bigger than molecule span in z direction
         GridPhi = '-fiber_diffraction:grid_phi '+ str(Qobject4B.gridPhi)    #Grid size phi, change if higher accuracy is needed
         #output for Rosetta_programs
-        #sil = '-out:pdb ' #for silent output
         fibPDBout = '-out:output ' 
-        outputpath = '-out:path:pdb ' + PathMaker(Qobject.username, '')
+        outputpath = '-out:path:pdb ' + PathMaker(Qobject.username, '')  #Rosetta decides name of fibrilPDB, we can only prefix it
+        prefix = '-out:prefix ' + 'RUN' + str(tagOutput(request)) + '_'
+        suffix = '-out:suffix '
         LLout = '-fiber_diffraction:output_fiber_spectra' #+ PathMaker(Qobject.username, 'Intensity.txt')   #to make LLpic, stored in user's folder'
         Score = '-out:file:scorefile ' + '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'score.sc')
-        scoreWeights = '-score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt'  #file is only “fiberdiffraction 1”
-        prefix = '-out:prefix ' + 'RUN' + str(tagOutput(request)) + '_'
+        scoreWeights = '-score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt'  #text file is only “fiberdiffraction 1”
+               
         #make a list of the above variables
         ParameterList = [
                          overwrite,
@@ -141,6 +136,7 @@ def Testing(request):
                          LLout,
                          Score,
                          prefix,
+                         suffix,
                          outputpath,
                          scoreWeights]
 
@@ -159,18 +155,16 @@ def Testing(request):
         #Paths needed for make_helix_denovo
         denovoPath = str(PathMaker(Qobject.username, 'helix_denovo.sdef'))
         virtualsPath = str(PathMaker(Qobject.username, 'virtuals.pdb'))
-        #for Rosetta
-        fibrilPDBPath = str(PathMaker(Qobject.username, 'fibril_run' + str(tagOutput(request)) + '.pdb')) #note: need to save this file for future load requests
-        intensityPath = str(PathMaker3(Qobject.username, 'Intensity.txt'))
+        #for Rosetta     
+        fibrilPDBPath = str(PathMaker(Qobject.username, fibRename(request, chosenPDB))) #Rosetta outputs odd name, so need function to match it for db
+        intensityPath = str(PathMaker3(Qobject.username, 'Intensity.txt')) #need special path correction; see PathMaker3
         scorePath = str(PathMaker(Qobject.username, 'score.sc'))
         #for layerlinestoimage
         LLpicPath = str(PathMaker(Qobject.username, 'layerlines_run' + str(tagOutput(request)) + '.png')) #note: need to save this file for future load requests
 
-
         #Run make_helix_denovo:
         #*********************
         #input: units/rise/turns/N=40, plus path to .sdef output, path to virtualPDB
-        
         helixer = Helixer(float(Qobject4.rise), int(40), int(Qobject4.turns), int(Qobject4.units), denovoPath, virtualsPath)
         #Executing pipeline
         helixer.execute()
@@ -179,7 +173,6 @@ def Testing(request):
         #output of helix_denovo.sdef 'symmetry definition file'
         #output of virtuals.pdb: virtual_residues_file also made each run: for diagnostics
 
-        
         #run Rosetta
         #***********
         #query dbFlag and make an object containing everything
@@ -201,24 +194,18 @@ def Testing(request):
         #move intensity.txt from Project/tryjango to user dir
         moveInten(request)
        
-  
         #Run LayerLinesToImage
         #*********************
-
         #output: layerlines.png stored in LLpic attribute
         output = PathMaker(Qobject.username, 'layerlines_run' + str(tagOutput(request)) + '.png')
         experimental = str(Qobject3.EXPupload)
-        #try:
         layerlines = LLTI(intensityPath, experimental, output)
         layerlines.convert_to_image()
 
-        #except:  
-          #  Sound(3)
-
         #Derive Chisq
+        #************
         #note! if no expLL (just grid.dat) , then score should be empty and no chisq made!!!!!
         Chisq=findChisq(scorePath, Qobject.username)   #parses Score file, which was produced by Rosetta_programs
-
 
         #Save Results
         #************
@@ -271,7 +258,6 @@ def fetch_pdb(Qobject):
     Fout.close()
     return Path
 
-
 #convert Score file to chi-square value
 def findChisq(Path, username):
     FH = open(Path, 'r')
@@ -283,7 +269,7 @@ def findChisq(Path, username):
             words = line.split()
             i=0
             for word in words:
-                if word == 'fiberdiffraction':
+                if word == 'fiberdiffraction': #chi-sq should be just below this string
                     index = i
                 i=i+1
         else:
@@ -293,8 +279,8 @@ def findChisq(Path, username):
             return Chisq
     FH.close()
 
-
-#need to tag output files of Rosetta and LLtoImage; this function makes the approp run number
+    
+#tag output files of Rosetta and LLtoImage; this function makes the approp run number
 def tagOutput(request):
     try:
         query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
@@ -304,7 +290,7 @@ def tagOutput(request):
         run = '1'  #if first run
     return run
 
- #Temp fix for Intensity.txt landing in Project/trydjango/
+#Temp fix for Intensity.txt landing in Project/trydjango/
 def moveInten(request):
     try:
         templocale = '/home/stephen/Project/trydjango/Intensity.txt'
@@ -315,8 +301,26 @@ def moveInten(request):
     except:
         pass
 
-#Takes username and file, returns a path to user's Storage file (by month)
+#need to mod intensity.txt paths- got double 'static_in_pro/media_root' with PathMaker
 def PathMaker3(name, filename):
     TodaysDate = datetime.date.today()
     Month = str(TodaysDate.month)
-    return '/'.join(['Storage', name, Month, filename])  #need 'static_in_pro/media_root'        
+    return '/'.join(['Storage', name, Month, filename])  #remove 'static_in_pro/media_root'   
+
+
+#rename fibrillarPDB output to what Rosetta outputs
+def fibRename(request, chosenPDB):
+    #get run number
+    runnum=tagOutput(request)
+    #get chosenPDB name
+    name = removePath(chosenPDB)
+    name = name[:-4]
+    #add Rosettas silly suffix
+    suffix = '_0001.pdb'
+    PathtofibrilPDB = 'RUN' + runnum + '_' + name + suffix
+    return PathtofibrilPDB
+    
+    
+    
+
+    
