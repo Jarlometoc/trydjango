@@ -1,1 +1,0 @@
-{"Turns": "5.0", "Resolution (H)": "0.3333333333", "Resolution (L)": "0.0833333333", "Optional_exp_layerlines": "none chosen", "PDB": "1QL1_monomer_ZgwFJcF.pdb", "Run date": "2015-12-01 14:11:50.536981+00:00", "Rise": "2.9", "Handedness": "R", "Units": "27.0", "ID": "36"}
