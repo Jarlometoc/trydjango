@@ -153,7 +153,7 @@ def importPara2(request):
     rerun = getLoadDict(request.user.username)
 
     if request.method == 'GET':
-        Parameters = AddParaForm(initial={'username': request.user.username, 'rfactor':'False', 'bfactor':20.0, 'bfactorSolv':400, 'bfactorSolvK':0.4, 'qfhtK1':2.0, 'qfhtK2':2.2, 'scscaling':0.92, 'gridR':256, 'gridZ':128, 'gridPhi':128})
+        Parameters = AddParaForm(initial={'username': request.user.username, 'rfactor':'False', 'bfactor':20.0, 'bfactorSolv':400, 'bfactorSolvK':0.4, 'qfhtK1':2.0, 'qfhtK2':2.2, 'scscaling':0.92, 'gridR':256, 'gridZ':128, 'gridPhi':128,'R_step':0.001, 'layer_lines':20})
     else:
         Parameters = AddParaForm(request.POST)
         if Parameters.is_valid():
@@ -167,11 +167,12 @@ def importPara2(request):
                         scscaling = request.POST.get('scscaling'),
                         gridR =request.POST.get('gridR'),
                         gridZ= request.POST.get('gridZ'),
-                        gridPhi = request.POST.get('gridPhi')
-                        )
+                        gridPhi = request.POST.get('gridPhi'),
+                        R_step= request.POST.get('R_step'),
+                        layer_lines = request.POST.get('layer_lines'))
             entry.save()
         else:
-           Parameters = AddParaForm(initial={'username': request.user.username, 'rfactor':'False', 'bfactor':20.0, 'bfactorSolv':400, 'bfactorSolvK':0.4, 'qfhtK1':2.0, 'qfhtK2':2.2, 'scscaling':0.92, 'gridR':256, 'gridZ':128, 'gridPhi':128})
+           Parameters = AddParaForm(initial={'username': request.user.username, 'rfactor':'False', 'bfactor':20.0, 'bfactorSolv':400, 'bfactorSolvK':0.4, 'qfhtK1':2.0, 'qfhtK2':2.2, 'scscaling':0.92, 'gridR':256, 'gridZ':128, 'gridPhi':128, 'R_step':0.001, 'layer_lines':20})
 
     #update newrundict.txt (to-be-run-parameters) via the toberun function
     query = 'SELECT * FROM Inputs_dbpara2 WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
@@ -200,7 +201,8 @@ def Clear(request):
         defPara = dbPara(username=request.user.username, jobname=' ', turns=5, units=27, rise=2.9, rescutL=0.0833333333, rescutH=0.3333333333, LorR='R')
         defPara.save()
         defPara2 = dbPara2(username=request.user.username, bfactor=20.0, bfactorSolv=400, bfactorSolvK=0.4, gridPhi=128,
-                           gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92)
+                           gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92, R_step=0.001,
+                           layer_lines=20)
         defPara2.save()
 
         #now make a new newrundict.txt with default values
@@ -324,6 +326,17 @@ def toberun(object):
         key = 'gridPhi'
         value= str(object.gridPhi)
         theDict[key]=value
+    if hasattr(object, 'R_step') and str(object.R_step) != '0.001':
+        key = 'R_step'
+        value= str(object.R_step)
+        theDict[key]=value
+    if hasattr(object, 'layer_lines') and str(object.layer_lines) != '20':
+        key = 'layer_lines'
+        value= str(object.layer_lines)
+        theDict[key]=value
+
+
+
     #save the dict to the file and close
     fout = open(thefile, 'w')
     json.dump(theDict,fout)

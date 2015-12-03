@@ -23,9 +23,11 @@ class dbResults(models.Model):
     qfhtK1 = models.FloatField(default=2.0)
     qfhtK2 = models.FloatField(default=2.2)
     scscaling = models.FloatField(default=0.92)
-    gridR = models.FloatField(default=256)
-    gridZ= models.FloatField(default=128)
-    gridPhi = models.FloatField(default=128)
+    gridR = models.IntegerField(default=256)
+    gridZ= models.IntegerField(default=128)
+    gridPhi = models.IntegerField(default=128)
+    R_step = models.FloatField(default=0.001)
+    layer_lines = models.IntegerField(default=20)
     fibrilPDB = models.CharField(max_length=100, default='empty')
     LLoutputPic = models.CharField(max_length=100, default='Storage/bunny.jpg')
     chisq = models.FloatField(default=0)
@@ -53,6 +55,8 @@ class dbResults(models.Model):
                self.gridR, \
                self.gridZ, \
                self.gridPhi, \
+               self.R_step, \
+               self.layer_lines, \
                self.fibrilPDB, \
                self.LLoutputPic,\
                self.chisq

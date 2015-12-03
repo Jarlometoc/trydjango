@@ -64,7 +64,7 @@ def Testing(request):
         #*************
         #default expLL: Need Hcutoff and Lcutoff (as floating numbers)
         #output is grid.dat, which is used to for making EXP in flag file
-        makeDefExp(Qobject.username, float(Qobject4.rescutH), float(Qobject4.rescutL))
+        makeDefExp(Qobject.username, float(Qobject4.rescutH), float(Qobject4.rescutL), int(Qobject4B.layer_lines), float(Qobject4B.R_step))
 
         #Make FlagsFile using the query objects
         #**************************************
@@ -104,7 +104,6 @@ def Testing(request):
         fibPDBout = '-out:output ' 
         outputpath = '-out:path:pdb ' + PathMaker(Qobject.username, '')  #Rosetta decides name of fibrilPDB, we can only prefix it
         prefix = '-out:prefix ' + 'RUN' + str(tagOutput(request)) + '_'
-        suffix = '-out:suffix '
         LLout = '-fiber_diffraction:output_fiber_spectra' #+ PathMaker(Qobject.username, 'Intensity.txt')   #to make LLpic, stored in user's folder'
         Score = '-out:file:scorefile ' + '/home/stephen/Project/trydjango/' + PathMaker(Qobject.username, 'score.sc')
         scoreWeights = '-score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt'  #text file is only “fiberdiffraction 1”
@@ -136,7 +135,6 @@ def Testing(request):
                          LLout,
                          Score,
                          prefix,
-                         suffix,
                          outputpath,
                          scoreWeights]
 
@@ -230,6 +228,8 @@ def Testing(request):
                                gridR = Qobject4B.gridR,
                                gridZ= Qobject4B.gridZ,
                                gridPhi = Qobject4B.gridPhi,
+                               R_step= Qobject4B.R_step,
+                               layer_lines = Qobject4B.layer_lines,
                                fibrilPDB = fibrilPDBPath,
                                LLoutputPic=LLpicPath,  #derived from LLtoImage
                                chisq = Chisq)  #derived from Score (see chisq function)

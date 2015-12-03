@@ -68,10 +68,14 @@ class dbPara2(models.Model):
     gridR = models.IntegerField(default=256)
     gridZ= models.IntegerField(default=128)
     gridPhi = models.IntegerField(default=128)
+    R_step = models.FloatField(default=0.001)
+    layer_lines = models.IntegerField(default=20)
+
+
 
     def __str__(self):
         return self.timestamp, self.username,  \
      self.rfactor, self.bfactor, self.bfactorSolv, self.bfactorSolvK, self.qfhtK1, \
-     self.qfhtK2, self.scscaling, self.gridR, self.gridZ, self.gridPhi
+     self.qfhtK2, self.scscaling, self.gridR, self.gridZ, self.gridPhi, self.R_step, self.layer_lines
 
 

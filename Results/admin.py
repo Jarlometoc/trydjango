@@ -25,6 +25,8 @@ class ResultsAdmin(admin.ModelAdmin):
                     'gridR',
                     'gridZ',
                     'gridPhi',
+                    'R_step',
+                    'layer_lines',
                     'fibrilPDB',
                     'LLoutputPic',
                     'chisq']

@@ -44,6 +44,6 @@ class AddParaForm(ModelForm):
         model = dbPara2
         widgets = {'username': forms.HiddenInput()}
         fields =['username', 'rfactor', 'bfactor', 'bfactorSolv', 'bfactorSolvK', 'qfhtK1',
-                    'qfhtK2', 'scscaling', 'gridR', 'gridZ', 'gridPhi']
+                    'qfhtK2', 'scscaling', 'gridR', 'gridZ', 'gridPhi', 'R_step', 'layer_lines']
 
 

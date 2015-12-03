@@ -234,6 +234,10 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
         used['gridZ'] =  str(Qobject6.gridZ)
     if Qobject6.gridPhi != 128:
         used['gridPhi'] =  str(Qobject6.gridPhi)
+    if Qobject6.R_step != 0.001:
+        used['R_step'] =  str(Qobject6.R_step)
+    if Qobject6.layer_lines != 20:
+        used['layer_lines'] =  str(Qobject6.layer_lines)
     if Qobject6.experimentalData != 'none chosen':
         used['Chi-square'] =  str(Qobject6.chisq)
 
