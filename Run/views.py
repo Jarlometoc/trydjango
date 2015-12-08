@@ -155,7 +155,7 @@ def Testing(request):
         virtualsPath = str(PathMaker(Qobject.username, 'virtuals.pdb'))
         #for Rosetta     
         fibrilPDBPath = str(PathMaker(Qobject.username, fibRename(request, chosenPDB))) #Rosetta outputs odd name, so need function to match it for db
-        intensityPath = str(PathMaker3(Qobject.username, 'Intensity.txt')) #need special path correction; see PathMaker3
+        intensityPath = str(PathMaker3(Qobject.username, 'Intensity_' + str(tagOutput(request)) + '.txt')) #need special path correction; see PathMaker3
         scorePath = str(PathMaker(Qobject.username, 'score.sc'))
         #for layerlinestoimage
         LLpicPath = str(PathMaker(Qobject.username, 'layerlines_run' + str(tagOutput(request)) + '.png')) #note: need to save this file for future load requests
@@ -189,7 +189,7 @@ def Testing(request):
         os.system(Path2)
         #outputs: fibril.pdb, intensity.txt(LLout), score.sc (for making chi-sq)+ scoreweights (ignore)
        
-        #move intensity.txt from Project/tryjango to user dir
+        #move intensity.txt from Project/tryjango to user dir and rename (to intensityPath)
         moveInten(request)
        
         #Run LayerLinesToImage
@@ -197,8 +197,8 @@ def Testing(request):
         #output: layerlines.png stored in LLpic attribute
         output = PathMaker(Qobject.username, 'layerlines_run' + str(tagOutput(request)) + '.png')
         experimental = str(Qobject3.EXPupload)
-        layerlines = LLTI(intensityPath, experimental, output)
-        layerlines.convert_to_image()
+        layerlines = LLTI(intensityPath, experimental, output, str(tagOutput(request)))
+        layerlines.convert_to_image(str(tagOutput(request))) #need to include RUNX here as well...
 
         #Derive Chisq
         #************
@@ -231,6 +231,7 @@ def Testing(request):
                                R_step= Qobject4B.R_step,
                                layer_lines = Qobject4B.layer_lines,
                                fibrilPDB = fibrilPDBPath,
+                               intensity = intensityPath,
                                LLoutputPic=LLpicPath,  #derived from LLtoImage
                                chisq = Chisq)  #derived from Score (see chisq function)
         addResults.save()
@@ -295,7 +296,7 @@ def moveInten(request):
     try:
         templocale = '/home/stephen/Project/trydjango/Intensity.txt'
         genericpath = '/home/stephen/Project/trydjango/'
-        userdir = PathMaker(request.user.username, '')
+        userdir = PathMaker(request.user.username, 'Intensity_' + str(tagOutput(request)) + '.txt')  #rename generic name to run name
         fullpath = 'mv ' + templocale + ' ' + genericpath + userdir
         os.system(fullpath)
     except:

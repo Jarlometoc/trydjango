@@ -3,16 +3,41 @@
  {% load static %}
 
 <!-- function to show blanks, users PDB+.dat, or PDB and userLL -->
-<table border="1" cellpadding="10"><tbody><tr>
+<div class="row">
+	<div  class='col-lg-6 pull-left'>
+		<h3>Jmol Display </h3>
+	</div>
+	<div  class='col-lg-6 pull-left'>
+		<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cool Picture </h3>
+	</div>	
+</div>
+
+
+</div>
+<table border="1" cellpadding="5"><tbody><tr>
     <!-- loop through loaded data dict -->
     {% for key, value in resultsHTML.items %}{% csrf_token %}
         <!-- user has PDB: display, otherwise blank -->
         {% if key == 'PDB' and value != 'none chosen' %}
             <td>
-                <img src="{% static 'images/Userjmol.png' %}" alt = "user jmol image" style="width:650px;height:600px;">
+                <img src="{% static 'images/Userjmol.png' %}" alt = "user jmol image" style="width:600px;height:600px;">
             </td>
             <td>
-                <img src="{% static 'images/UserLL.png' %}" alt = "user LL image" style="width:650px;height:600px;">
+                <img src="{% static 'images/bunny.jpg' %}" alt = "newfig" style="width:600px;height:600px;">
+            </td>
+        {% endif %}
+    {% endfor %}
+</tr></tbody></table>
+
+<br>
+<h3>Layerlines</h3>
+<table border="1" cellpadding="5"><tbody><tr>
+    <!-- loop through loaded data dict -->
+    {% for key, value in resultsHTML.items %}{% csrf_token %}
+        <!-- user has PDB: display, otherwise blank -->
+        {% if key == 'PDB' and value != 'none chosen' %}
+            <td>
+                <img src="{% static 'images/UserLL.png' %}" alt = "user LL image" style="width:1200px;height:2000px;">
             </td>
         {% endif %}
     {% endfor %}

@@ -197,6 +197,9 @@ Also 'includes' jmol functionality from jmol.html-->
        {% if key == 'PDB' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
+	   {% if key == 'Intensity.txt' %}
+           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+       {%  endif %}
        {% if key == 'Optional_exp_layerlines' %}
            <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
        {%  endif %}
@@ -211,8 +214,10 @@ Also 'includes' jmol functionality from jmol.html-->
                        {% if key != 'forJmol' %}
                              {% if key != 'jobname' %}
                                  {% if key != 'forLLpic' %}
+									 {% if key != 'Intensity.txt' %}
                 <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-                                 {% endif %}
+									{% endif %}
+								 {% endif %}
                                 {% endif %}
                             {% endif %}
                            {% endif %}

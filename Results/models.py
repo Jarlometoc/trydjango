@@ -28,6 +28,7 @@ class dbResults(models.Model):
     gridPhi = models.IntegerField(default=128)
     R_step = models.FloatField(default=0.001)
     layer_lines = models.IntegerField(default=20)
+    intensity = models.CharField(max_length=100, default='empty')
     fibrilPDB = models.CharField(max_length=100, default='empty')
     LLoutputPic = models.CharField(max_length=100, default='Storage/bunny.jpg')
     chisq = models.FloatField(default=0)
@@ -57,6 +58,7 @@ class dbResults(models.Model):
                self.gridPhi, \
                self.R_step, \
                self.layer_lines, \
+               self.intensity, \
                self.fibrilPDB, \
                self.LLoutputPic,\
                self.chisq

@@ -158,10 +158,11 @@ def ParamUsedFile(Qobject6, used):
     FH.write("Files:\n")
     FH.write("\t" + 'PDB'  + ": "+ used['PDB']+"\n")
     FH.write("\t"+ 'Optional exp. layerlines' + ": " + used['Optional_exp_layerlines']+ "\n")
+    FH.write("\t"+ 'Intensity.txt' + ": " + used['Intensity.txt']+ "\n")
     FH.write("\n\n")
     FH.write("Parameters:\n")
     for key in used:
-        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines'):
+        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines', key == 'Intensity.txt'):
             next
         else:
             FH.write("\t"+ key + ": " + used[key])
@@ -208,6 +209,7 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
             'Run date':  str(Qobject6.timestamp),
             'PDB':  removePath(str(Qobject6.PDBused)),
             'Optional_exp_layerlines': removePath(str(Qobject6.experimentalData)),
+            'Intensity.txt' : removePath(str(Qobject6.intensity)),
             'Turns':  str(Qobject6.turns),
             'Units' : str(Qobject6.units),
             'Rise' : str(Qobject6.rise),

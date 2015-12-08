@@ -27,6 +27,7 @@ class ResultsAdmin(admin.ModelAdmin):
                     'gridPhi',
                     'R_step',
                     'layer_lines',
+                    'intensity',
                     'fibrilPDB',
                     'LLoutputPic',
                     'chisq']

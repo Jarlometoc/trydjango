@@ -1,0 +1,19 @@
+Files and Parameters used for FAT Run Number 88
+User: stephen
+Date: 2015-12-08 09:44:12.038916+00:00
+
+
+Files:
+	PDB: 1QL1_monomer_oJzvifg.pdb
+	Optional exp. layerlines: none chosen
+	Intensity.txt: Intensity_88.txt
+
+
+Parameters:
+	Rise: 2.9
+	Resolution (L): 0.0833333333
+	Resolution (H): 0.3333333333
+	Handedness: R
+	Turns: 5.0
+	Units: 27.0
+	Intensity.txt: Intensity_88.txt
