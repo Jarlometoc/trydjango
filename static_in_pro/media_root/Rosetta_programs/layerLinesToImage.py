@@ -76,17 +76,24 @@ class LLTI(object):
         
         lindex = 0 #Should be the same as layer line but better play safe
         count = 1 #stop x axis from printing, until bottom
-        for lline in self.ExpR.keys():
+        for lline in sorted(self.ExpR.keys(), reverse=True):
             #And will have add experimental stuff as well
             axrr[lindex].plot(self.ExpR[lline], self.ExpI[lline])
             axrr[lindex].plot(self.SimR[lline], self.SimI[lline])
             axrr[lindex].set_yticklabels([])
+            #yaxis labels for 
+            if count == 1:
+                countprint = "  1"
+                axrr[lindex].yaxis.set_label_position("right")
+                axrr[lindex].set_ylabel(countprint, rotation=0, fontsize=8 )
+            #only x ticks at bottom of plots
             if count < len(self.ExpR):
                 axrr[lindex].set_xticklabels([])
+                #axrr[lindex].set_ylabel(count, rotation=0, fontsize=6 )
             lindex+=1
             count = count + 1
             plt.tick_params(axis='both', which='major', labelsize=8)
-            #plt.tick_params(axis='both', which='minor', labelsize=6)
+            
         #plt.subplots_adjust(hspace=0.5)# Tweak spacing between subplots to prevent labels from overlapping
         plt.xlabel('Reciprocal (1/Å)')
         plt.ylabel("                                                                          Intensity")     

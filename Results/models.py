@@ -62,3 +62,13 @@ class dbResults(models.Model):
                self.fibrilPDB, \
                self.LLoutputPic,\
                self.chisq
+
+               
+#DB for loading older results
+class dbrerun(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    username = models.CharField(max_length=10)
+    runNum = models.IntegerField(default=1)
+    
+    def __str__(self):
+        return self.timestamp, self.username, self.runNum

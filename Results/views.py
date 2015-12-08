@@ -5,7 +5,7 @@
 #********
 from .forms import ReRunForm
 from django.shortcuts import render
-from Results.models import dbResults
+from Results.models import dbResults, dbrerun
 from trydjango18.views import PathMaker, removePath
 import json
 import shutil
@@ -56,7 +56,13 @@ def ReRun(request):
     else:
         rerunF = ReRunForm(request.POST)
         if rerunF.is_valid():
-            runNum = request.POST.get('runNum')   # or runNum = rerunF.cleaned_data['runNum']
+            #save to rerun db (so you can get correct loaded run for downloading/emailing)
+            entry=dbrerun(username = request.POST.get('username'),
+                         runNum = request.POST.get('runNum'))
+            entry.save() 
+            #load again to get results
+            runNum = request.POST.get('runNum')
+            # or runNum = rerunF.cleaned_data['runNum']
             # use the most-recent-run-number to pull up that row in the results db
             query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
                      str(runNum)
@@ -93,9 +99,14 @@ def EmailResults(request):
         query = 'SELECT * FROM auth_user WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
         Qobject8 = User.objects.raw(query)[0]  # db called User in Django, auth_user in SQL
         userEmail = str(Qobject8.email)
+        #get current run number
+        query2 = 'SELECT * FROM Results_dbrerun WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
+        Qobject9 = dbrerun.objects.raw(query2)[0]
+        runNum = str(Qobject9.runNum)
         # get user run info
-        query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
-        Qobject6 = dbResults.objects.raw(query2)[0]
+        query3 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
+                     str(runNum)
+        Qobject6 = dbResults.objects.raw(query3)[0]
         bodytext = 'Here are your requested results for Run Number ' + str(Qobject6.id) + ' carried out on ' + str(
             Qobject6.timestamp)
         emailResults = EmailMessage(subject='Results of FAT analysis',
@@ -127,9 +138,14 @@ def DownloadResults(request):
         import os, zipfile
         from django.http import HttpResponse
         from django.core.servers.basehttp import FileWrapper
-        # get most recent zip of results
-        query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
-        Qobject6 = dbResults.objects.raw(query)[0]
+        #get current run number
+        query = 'SELECT * FROM Results_dbrerun WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
+        Qobject8 = dbrerun.objects.raw(query)[0]
+        runNum = str(Qobject8.runNum)
+        # get user run info
+        query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
+                     str(runNum)
+        Qobject6 = dbResults.objects.raw(query2)[0]
         # make the zipfile
         file = ZipIt(request, Qobject6)
         # code for downloading a file
@@ -158,11 +174,11 @@ def ParamUsedFile(Qobject6, used):
     FH.write("Files:\n")
     FH.write("\t" + 'PDB'  + ": "+ used['PDB']+"\n")
     FH.write("\t"+ 'Optional exp. layerlines' + ": " + used['Optional_exp_layerlines']+ "\n")
-    FH.write("\t"+ 'Intensity.txt' + ": " + used['Intensity.txt']+ "\n")
+    FH.write("\t"+ 'Intensity file' + ": " + used['Intensity file']+ "\n")
     FH.write("\n\n")
     FH.write("Parameters:\n")
     for key in used:
-        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines', key == 'Intensity.txt'):
+        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines', key == 'Intensity file'):
             next
         else:
             FH.write("\t"+ key + ": " + used[key])
@@ -188,6 +204,7 @@ def ZipIt(request, Qobject6):
     # select table columns to send; fibril.pdb, LayerLines.jpg and parameters.txt
     fibfile = str(Qobject6.fibrilPDB)
     LLout = str(Qobject6.LLoutputPic)
+    inten = 'static_in_pro/media_root/' + str(Qobject6.intensity)
     parampath = PathMaker(request.user.username, 'parameters.txt')
     # give file a name and location in user's dir
     filename = 'results.zip'
@@ -198,6 +215,7 @@ def ZipIt(request, Qobject6):
     zipped = zipfile.ZipFile(Path, 'w')
     zipped.write(fibfile, basename(fibfile))
     zipped.write(LLout, basename(LLout))
+    zipped.write(inten, basename(inten))
     zipped.write(parampath, basename(parampath))
     zipped.close()
     return Path
@@ -209,7 +227,7 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
             'Run date':  str(Qobject6.timestamp),
             'PDB':  removePath(str(Qobject6.PDBused)),
             'Optional_exp_layerlines': removePath(str(Qobject6.experimentalData)),
-            'Intensity.txt' : removePath(str(Qobject6.intensity)),
+            'Intensity file' : removePath(str(Qobject6.intensity)),
             'Turns':  str(Qobject6.turns),
             'Units' : str(Qobject6.units),
             'Rise' : str(Qobject6.rise),

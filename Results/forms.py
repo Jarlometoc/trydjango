@@ -1,7 +1,11 @@
-from django import forms
+from django.forms import ModelForm
+from .models import dbrerun
+from django import forms   #for validation errors and hiddenfields
 
-#ReRun form (allows for user to request a specific run number: need a (form to accept data from the input box)
-#but no corresponding model (table in db)
+#ReRun form (allows for user to request a specific run number)
 
-class ReRunForm(forms.Form):
-    runNum = forms.CharField(max_length=4)
+class ReRunForm(ModelForm):
+    class Meta:
+        model = dbrerun
+        widgets = {'username': forms.HiddenInput()}
+        fields =['username', 'runNum']  
