@@ -1,1 +1,1 @@
-{"turns": 5, "handedness": "R", "units": 27, "Optional_exp_layerlines": "none chosen", "resolution (H)": 0.3333333333, "PDB": "1QL1_monomer_FAOVNaO.pdb", "rise": 2.9, "resolution (L)": 0.0833333333}
+{"units": 27, "resolution (H)": 0.3333333333, "PDB": "1ifp", "Optional_exp_layerlines": "none chosen", "resolution (L)": 0.0833333333, "handedness": "R", "rise": 2.9, "turns": 5}

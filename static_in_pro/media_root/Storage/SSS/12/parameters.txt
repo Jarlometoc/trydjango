@@ -1,0 +1,12 @@
+Files and Parameters used for FAT Run Number 17
+User: SSS
+Date: 2015-12-22 10:33:40.791657+00:00
+
+
+Files:
+	PDB: 1ql1.pdb
+	Optional exp. layerlines: layer_lines_experimental.dat
+	Intensity file: Intensity_17.txt
+
+
+Parameters:

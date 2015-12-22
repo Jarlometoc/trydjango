@@ -1,12 +1,19 @@
-Files and Parameters used for FAT Run Number 3
+Files and Parameters used for FAT Run Number 8
 User: stephen
-Date: 2015-12-08 14:04:31.627136+00:00
+Date: 2015-12-22 15:32:33.208322+00:00
 
 
 Files:
-	PDB: 1QL1_monomer_dL6S0lc.pdb
-	Optional exp. layerlines: layer_lines_experimental_9ycW5pf.dat
-	Intensity file: Intensity_3.txt
+	PDB: 1QL1_monomer_EMGtz8w.pdb
+	Optional exp. layerlines: layer_lines_experimental_2jZI7sT.dat
+	Intensity file: Intensity_8.txt
 
 
 Parameters:
+	Chi-square: 3.342
+	Resolution (H): 0.3333333333
+	Resolution (L): 0.0833333333
+	Units: 27.0
+	Rise: 2.9
+	Turns: 5.0
+	Handedness: R

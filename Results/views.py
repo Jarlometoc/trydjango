@@ -11,6 +11,7 @@ import json
 import shutil
 from trydjango18.views import Sound
 import urllib.request
+import os
 
 #Retrieve data from a run
 #*************************
@@ -21,7 +22,7 @@ def LoadRun(request):  # when Load is entered.....
     ToBeRunDict = getRunDict(request.user.username)
 
     #Make Results object for printing to main:  MOST RECENT ENTRY!
-    query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
+    query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY mostRes DESC LIMIT 1'
     Qobject6 = dbResults.objects.raw(query)[0]
     toreturn = UsedParam(Qobject6)
 
@@ -33,13 +34,15 @@ def LoadRun(request):  # when Load is entered.....
 
     #jmol display
     #************
-    #use fibrilPDB, returns LLoutputPic
-    try:
-        UseJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
-    except:
-        Sound(4)
+    #use fibrilPDB
+    #try:
+    runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
+    #except:
+       # pass
 
-
+    #make the zipfile
+    ZipIt(request, Qobject6)
+              
     #RENDER
     return render(request, 'main.html', {'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': toreturn})
 
@@ -64,19 +67,28 @@ def ReRun(request):
             runNum = request.POST.get('runNum')
             # or runNum = rerunF.cleaned_data['runNum']
             # use the most-recent-run-number to pull up that row in the results db
-            query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
+            query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND mostRes =' + \
                      str(runNum)
             Qobject6 = dbResults.objects.raw(query2)[0]
             toreturn = UsedParam(Qobject6)
 
             #move current layerlines.png to static for rendering
             source = str(Qobject6.LLoutputPic)
-            shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
             shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
+            shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
+           
 
-            #insert Jmol code from above
+            #jmol display
+            #************
+            #use fibrilPDB
+            try:
+                runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
+            except:
+                pass
 
-
+            #make the zipfile
+            ZipIt(request, Qobject6)
+                
             #RENDER
             return render(request, 'main.html', {'resultsHTML': toreturn, 'ToBeRunHTML' : ToBeRunDict})
         else:
@@ -100,32 +112,37 @@ def EmailResults(request):
         Qobject8 = User.objects.raw(query)[0]  # db called User in Django, auth_user in SQL
         userEmail = str(Qobject8.email)
         #get current run number
-        query2 = 'SELECT * FROM Results_dbrerun WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
-        Qobject9 = dbrerun.objects.raw(query2)[0]
-        runNum = str(Qobject9.runNum)
+        #query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY mostRes DESC LIMIT 1'
+       #Qobject6 = dbResults.objects.raw(query2)[0]
+        #runNum = str(Qobject9.runNum)
         # get user run info
-        query3 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
-                     str(runNum)
-        Qobject6 = dbResults.objects.raw(query3)[0]
-        bodytext = 'Here are your requested results for Run Number ' + str(Qobject6.id) + ' carried out on ' + str(
-            Qobject6.timestamp)
+        #query3 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
+                    # str(runNum)
+        #Qobject6 = dbResults.objects.raw(query3)[0]
+        bodytext = 'Here are your requested results' #for Run Number ' + str(Qobject6.mostRes) + ' carried out on ' + str(
+            #Qobject6.timestamp)
         emailResults = EmailMessage(subject='Results of FAT analysis',
                                     body=bodytext,
                                     from_email=settings.EMAIL_HOST_USER,
                                     to=[userEmail]
                                     )
+        
+        #path to zipfile
+        Path=PathMaker(request.user.username, 'results.zip')
+        
         #make the zipfile
-        Path = ZipIt(request, Qobject6)
+        #Path = ZipIt(request, Qobject6)
         # attach results.zip
         emailResults.attach_file(Path)  # attach the zip file
         emailResults.send()  # need to .send()
 
         #also include ToBeRun dictionary from inputs
-        ToBeRunDict = getRunDict(Qobject6.username)
+        ToBeRunDict = getRunDict(request.user.username)
 
         #get loaded Results data, if any, for the Testing Refresh, otherwise it will blank
         rerun = getLoadDict(request.user.username)
 
+        
         #RENDER
         return render(request, 'main.html',{'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': rerun})
 
@@ -139,15 +156,14 @@ def DownloadResults(request):
         from django.http import HttpResponse
         from django.core.servers.basehttp import FileWrapper
         #get current run number
-        query = 'SELECT * FROM Results_dbrerun WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
+        query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY mostRes DESC LIMIT 1'
         Qobject8 = dbrerun.objects.raw(query)[0]
-        runNum = str(Qobject8.runNum)
+        #runNum = str(Qobject8.mostRes)
         # get user run info
-        query2 = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" AND id =' + \
-                     str(runNum)
-        Qobject6 = dbResults.objects.raw(query2)[0]
+        #             str(runNum)
+       # Qobject6 = dbResults.objects.raw(query2)[0]
         # make the zipfile
-        file = ZipIt(request, Qobject6)
+        file = ZipIt(request, Qobject8)
         # code for downloading a file
         wrapper = FileWrapper(open(file, 'rb'))  # 'rb' is windows fix
         response = HttpResponse(wrapper, content_type='text/plain')
@@ -162,7 +178,7 @@ def DownloadResults(request):
 def ParamUsedFile(Qobject6, used):
     Path = PathMaker(Qobject6.username, 'parameters.txt')
     FH = open(Path, 'w')
-    FH.write('Files and Parameters used for FAT Run Number ' + str(Qobject6.id))
+    FH.write('Files and Parameters used for FAT Run Number ' + str(Qobject6.mostRes))
     FH.write("\n")
     FH.write('User' + ": " + str(Qobject6.username) + "\n")
     FH.write('Date' + ": " + used['Run date'] + "\n")
@@ -178,7 +194,7 @@ def ParamUsedFile(Qobject6, used):
     FH.write("\n\n")
     FH.write("Parameters:\n")
     for key in used:
-        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines', key == 'Intensity file'):
+        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file'):
             next
         else:
             FH.write("\t"+ key + ": " + used[key])
@@ -196,7 +212,7 @@ def ZipIt(request, Qobject6):
         os.remove(pathtoold)
     except OSError:
         pass
-    from Results.models import dbResults
+    #from Results.models import dbResults
     # Make Results object
     # query = 'SELECT * FROM Inputs_dbresults WHERE username = "'+request.user.username+'" ORDER BY id DESC LIMIT 1'
     # Qobject6 = dbResults.objects.raw(query)[0]
@@ -218,12 +234,12 @@ def ZipIt(request, Qobject6):
     zipped.write(inten, basename(inten))
     zipped.write(parampath, basename(parampath))
     zipped.close()
-    return Path
+    #return Path
 
 
 #Results for a given run:
 def UsedParam(Qobject6):  #inputed object containing the chosen run number
-    used = {'ID': str(Qobject6.id),
+    used = {'ID': str(Qobject6.mostRes),
             'Run date':  str(Qobject6.timestamp),
             'PDB':  removePath(str(Qobject6.PDBused)),
             'Optional_exp_layerlines': removePath(str(Qobject6.experimentalData)),
@@ -306,5 +322,7 @@ def getLoadDict(username):
     return DictLoadedResults
 
 #UseJmol takes fibrilPDB output from Rosetta, hands it to Jmol for display
-def UseJmol(fibrilPDB):
-    pass
+def runJmol(fibrilPDB):
+    path = './home/stephen/jmol-14.4.0_2015.12.02/jmol.sh ' + '/home/stephen/Project/trydjango' + str(fibrilPDB)
+    os.system(path)
+    

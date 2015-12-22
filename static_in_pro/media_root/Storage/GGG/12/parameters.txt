@@ -1,0 +1,18 @@
+Files and Parameters used for FAT Run Number 27
+User: GGG
+Date: 2015-12-22 13:12:10.564783+00:00
+
+
+Files:
+	PDB: 1ifp.pdb
+	Optional exp. layerlines: none chosen
+	Intensity file: Intensity_1.txt
+
+
+Parameters:
+	Units: 27.0
+	Turns: 5.0
+	Resolution (L): 0.0833333333
+	Handedness: R
+	Rise: 2.9
+	Resolution (H): 0.3333333333

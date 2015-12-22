@@ -5,6 +5,7 @@ from django.db import models
 
 #Results files table (from Rosetta_programs)
 class dbResults(models.Model):
+    mostRes = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     username = models.CharField(max_length=10)
     PDBused = models.CharField(max_length=100)
@@ -35,7 +36,8 @@ class dbResults(models.Model):
 
     #for class instances of the model
     def __str__(self):
-        return self.timestamp, \
+        return self.mostRes, \
+               self.timestamp, \
                self.username, \
                self.jobname, \
                self.PDBused, \

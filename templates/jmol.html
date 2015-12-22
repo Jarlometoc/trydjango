@@ -20,7 +20,11 @@
         <!-- user has PDB: display, otherwise blank -->
         {% if key == 'PDB' and value != 'none chosen' %}
             <td>
-                <img src="{% static 'images/Userjmol.png' %}" alt = "user jmol image" style="width:600px;height:600px;">
+                <script type="text/javascript">
+					jmolApplet = Jmol.getApplet("/home/stephen/Project/trydjango/static_in_pro/jsmol/js/jsmolApplet", Info)
+					Jmol.script(jmolApplet, 'load "{{ value }}"; anim mode palindrome 2 2; anim on; slab off; spin off; wireframe off; spacefill off; trace off; set ambient 40; set specpower 40; slab off; ribbons on; color structure');
+				</script> 
+					
             </td>
             <td>
                 <img src="{% static 'images/bunny.jpg' %}" alt = "newfig" style="width:600px;height:600px;">

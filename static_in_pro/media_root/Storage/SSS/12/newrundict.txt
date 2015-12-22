@@ -1,0 +1,1 @@
+{"resolution (H)": 0.3333333333, "rise": 2.9, "units": 27, "turns": 5, "handedness": "R", "PDB": "1QL1_fibril_evofRGd.pdb", "resolution (L)": 0.0833333333, "Optional_exp_layerlines": "none chosen"}

@@ -1,0 +1,19 @@
+Files and Parameters used for FAT Run Number 3
+User: TTT
+Date: 2015-12-22 15:31:17.205063+00:00
+
+
+Files:
+	PDB: 1ql1.pdb
+	Optional exp. layerlines: layer_lines_experimental.dat
+	Intensity file: Intensity_3.txt
+
+
+Parameters:
+	Rise: 2.9
+	Units: 27.0
+	Resolution (L): 0.0833333333
+	Resolution (H): 0.3333333333
+	Handedness: R
+	Chi-square: 2.996
+	Turns: 5.0

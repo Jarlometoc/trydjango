@@ -1,0 +1,1 @@
+{"ID": "17", "Units": "27.0", "Chi-square": "2.687", "Handedness": "R", "Run date": "2015-12-22 10:33:40.791657+00:00", "Optional_exp_layerlines": "layer_lines_experimental.dat", "Resolution (L)": "0.0833333333", "Turns": "5.0", "PDB": "1ql1.pdb", "Rise": "2.9", "Resolution (H)": "0.3333333333", "Intensity file": "Intensity_17.txt"}

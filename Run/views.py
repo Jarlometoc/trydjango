@@ -205,10 +205,15 @@ def Testing(request):
         #note! if no expLL (just grid.dat) , then score should be empty and no chisq made!!!!!
         Chisq=findChisq(scorePath, Qobject.username)   #parses Score file, which was produced by Rosetta_programs
 
+        
+        #add to most recent run
+        mostrecent = int(tagOutput(request))
+        
         #Save Results
         #************
         #load inputs and  results to dbResults
-        addResults = dbResults(username=Qobject.username,
+        addResults = dbResults(mostRes=mostrecent,  #Add to mostRec runcount
+                               username=Qobject.username,
                                PDBused=chosenPDB,
                                experimentalData= Qobject3.EXPupload,
                                jobname=Qobject4.jobname,
@@ -236,6 +241,8 @@ def Testing(request):
                                chisq = Chisq)  #derived from Score (see chisq function)
         addResults.save()
 
+    
+    
     #RENDER
     #toreturn= UsedParam(Qobject6)      #note! UsedParam also includes newrundict.txt results for 'to be run' files/para
     return render(request, 'main.html', {'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': rerun})
@@ -286,7 +293,7 @@ def tagOutput(request):
     try:
         query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY id DESC LIMIT 1'
         Qobject6 = dbResults.objects.raw(query)[0]
-        run = str(int(Qobject6.id)+1) #run id will be one more than last run id
+        run = str(int(Qobject6.mostRes)+1) #run id will be one more than last run id
     except:
         run = '1'  #if first run
     return run

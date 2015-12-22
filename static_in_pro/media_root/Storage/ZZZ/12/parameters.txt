@@ -1,0 +1,18 @@
+Files and Parameters used for FAT Run Number 26
+User: ZZZ
+Date: 2015-12-22 12:23:05.107868+00:00
+
+
+Files:
+	PDB: 1ifp.pdb
+	Optional exp. layerlines: none chosen
+	Intensity file: Intensity_1.txt
+
+
+Parameters:
+	Resolution (L): 0.0833333333
+	Resolution (H): 0.3333333333
+	Handedness: R
+	Units: 27.0
+	Rise: 2.9
+	Turns: 5.0

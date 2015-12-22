@@ -2,7 +2,7 @@
 -database /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/database
 -symmetry:symmetry_definition /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/12/helix_denovo.sdef
 -symmetry:initialize_rigid_body_dofs
--in:file:s /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/12/1QL1_monomer_FAOVNaO.pdb
+-in:file:s /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/12/1ifp.pdb
 -fiber_diffraction:layer_lines /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/12/grid.dat
 -fiber_diffraction:a 27.0
 -fiber_diffraction:b 5.0
@@ -22,6 +22,6 @@
 -out:output 
 -fiber_diffraction:output_fiber_spectra
 -out:file:scorefile /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/12/score.sc
--out:prefix RUN4_
+-out:prefix RUN9_
 -out:path:pdb static_in_pro/media_root/Storage/stephen/12/
 -score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt

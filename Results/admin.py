@@ -3,7 +3,8 @@ from Results.models import dbResults, dbrerun
 
 #without this, the data is in one big clump in admin
 class ResultsAdmin(admin.ModelAdmin):
-    list_display = ['id',
+    list_display = ['mostRes',
+                    'id',
                     'timestamp',
                     'username',
                     'jobname',

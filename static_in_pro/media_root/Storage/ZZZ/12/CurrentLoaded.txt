@@ -1,0 +1,1 @@
+{"Resolution (L)": "0.0833333333", "Resolution (H)": "0.3333333333", "Run date": "2015-12-22 12:23:05.107868+00:00", "Handedness": "R", "Intensity file": "Intensity_1.txt", "Units": "27.0", "Rise": "2.9", "ID": "26", "Optional_exp_layerlines": "none chosen", "PDB": "1ifp.pdb", "Turns": "5.0"}
