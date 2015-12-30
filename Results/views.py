@@ -29,14 +29,14 @@ def LoadRun(request):  # when Load is entered.....
     #move current layerlines.png to static for rendering
     source = str(Qobject6.LLoutputPic)
     #Django want pic in both our_static and root_static...
-    shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
     shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
+    shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
 
     #jmol display
     #************
     #use fibrilPDB
     #try:
-    runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
+   # runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
     #except:
        # pass
 
@@ -81,10 +81,10 @@ def ReRun(request):
             #jmol display
             #************
             #use fibrilPDB
-            try:
-                runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
-            except:
-                pass
+            #try:
+               # runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
+           # except:
+               # pass
 
             #make the zipfile
             ZipIt(request, Qobject6)
@@ -156,14 +156,18 @@ def DownloadResults(request):
         from django.http import HttpResponse
         from django.core.servers.basehttp import FileWrapper
         #get current run number
-        query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY mostRes DESC LIMIT 1'
-        Qobject8 = dbrerun.objects.raw(query)[0]
+        #query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY mostRes DESC LIMIT 1'
+        #Qobject8 = dbrerun.objects.raw(query)[0]
         #runNum = str(Qobject8.mostRes)
         # get user run info
         #             str(runNum)
        # Qobject6 = dbResults.objects.raw(query2)[0]
         # make the zipfile
-        file = ZipIt(request, Qobject8)
+        #file = ZipIt(request, Qobject8)
+         #path to zipfile
+        file=PathMaker(request.user.username, 'results.zip')
+        
+        
         # code for downloading a file
         wrapper = FileWrapper(open(file, 'rb'))  # 'rb' is windows fix
         response = HttpResponse(wrapper, content_type='text/plain')
@@ -322,7 +326,7 @@ def getLoadDict(username):
     return DictLoadedResults
 
 #UseJmol takes fibrilPDB output from Rosetta, hands it to Jmol for display
-def runJmol(fibrilPDB):
-    path = './home/stephen/jmol-14.4.0_2015.12.02/jmol.sh ' + '/home/stephen/Project/trydjango' + str(fibrilPDB)
-    os.system(path)
+#def runJmol(fibrilPDB):
+   # path = './home/stephen/jmol-14.4.0_2015.12.02/jmol.sh ' + '/home/stephen/Project/trydjango' + str(fibrilPDB)
+   # os.system(path)
     

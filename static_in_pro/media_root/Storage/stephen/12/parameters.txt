@@ -1,19 +1,20 @@
-Files and Parameters used for FAT Run Number 8
+Files and Parameters used for FAT Run Number 19
 User: stephen
-Date: 2015-12-22 15:32:33.208322+00:00
+Date: 2015-12-30 15:02:29.194435+00:00
+jobname:  test
 
 
 Files:
-	PDB: 1QL1_monomer_EMGtz8w.pdb
-	Optional exp. layerlines: layer_lines_experimental_2jZI7sT.dat
-	Intensity file: Intensity_8.txt
+	PDB: 1ql1.pdb
+	Optional exp. layerlines: layer_lines_experimental_rtZcLp8.dat
+	Intensity file: Intensity_19.txt
 
 
 Parameters:
-	Chi-square: 3.342
+	Handedness: L
 	Resolution (H): 0.3333333333
 	Resolution (L): 0.0833333333
 	Units: 27.0
 	Rise: 2.9
+	Chi-square: 3.342
 	Turns: 5.0
-	Handedness: R

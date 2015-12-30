@@ -27265,7 +27265,7 @@ ATOM  27264 2HB  ALA    46      -9.880  11.843  36.232  1.00  0.00           H
 ATOM  27265 3HB  ALA    46      -8.826  13.262  36.425  1.00  0.00           H  
 TER                                                                             
 # All scores below are weighted scores, not raw scores.
-#BEGIN_POSE_ENERGIES_TABLE RUN19_1ql1_0001
+#BEGIN_POSE_ENERGIES_TABLE RUN18_1ql1_0001
 label fiberdiffraction total
 weights 1 NA
 pose 0.158724 0.158724
@@ -29196,4 +29196,4 @@ VRT_1924 0 0
 VRT_1925 0 0
 VRT_1926 0 0
 VRT_1927 0 0
-#END_POSE_ENERGIES_TABLE RUN19_1ql1_0001
+#END_POSE_ENERGIES_TABLE RUN18_1ql1_0001

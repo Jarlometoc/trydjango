@@ -18,9 +18,9 @@ function readCookie(name){
 //for jsmol
 
 var jmolApplet;
-jmol_isReady = function(applet) {
-	document.title = ("JSmol is ready")
-	Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+	jmol_isReady = function(applet) {
+		document.title = ("JSmol is ready")
+		Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
 }               
 var Info = {
 	width: 300,
@@ -28,7 +28,7 @@ var Info = {
 	debug: false,
 	color: "black",
 	use: "HTML5",
-	j2sPath: "j2s",
+	j2sPath: "/static_in_pro/jsmol/j2s",
 	readyFunction: jmol_isReady,
 	script: "set antialiasDisplay;"
 }
