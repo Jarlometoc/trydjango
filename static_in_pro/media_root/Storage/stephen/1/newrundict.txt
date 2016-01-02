@@ -1,0 +1,1 @@
+{"handedness": "R", "Optional_exp_layerlines": "layer_lines_experimental.dat", "turns": 5, "rise": 2.9, "resolution (L)": 0.0833333333, "resolution (H)": 0.3333333333, "PDB": "1QL1_monomer.pdb", "units": 27}
