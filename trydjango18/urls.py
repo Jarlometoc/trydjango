@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^about/$', 'trydjango18.views.about', name = 'about'),
     url(r'^main/', 'trydjango18.views.main', name = 'main'),   #mainpage
     url(r'^accounts/', include('registration.backends.simple.urls')),  #no registration/confirm etc
-
+    url(r'^example/', 'trydjango18.views.example', name = 'example'),   #run example
+    
     #app specific url links
     url(r'^Inputs', include('Inputs.urls')),
     url(r'^Run', include('Run.urls')),

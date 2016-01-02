@@ -1,1 +1,1 @@
-{"Optional_exp_layerlines": "layer_lines_experimental.dat", "Rise": "2.9", "Intensity file": "Intensity_21.txt", "Handedness": "R", "PDB": "1QL1_monomer.pdb", "Resolution (H)": "0.3333333333", "Resolution (L)": "0.0833333333", "Turns": "5.0", "Run date": "2016-01-02 13:51:22.920383+00:00", "Chi-square": "2.996", "Units": "27.0", "ID": "21"}
+{}

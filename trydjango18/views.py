@@ -21,7 +21,8 @@ def main(request):
     else:
         return render(request, 'home.html', {})
 
-
+def example(request):
+    return render(request, 'example.html', {})
 
 #generic functions
 #*****************

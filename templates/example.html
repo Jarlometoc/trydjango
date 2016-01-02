@@ -1,0 +1,38 @@
+<!-- Example page; gets basic format (navbar, jumbotron, content block) and statics from base.html -->
+{% extends "base.html" %}
+ {% load static %}
+{% block jumbotron_content %}
+      <div class="jumbotron">
+        <div class="row">
+         <h1>FibSim example</h1>
+		
+        <div class="col-md-12">
+		<br>
+        <p>Below is an example of a typical FibSim output; in this case the displayed data is the fibril 1QL1, a filamentous bacteriophage. Layer-lines data from an X-ray diffraction experiment is also included. Some of the numerous generic and advanced settings have been altered from their defaults. Note how no advanced settings are displayed if they are not altered- you see only those that you change.  This run has been named 'The Test' and can be recalled for viewing/downloading by inputing the run number in the 'Choose an older run' button."  </p>  
+        </p>
+      </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div>
+     <div class="page-header">
+     <h1>Screen shot of a typical run</h1>
+        </div>
+
+<div class="container">
+<div class="row">
+<div style="float:left; width:10%;">
+<table border="1" cellpadding="5"><tbody><tr>
+	<td>
+		<img src="{% static 'images/UserLL.png' %}" alt = "user LL image" style="width:1100px;height:2400px;">
+	</td>
+</tr></tbody></table>	
+</div>
+</div>
+</div>
+{% endblock %}
