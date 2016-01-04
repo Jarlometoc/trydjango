@@ -1,1 +1,1 @@
-{}
+{"Units": "27.0", "PDB": "1ql1.pdb", "Resolution (L)": "0.0833333333", "Resolution (H)": "0.3333333333", "ID": "22", "Handedness": "R", "Optional_exp_layerlines": "none chosen", "Rise": "2.9", "Run date": "2016-01-04 21:49:40.034800+00:00", "Intensity file": "Intensity_22.txt", "Turns": "5.0"}

@@ -1,35 +1,31 @@
-<!-- Contact; gets basic format (navbar, jumbotron, content block) and statics from base.html  Also has crispy form. -->
+<!-- Contact-->
+<!-- gets basic format (navbar, jumbotron, content block) and statics from base.html  Also has crispyforms -->
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
-
 {% block jumbotron_content %}
-      <div class="jumbotron">
-        <div class="row">
-         <h1>Contact</h1>
-        <div class="col-md-8">
+<div class="jumbotron">
+   <div class="row">
+      <h1>Contact</h1>
+      <div class="col-md-12">
          <p> Feel free to contact us below if you have questions or comments about logging on, data security, registration, or the simulation itself.  Your email address will be stored securely on our server and not used for any purposes except to respond to your questions. Your data and results are stored for two months then erased. Your account will be erased after one year of inactivity. </p>
-     </div>
-     </div>
+      </div>
+   </div>
 </div>
 {% endblock %}
-
-
 {% block content %}
 {%  if title %}
 <div class='row'>
-<div class = 'col-sm-6 col-sm-offset-3'>
-    <h1>{{ title }}</h1>
-</div>
+   <div class = 'col-sm-6 col-sm-offset-3'>
+      <h1>{{ title }}</h1>
+   </div>
 </div>
 {%  endif %}
-
 <div class="row">
-<div class = 'col-sm-6 col-sm-offset-3'>
-<form method = 'POST' action= ''>{% csrf_token %}
-{{ form|crispy }}
-<input type="submit" class="btn btn-primary" value="Submit">
-</form>
-</div>
+   <div class = 'col-sm-6 col-sm-offset-3'>
+      <form method = 'POST' action= ''>{% csrf_token %}
+         {{ form|crispy }}
+         <input type="submit" class="btn btn-primary" value="Submit">
+      </form>
+   </div>
 </div>
 {% endblock %}

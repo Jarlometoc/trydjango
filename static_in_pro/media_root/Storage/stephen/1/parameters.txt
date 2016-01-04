@@ -1,19 +1,18 @@
-Files and Parameters used for FAT Run Number 21
+Files and Parameters used for FAT Run Number 22
 User: stephen
-Date: 2016-01-02 13:51:22.920383+00:00
+Date: 2016-01-04 21:49:40.034800+00:00
 
 
 Files:
-	PDB: 1QL1_monomer.pdb
-	Optional exp. layerlines: layer_lines_experimental.dat
-	Intensity file: Intensity_21.txt
+	PDB: 1ql1.pdb
+	Optional exp. layerlines: none chosen
+	Intensity file: Intensity_22.txt
 
 
 Parameters:
-	Rise: 2.9
-	Handedness: R
-	Resolution (H): 0.3333333333
-	Resolution (L): 0.0833333333
-	Turns: 5.0
-	Chi-square: 2.996
 	Units: 27.0
+	Resolution (L): 0.0833333333
+	Resolution (H): 0.3333333333
+	Handedness: R
+	Rise: 2.9
+	Turns: 5.0

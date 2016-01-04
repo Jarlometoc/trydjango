@@ -1,249 +1,215 @@
 <!-- Server page; gets basic format (navbar, jumbotron, content block) and statics from base.html
-Also 'includes' jmol functionality from jmol.html-->
+   Also 'includes' jmol functionality from jmol.html-->
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block jumbotron_content %}
 <div class="jumbotron">
-<div class="row">
-<h1>Fibrillar Assembly Server</h1>
-<div class="col-md-12">
-<p>This is the MainPage for running the analysis. Provide a PDB file, set the parameters and run the program. In return you receive a layerline plot, Jmol plot and a fibrillar score. The program takes a few minutes to run. Users can receive results via Email. See the example run on the HomePage, watch the video, or contact us if you have any questions.
-</p>
-</div>
-</div>
+   <div class="row">
+      <h1>Fibrillar Simulation Server</h1>
+      <div class="col-md-12">
+         <p>This is the main-page for running the Rosetta simulation. Follow the directions below. The program takes a few minutes to run. See the example run on the home-page for a better understanding of how this site functions.  Feel free to contact us if you have any questions.</p>
+      </div>
+   </div>
 </div>
 {% endblock %}
-
 {% block content %}
-
 <div class="page-header">
-<h1>Directions</h1>
+   <h1>Directions</h1>
 </div>
 <div class="container">
-<div class="row">
-
-<div class="col-md-12">
-<p style="font-size:120%">FETCH a PDB from the RCSB Protein Data Ban, or UPLOAD it locally. </p>
-<p style="font-size:120%">Optionally UPLOAD experimental layerlines data. </p>
-<p style="font-size:120%">Select PARAMETERS, optional ADDITIONAL PARAMETERS, hit RUN and wait. This will take a few minutes.</p>
-<p style="font-size:120%">Examine the results.</p>
-<p style="font-size:120%">Adjust and carry out the the query again if you like.</p>
-<p style="font-size:120%">ReRun any old results by entering the run number.</p>
-<p style="font-size:120%">DOWNLOAD or EMAIL results.</p>
-<p style="font-size:120%">Press CLEAR to start over.</p>
-
+   <div class="row">
+      <div class="col-md-12">
+         <p style="font-size:120%">Fetch a fibrillar monomeric PDB file from the RCSB, or upload it locally. </p>
+         <p style="font-size:120%">Upload optional experimental layerlines data. </p>
+         <p style="font-size:120%">Select generic and optional settings, hit run and wait. This will take a few minutes.</p>
+		 <p style="font-size:120%">Hit load to examine the results.</p>
+         <p style="font-size:120%">Adjust settings and carry out the the query again if you like.</p>
+         <p style="font-size:120%">Rerun any old results by entering the run number.</p>
+         <p style="font-size:120%">Download or email results.</p>
+         <p style="font-size:120%">Press clear to start over.</p>
+      </div>
+   </div>
 </div>
-
-</div>
-</div>
-
 <br>
-
-
 <div class="page-header">
-<h1>Running the program</h1>
+   <h1>Running the program</h1>
 </div>
-
 <div class="container">
-<div class="row">
-<div style="float:left; width:50%;">
-
-<div class="row">
-<div  class='col-lg-3'>
-
-<h4>Fetch from RCSB</h4>             <!--url "urlPDBdown" points to name (3rd parameter) in url.py -->
-<form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
-{{ PDBdownHTML }}
-<input type="hidden" name = "username" value = "{{ user.get_username }}">
-<input type="submit" class="btn btn-primary" value="Fetch">
-</form>
-    </div>
-
-<div  class='col-lg-2 '>
-    <br><br><br>
- <h4>&nbsp;&nbsp;&nbsp;&nbsp;Or</h4>
-</div>
-
- <div  class='col-lg-4'>
-     <br>
-<h4>Upload a PDB </h4>
-<form id = "noRefresh" action="{% url "urlPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ PDBupHTML|crispy }}
-<input type="hidden" name = "username" value = "{{ user.get_username }}">
-<input type="submit" class="btn btn-primary" value="Upload">
-</form>
-</div>
-</div>  <!-- close row -->
-
-<br><br><br>
-    <div  class='col-lg-3 pull-left'>
-<h4>Optional Exp. LayerLines</h4>
-<form id = "noRefresh" action="{% url "urlEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-{{ EXPHTML|crispy }}
-<input type="hidden" name = "username" value = "{{ user.get_username }}">
-<input type="submit" class="btn btn-primary" value="Upload">
-</form>
-
-
-<br><br>
-<h4>Generic Settings</h4>
-<form id = "H" action="{% url "urlParameters" %}" method="post">{% csrf_token %}
-{{ ParaHTML|crispy }}
-<input type="hidden" name = "username" value = "{{ user.get_username }}">
-<input type="submit" class="btn btn-primary" value="Set">
-</form>
-
-<br><br>
-<!-- additional parameters is a dropdown menu -->
-<h4>Additional Settings</h4>
-<form id = "noRefresh" action="{% url "urlPara2" %}" method="post">{% csrf_token %}
-{{ AddHTML|crispy }}
-<input type="hidden" name = "username" value = "{{ user.get_username }}">
-<input type="submit" class="btn btn-primary" value="Set">
-</form>
-</div>
-</div>
-
-<div style="float:left; width:40%; margin-left:10px;">
-
- <h3>Files and parameters for the upcoming run:</h3>
-      {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
-        {% if key == 'jobname' %}
-           <h4>{{ key }}:&nbsp;{{ value }}</h4>
-       {%  endif %}
-    {%  endfor %}
-    <br> <h4>Files to be used:</h4>
-   {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
-       {% if key == 'PDB' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-       {%  endif %}
-       {% if key == 'Optional_exp_layerlines' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-       {%  endif %}
-   {%  endfor %}
-    <br> <h4>Parameters to be used:</h4>
-     {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
+   <div class="row">
+      <div style="float:left; width:50%;">
+         <div class="row">
+            <div  class='col-lg-3'>
+               <h4>Fetch a PDB from RCSB</h4>
+               <form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
+               {{ PDBdownHTML }}
+               <input type="hidden" name = "username" value = "{{ user.get_username }}">
+               <input type="submit" class="btn btn-primary" value="Fetch">
+               </form>
+            </div>
+            <div  class='col-lg-2 '>
+               <br><br><br>
+               <h4>&nbsp;&nbsp;&nbsp;&nbsp;Or</h4>
+            </div>
+            <div  class='col-lg-4'>
+               <br>
+               <h4>Upload a PDB </h4>
+               <form id = "noRefresh" action="{% url "urlPDBup" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+               {{ PDBupHTML|crispy }}
+               <input type="hidden" name = "username" value = "{{ user.get_username }}">
+               <input type="submit" class="btn btn-primary" value="Upload">
+               </form>
+            </div>
+         </div>
+         <!-- close row -->
+         <br><br><br>
+         <div  class='col-lg-3 pull-left'>
+            <h4>Optional Exp. LayerLines</h4>
+            <form id = "noRefresh" action="{% url "urlEXP" %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            {{ EXPHTML|crispy }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Upload">
+            </form>
+            <br><br>
+			 <!-- Generic parameters -->
+            <h4>Generic Settings</h4>
+            <form id = "H" action="{% url "urlParameters" %}" method="post">{% csrf_token %}
+            {{ ParaHTML|crispy }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Set">
+            </form>
+            <br><br>
+            <!-- Additional parameters -->
+            <h4>Additional Settings</h4>
+            <form id = "noRefresh" action="{% url "urlPara2" %}" method="post">{% csrf_token %}
+            {{ AddHTML|crispy }}
+            <input type="hidden" name = "username" value = "{{ user.get_username }}">
+            <input type="submit" class="btn btn-primary" value="Set">
+            </form>
+         </div>
+      </div>
+      <div style="float:left; width:40%; margin-left:10px;">
+         <h3>Files and parameters for the upcoming run:</h3>
+         {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
+         {% if key == 'jobname' %}
+         <h4>{{ key }}:&nbsp;{{ value }}</h4>
+         {%  endif %}
+         {%  endfor %}
+         <br> 
+         <h4>Files to be used:</h4>
+         {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
+         {% if key == 'PDB' %}
+         <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+         {%  endif %}
+         {% if key == 'Optional_exp_layerlines' %}
+         <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+         {%  endif %}
+         {%  endfor %}
+         <br> 
+         <h4>Parameters to be used:</h4>
+         {% for key, value in ToBeRunHTML.items %}{% csrf_token %}
          {% if key != 'PDB' %}
-           {% if key != 'Optional_exp_layerlines' %}
-               {% if key != 'jobname' %}
-                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-                {% endif %}
-             {% endif %}
+         {% if key != 'Optional_exp_layerlines' %}
+         {% if key != 'jobname' %}
+         <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
          {% endif %}
-    {%  endfor %}
-
+         {% endif %}
+         {% endif %}
+         {%  endfor %}
+      </div>
+   </div>
 </div>
-</div>
-    </div>
-
-    <div class="row">
-<div class='col-sm-2 pull-right'>
- <form id = "noRefresh" action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
+<div class="row">
+   <div class='col-sm-2 pull-right'>
+      <form id = "noRefresh" action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
       <button type="submit" class="btn btn-primary">Run</button>
- </form>
-  </div>
-<div class='col-sm-2 pull-right'>
-<form id = "noRefresh" action= "{% url "urlClear" %}" method="POST">{% csrf_token %}
-<input type="submit" class="btn btn-warning" value="Clear">
-</form>
+      </form>
+   </div>
+   <div class='col-sm-2 pull-right'>
+      <form id = "noRefresh" action= "{% url "urlClear" %}" method="POST">{% csrf_token %}
+      <input type="submit" class="btn btn-warning" value="Clear">
+      </form>
+   </div>
 </div>
-
- </div>
-
-
 <!--Loading the results to be viewed -->
 <div class="page-header">
-<h1>Loading results</h1>
+   <h1>Loading results</h1>
 </div>
-
 <div class="container">
 <div class="row">
-<div style="float:left; width:10%;">
-<br>
- <!-- Loading needs Load button, send buttons, exit -->
-     <form action= "{% url "urlLoadRun" %}" method="POST">{% csrf_token %}
-<button type="Submit" class = 'btn btn-primary'>Load Run</button>
-</form>
-<br>
-<br>
-
- <form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
-   {{ ReRunHTML|crispy }}
-   <input type="hidden" name = "username" value = "{{ user.get_username }}">
-  <input type="submit" class="btn btn-primary" value="Choose an older run">
- </form>
-<br>
-<br>
-</div>
-
-
- <div style="float:Right; width:50%; margin-left:10px;">
-{% for key, value in resultsHTML.items %}{% csrf_token %}
-  {% if key == 'ID' %}
-    <h3>Loaded Run Number &nbsp;{{ value }}</h3>
-    {%  endif %}
-      {%  endfor %}
- {% for key, value in resultsHTML.items %}{% csrf_token %}
-      {% if key == 'Run date' %}
-            <h4>{{ value }}</h4>
+   <div style="float:left; width:10%;">
+      <br>
+      <!-- Loading needs Load button, send buttons, exit -->
+      <form action= "{% url "urlLoadRun" %}" method="POST">{% csrf_token %}
+      <button type="Submit" class = 'btn btn-primary'>Load Run</button>
+      </form>
+      <br>
+      <br>
+      <form id = "noRefresh" action= "{% url "urlReRun" %}" method="post" >{% csrf_token %}
+      {{ ReRunHTML|crispy }}
+      <input type="hidden" name = "username" value = "{{ user.get_username }}">
+      <input type="submit" class="btn btn-primary" value="Choose an older run">
+      </form>
+      <br>
+      <br>
+   </div>
+   <div style="float:Right; width:50%; margin-left:10px;">
+      {% for key, value in resultsHTML.items %}{% csrf_token %}
+      {% if key == 'ID' %}
+      <h3>Loaded Run Number &nbsp;{{ value }}</h3>
       {%  endif %}
-   {% if key == 'jobname' %}
-           <h4>{{ key }}:&nbsp;{{ value }}</h4>
-   {%  endif %}
-
-{%  endfor %}
-    <br> <h4>Files used:</h4>
-{% for key, value in resultsHTML.items %}{% csrf_token %}
-       {% if key == 'PDB' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-       {%  endif %}
-	   {% if key == 'Intensity file' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-       {%  endif %}
-       {% if key == 'Optional_exp_layerlines' %}
-           <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-       {%  endif %}
-     {%  endfor %}
-    <br> <h4>Parameters used:</h4>
-     {% for key, value in resultsHTML.items %}{% csrf_token %}
-         {% if key != 'PDB' %}
-              {% if key != 'ID' %}
-           {% if key != 'Optional_exp_layerlines' %}
-               {% if key != 'Run date' %}
-                   {% if key != 'ToBeRunHTML' %}
-                       {% if key != 'forJmol' %}
-                             {% if key != 'jobname' %}
-                                 {% if key != 'forLLpic' %}
-									 {% if key != 'Intensity file' %}
-                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
-									{% endif %}
-								 {% endif %}
-                                {% endif %}
-                            {% endif %}
-                           {% endif %}
-                        {% endif %}
-                   {% endif %}
-             {% endif %}
-         {% endif %}
-    {%  endfor %}
-
-
-
-    </div>  <!-- close button row -->
-    </div>  <!-- close container -->
-
-
-
-<!-- Examining results -->
-
-<div class="page-header">
-<h1>Examining the results</h1>
+      {%  endfor %}
+      {% for key, value in resultsHTML.items %}{% csrf_token %}
+      {% if key == 'Run date' %}
+      <h4>{{ value }}</h4>
+      {%  endif %}
+      {% if key == 'jobname' %}
+      <h4>{{ key }}:&nbsp;{{ value }}</h4>
+      {%  endif %}
+      {%  endfor %}
+      <br> 
+      <h4>Files used:</h4>
+      {% for key, value in resultsHTML.items %}{% csrf_token %}
+      {% if key == 'PDB' %}
+      <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+      {%  endif %}
+      {% if key == 'Intensity file' %}
+      <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+      {%  endif %}
+      {% if key == 'Optional_exp_layerlines' %}
+      <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+      {%  endif %}
+      {%  endfor %}
+      <br> 
+      <h4>Parameters used:</h4>
+      {% for key, value in resultsHTML.items %}{% csrf_token %}
+      {% if key != 'PDB' %}
+      {% if key != 'ID' %}
+      {% if key != 'Optional_exp_layerlines' %}
+      {% if key != 'Run date' %}
+      {% if key != 'ToBeRunHTML' %}
+      {% if key != 'forJmol' %}
+      {% if key != 'jobname' %}
+      {% if key != 'forLLpic' %}
+      {% if key != 'Intensity file' %}
+      <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {% endif %}
+      {%  endfor %}
+   </div>
+   <!-- close button row -->
 </div>
-
-
-  <!-- Keep Results (Jmol+Chisq) code on its own-->
-    {% include 'jmol.html' %}
-
-
+<!-- close container -->
+<!-- Examining results -->
+<div class="page-header">
+   <h1>Examining the results</h1>
+</div>
+<!-- Keep Results (Jmol+Chisq) code on its own-->
+{% include 'jmol.html' %}
 {% endblock %}
-

@@ -1,100 +1,89 @@
-<!-- Landing page; gets basic format (navbar, jumbotron, content block) and statics from base.html -->
+<!-- Landing page-->
+<!-- extend basic format (navbar, jumbotron, content block) and statics from base.html -->
 {% extends "base.html" %}
- {% load static %}
+{% load static %}
 {% block jumbotron_content %}
-      <div class="jumbotron">
-        <div class="row">
-         <h1>FibSim: a fribrillar assembly tool</h1>
-		
-        <div class="col-md-8">
-		<br>
-        <p>FibSim allows users to predict fibrillar quaternary structure based on a fibrillar subunit's secondary structure.  Users can include experimentally-derived layer-lines for a statistical comparison of simulated vs experimental data, and to guild in model building. This program is based on the work of Potrzebowski & André in a paper entitled 'Automated determination of fibrillar structures by simultaneous model building and fiber diffraction refinement', published in Nature Methods, 2015, pp. 679-684.   
-        </p>
-            <p>
-			<br>
-          <a class="btn btn-lg btn-primary" href="{% url 'example' %}">See an example &raquo;</a>
-        </p>
+<div class="jumbotron">
+   <div class="row">
+      <h1>FibSim: a fribrillar assembly tool</h1>
+      <div class="col-md-8">
+         <br>
+         <p>FibSim is a web server allowing access to a Rosetta simulation for fibrillar quaternary structure, based on the work of Potrzebowski & André in a paper entitled, 'Automated determination of fibrillar structures by simultaneous model building and fiber diffraction refinement', published in 2015 in Nature Methods, 7, 679-684. 
+         <p>
+            <br>
+            <a class="btn btn-lg btn-primary" href="{% url 'example' %}">See an example &raquo;</a>
+         </p>
       </div>
       <div class='col-sm-4'>
-	  <br>
-          <img src="{% static 'images/tmv_main.png' %}" alt = "user jmol image" style="width:350px;height:350px;">
-		  <p style="font-size:90%">Image Source:&nbsp;&nbsp;<a href="http://www.rcsb.org/pdb/home/home.do#Category-visualize">2TMV, RCSB</a> </p>
+         <br>
+         <img src="{% static 'images/tmv_main.png' %}" alt = "user jmol image" style="width:350px;height:350px;">
+         <p style="font-size:90%">Image Source:&nbsp;&nbsp;<a href="http://www.rcsb.org/pdb/home/home.do#Category-visualize">2TMV, RCSB</a> </p>
       </div>
-    </div>
-    </div>
-
+   </div>
+</div>
 {% endblock %}
-
-
 {% block content %}
-
-    <div>
-     <div class="page-header">
-     <h1>How it works</h1>
-        </div>
-
-
-    <div class="row">
-        <div class="col-md-12">
-            <p style="font-size:150%">Users provide the monomeric sequence data in .pdb format, either uploaded from a local source, or downloaded from RCSB, and in return receive a simulated layer-lines output, the predicted 3D fibril as a .pdb and its Jsmol 3D image.  Users can include experimentally-derived layer-lines for a statistical comparison, and to guild in model building. Users must register with an email address to have access to the server. A run usually takes just a few minutes and results can be viewed online, downloaded, or sent to your email address. Results are stored two month and then erased.
-
-
-
-            </p>
-        </div>
-    </div>
-    </div>
-
-
-
-       <!--Powered by symbols and links -->
+<div>
+   <div class="page-header">
+      <h1>How it works</h1>
+   </div>
+   <div class="row">
+      <div class="col-md-12">
+         <p style="font-size:150%">Users provide the monomeric tertiary structure in .pdb format, either uploaded from a local source, or downloaded from RCSB, along with helical symmetry data, and in return receive a simulated layer-lines output, the predicted fibril as a .pdb and its Jsmol 3D image.  Users can include experimentally-derived layer-lines for a statistical comparison with the simulated layer-lines, and to guild in model building. Users must register with an email address to have access to the server. A run usually takes just a few minutes and results can be viewed online, downloaded, or sent to your email address. Results are stored two month and then erased.
+         </p>
+      </div>
+   </div>
+</div>
+<!-- 'Powered by' symbols and links -->
 <div class="page-header">
-<h1>Powered by </h1>
+   <h1>Powered by </h1>
 </div>
-
 <div class="container">
-<div class="row">
-<div style="float:left; width:10%;">
-    <table cellpadding="100"><tbody><tr>
-        <td>
-            <a href="https://www.djangoproject.com/"> <img src="{% static 'images/django-neg.sh-600x600.png' %}" alt = "django" style="width:150px;height:150px;"/> </a>
-       </td>
-        <td>
-            <a href="http://getbootstrap.com/"> <img src="{% static 'images/bootstrap-logo.png' %}"  alt = "bootstrap" style="width:110px;height:100px;"/> </a>
-        </td>
-        <td>
-            <a href="https://www.jetbrains.com/pycharm/"> <img src="{% static 'images/PyCharm_twitter.png' %}"  alt = "PyCharm" style="width:110px;height:100px;"/> </a>
-        </td>
-        <td>
-            <a href="https://www.python.org/"> <img src="{% static 'images/python.png' %}"  alt = "Python" style="width:110px;height:100px;"/> </a>
-        </td>
-        <td>
-            <a href="https://www.sqlite.org/"> <img src="{% static 'images/SQLite370.svg.png' %}"  alt = "SQLite" style="width:120px;height:100px;"/> </a>
-        </td>
-         <td>
-            <a href="http://jmol.sourceforge.net/"><img src="{% static 'images/Jmol_icon13.png' %}"  alt = "Jsmol" style="width:110px;height:100px;"/> </a>
-        </td>
-		</tr>
-		<tr>
-         <td>
-            <a href="http://www.rcsb.org/pdb/home/home.do"><img src="{% static 'images/rcsb-pdb.png' %}"  alt = "RCSB" style="width:120px;height:100px;"/> </a>
-        </td>
-         <td>
-            <a href="https://git-scm.com/"><img src="{% static 'images/GIT.png' %}"  alt = "Git" style="width:100px;height:100px;"/> </a>
-        </td>
-		 <td>
-            <a href="https://github.com/"><img src="{% static 'images/github-mark.png' %}"  alt = "Github" style="width:150px;height:100px;"/> </a>
-        </td>
-         <td>
-            <a href="https://www.rosettacommons.org/"><img src="{% static 'images/Rosetta.png' %}"  alt = "Rosetta" style="width:160px;height:100px;"/> </a>
-        </td>
-		<td>
-            <a href="http://www.lunduniversity.lu.se/"><img src="{% static 'images/Lundsymbol.png' %}"  alt = "Lund University" style="width:100px;height:100px;"/> </a>
-        </td>
-
-    </tr></tbody></table>
-    </div>
-</div>
+   <div class="row">
+      <div style="float:left; width:10%;">
+         <table cellpadding="100">
+            <tbody>
+               <tr>
+                  <td>
+                     <a href="https://www.djangoproject.com/"> <img src="{% static 'images/django-neg.sh-600x600.png' %}" alt = "django" style="width:150px;height:150px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="http://getbootstrap.com/"> <img src="{% static 'images/bootstrap-logo.png' %}"  alt = "bootstrap" style="width:110px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="https://www.jetbrains.com/pycharm/"> <img src="{% static 'images/PyCharm_twitter.png' %}"  alt = "PyCharm" style="width:110px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="https://www.python.org/"> <img src="{% static 'images/python.png' %}"  alt = "Python" style="width:110px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="https://www.sqlite.org/"> <img src="{% static 'images/SQLite370.svg.png' %}"  alt = "SQLite" style="width:120px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="http://jmol.sourceforge.net/"><img src="{% static 'images/Jmol_icon13.png' %}"  alt = "Jsmol" style="width:110px;height:100px;"/> </a>
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <a href="http://www.rcsb.org/pdb/home/home.do"><img src="{% static 'images/rcsb-pdb.png' %}"  alt = "RCSB" style="width:120px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="https://git-scm.com/"><img src="{% static 'images/GIT.png' %}"  alt = "Git" style="width:100px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="https://github.com/"><img src="{% static 'images/github-mark.png' %}"  alt = "Github" style="width:150px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="https://www.rosettacommons.org/"><img src="{% static 'images/Rosetta.png' %}"  alt = "Rosetta" style="width:160px;height:100px;"/> </a>
+                  </td>
+                  <td>
+                     <a href="http://www.lunduniversity.lu.se/"><img src="{% static 'images/Lundsymbol.png' %}"  alt = "Lund University" style="width:100px;height:100px;"/> </a>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
 </div>
 </div>
 {% endblock %}
