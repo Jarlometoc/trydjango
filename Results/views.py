@@ -253,6 +253,7 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
             'Rise' : str(Qobject6.rise),
             'Resolution (L)': str(Qobject6.rescutL),
             'Resolution (H)' : str(Qobject6.rescutH),
+            'fibPDB' : removePath(str(Qobject6.fibrilPDB)),
             'Handedness':  str(Qobject6.LorR)}
     if Qobject6.jobname != ' ':
         used['jobname'] = str(Qobject6.jobname)

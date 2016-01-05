@@ -1,0 +1,29 @@
+<html>
+<body>
+  <script type="text/javascript" src="/static_root/jsmol/JSmol.min.js"></script>
+                
+<script type="text/javascript">
+    var jmolApplet;
+    jmol_isReady = function(applet) {
+        document.title = ("JSmol is ready")
+        Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+}               
+    var Info = {
+        width: 300,
+        height: 300,
+        debug: false,
+        color: "black",
+        use: "HTML5",
+        j2sPath: "/static_root/jsmol/j2s",
+        readyFunction: jmol_isReady,
+        script: "set antialiasDisplay;"
+}
+</script>
+
+<script>
+    jmolApplet = Jmol.getApplet("jmolApplet", Info)
+    Jmol.script(jmolApplet,  "load /static_root/jsmol/1gxp.pdb;anim mode palindrome 2 2; anim on; slab off; spin off; wireframe off; spacefill off; trace off; set ambient 40; set specpower 40; slab off; ribbons on; color structure");
+</script>
+</body>
+</html>
+<!-- All atom types -->

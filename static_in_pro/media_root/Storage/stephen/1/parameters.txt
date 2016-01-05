@@ -1,18 +1,19 @@
-Files and Parameters used for FAT Run Number 22
+Files and Parameters used for FAT Run Number 26
 User: stephen
-Date: 2016-01-04 21:49:40.034800+00:00
+Date: 2016-01-05 23:26:59.520273+00:00
 
 
 Files:
-	PDB: 1ql1.pdb
+	PDB: 1ifp.pdb
 	Optional exp. layerlines: none chosen
-	Intensity file: Intensity_22.txt
+	Intensity file: Intensity_26.txt
 
 
 Parameters:
-	Units: 27.0
 	Resolution (L): 0.0833333333
+	Units: 27.0
+	Rise: 1.4
+	fibPDB: RUN26_1ifp_0001.pdb
 	Resolution (H): 0.3333333333
 	Handedness: R
-	Rise: 2.9
 	Turns: 5.0
