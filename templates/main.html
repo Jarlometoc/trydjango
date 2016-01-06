@@ -19,7 +19,7 @@
 <div class="container">
    <div class="row">
       <div class="col-md-12">
-         <p style="font-size:120%">Fetch a fibrillar monomeric PDB file from the RCSB, or upload it locally. </p>
+         <p style="font-size:120%">Fetch a fibrillar monomeric PDB file from RCSB, or upload it locally. </p>
          <p style="font-size:120%">Upload optional experimental layerlines data. </p>
          <p style="font-size:120%">Select generic and optional settings, hit run and wait. This will take a few minutes.</p>
 		 <p style="font-size:120%">Hit load to examine the results.</p>
@@ -39,9 +39,10 @@
       <div style="float:left; width:50%;">
          <div class="row">
             <div  class='col-lg-3'>
-               <h4>Fetch a PDB from RCSB</h4>
+			<br>
+               <h4>&nbsp;&nbsp;&nbsp;&nbsp;Fetch a PDB</h4>
                <form id = "noRefresh" action="{% url "urlPDBdown" %}" method="post">{% csrf_token %}
-               {{ PDBdownHTML }}
+               &nbsp;&nbsp;&nbsp;{{ PDBdownHTML }}
                <input type="hidden" name = "username" value = "{{ user.get_username }}">
                <input type="submit" class="btn btn-primary" value="Fetch">
                </form>
@@ -119,7 +120,7 @@
    </div>
 </div>
 <div class="row">
-   <div class='col-sm-2 pull-right'>
+   <div class='col-sm-4 pull-right'>
       <form id = "noRefresh" action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
       <button type="submit" class="btn btn-primary">Run</button>
       </form>
@@ -132,7 +133,7 @@
 </div>
 <!--Loading the results to be viewed -->
 <div class="page-header">
-   <h1>Loading results</h1>
+   <h1>Viewing the results</h1>
 </div>
 <div class="container">
 <div class="row">
@@ -140,7 +141,7 @@
       <br>
       <!-- Loading needs Load button, send buttons, exit -->
       <form action= "{% url "urlLoadRun" %}" method="POST">{% csrf_token %}
-      <button type="Submit" class = 'btn btn-primary'>Load Run</button>
+      <button type="Submit" class = 'btn btn-primary'>Most recent run</button>
       </form>
       <br>
       <br>
@@ -183,6 +184,7 @@
       <h4>Parameters used:</h4>
       {% for key, value in resultsHTML.items %}{% csrf_token %}
       {% if key != 'PDB' %}
+	  {% if key != 'fibPDB' %}
       {% if key != 'ID' %}
       {% if key != 'Optional_exp_layerlines' %}
       {% if key != 'Run date' %}
@@ -193,6 +195,7 @@
       {% if key != 'Intensity file' %}
       <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
       {% endif %}
+	  {% endif %}
       {% endif %}
       {% endif %}
       {% endif %}

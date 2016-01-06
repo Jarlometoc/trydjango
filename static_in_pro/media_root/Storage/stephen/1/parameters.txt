@@ -10,10 +10,10 @@ Files:
 
 
 Parameters:
-	Resolution (L): 0.0833333333
-	Units: 27.0
 	Rise: 1.4
-	fibPDB: RUN26_1ifp_0001.pdb
 	Resolution (H): 0.3333333333
+	Resolution (L): 0.0833333333
 	Handedness: R
+	fibPDB: RUN26_1ifp_0001.pdb
 	Turns: 5.0
+	Units: 27.0

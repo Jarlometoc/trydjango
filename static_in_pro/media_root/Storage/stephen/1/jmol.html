@@ -1,0 +1,110 @@
+ <!-- Jmol functionality from http://chemapps.stolaf.edu/jmol/jmol.php
+ This pages feeds into the Mainpage using 'include'-->
+ {% load static %}
+
+ 
+<!-- Jsmol script -->
+<script type="text/javascript" src="{% static 'js/JSmol.min.js' %}"></script>               
+
+ 
+ 
+<!-- function to show empty fields or, if present, fibrilPDB and userLL -->
+{% for key, value in resultsHTML.items %} <!-- removed token! here -->
+{% if key == 'PDB' and value != 'none chosen' %}
+
+<table border="1" cellpadding="5">
+	<tbody>
+		<tr>	
+			<h3>Tertiary structure of subunit</h3>
+			{{ value }}	
+			<td>
+				<script type="text/javascript">
+					var jmolApplet;
+					jmol_isReady = function(applet) {
+						document.title = ("JSmol is ready")
+						Jmol._getElement(applet, "appletdiv").style.border=""
+				}               
+					var Info = {
+						width: 400,
+						height: 400,
+						debug: false,
+						color: "white",
+						use: "HTML5",
+						j2sPath: "/static/jsmol/j2s",
+						readyFunction: jmol_isReady,
+						script: "set antialiasDisplay;"
+				}
+				</script>
+				<script >
+					jmolApplet = Jmol.getApplet("jmolApplet", Info)
+					Jmol.script(jmolApplet,  'load "/media/Storage/stephen/1/{{ value }}";anim mode palindrome 2 2; anim on; slab off; spin off; wireframe off; spacefill off; trace off; set ambient 40; set specpower 40; slab off; ribbons on; color structure');
+				</script>				
+			</td>
+			{% endif %}
+			{% endfor %}
+			&nbsp;&nbsp;
+			{% for key, value in resultsHTML.items %} 
+			{% if key == 'fibPDB' and value != 'none chosen' %}
+			{{ value }}
+			<h3>Quaternary structure of fibril</h3>
+			<td>
+				<script type="text/javascript">
+					var jmolApplet;
+					jmol_isReady = function(applet) {
+						document.title = ("JSmol is ready")
+						Jmol._getElement(applet, "appletdiv").style.border=""
+				}               
+					var Info = {
+						width: 400,
+						height: 400,
+						debug: false,
+						color: "white",
+						use: "HTML5",
+						j2sPath: "/static/jsmol/j2s",
+						readyFunction: jmol_isReady,
+						script: "set antialiasDisplay;"
+				}
+				</script>
+				<script >
+					jmolApplet = Jmol.getApplet("jmolApplet", Info)
+					Jmol.script(jmolApplet,  'load "/media/Storage/stephen/1/{{ value }}";anim mode palindrome 2 2; anim on; slab off; spin off; wireframe off; spacefill off; trace off; set ambient 40; set specpower 40; slab off; ribbons on; color structure');
+				</script>			
+			</td>
+		</tr>
+	</tbody>
+</table>
+{% endif %}
+{% endfor %}
+
+<br>
+<h3>Layerlines</h3>
+<table border="1" cellpadding="5"><tbody><tr>
+	<td>
+		<img src="{% static 'images/UserLL.png' %}" alt = "user LL image" style="width:1100px;height:2400px;">
+	</td>
+</tr></tbody></table>	
+
+<!-- Buttons--->
+<br><br><br>
+
+    <form action= "{% url "urlEmailR" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-success'>Email Results</button>
+</form>
+
+<br>
+<br>
+<form action= "{% url "urlDownR" %}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-success'>Download Results</button>
+</form>
+<br>
+<br>
+ <form action= "{% url 'auth_logout'%}" method="POST">{% csrf_token %}
+<button type="Submit" class = 'btn btn-danger'>Logoff</button>
+</form>
+<br>
+<br>
+
+{% endif %}
+{% endfor %}
+
+
