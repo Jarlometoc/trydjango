@@ -6,3 +6,6 @@ SCORE:     2.563               2.563   0.000   empty_tag
 SCORE:     2.563               2.563   0.000   empty_tag
 SCORE:    25.409              25.409   0.000   empty_tag
 SCORE:     7.136               7.136   0.000   empty_tag
+SCORE:     0.159               0.159   0.000   empty_tag
+SCORE:     2.139               2.139   0.000   empty_tag
+SCORE:     0.159               0.159   0.000   empty_tag

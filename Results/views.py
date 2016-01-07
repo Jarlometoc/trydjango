@@ -32,14 +32,6 @@ def LoadRun(request):  # when Load is entered.....
     shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
     shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
 
-    #jmol display
-    #************
-    #use fibrilPDB
-    #try:
-   # runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
-    #except:
-       # pass
-
     #make the zipfile
     ZipIt(request, Qobject6)
               
@@ -77,15 +69,6 @@ def ReRun(request):
             shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
             shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
            
-
-            #jmol display
-            #************
-            #use fibrilPDB
-            #try:
-               # runJmol(Qobject6.fibrilPDB)  #path to the fibrilPDB made by Rosetta
-           # except:
-               # pass
-
             #make the zipfile
             ZipIt(request, Qobject6)
                 
@@ -291,13 +274,6 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
     json.dump(used, fout)
     fout.close()
 
-
-    #Logic for displaying fibrilarPDB using Jmol and LLimage
-   # used['forJmol'] = str(Qobject6.fibrilPDB)        #this is the -input- for Jmol
-   # if Qobject6.experimentalData != 'none chosen':
-       # used['forLLpic'] = str(Qobject6.LLoutputPic)   #this is the -output- of LayerLinesToImage.py
-
-
     #include most recent newrundict.txt, so it can be displayed during page refresh
     rundict=getRunDict(Qobject6.username)
     used['ToBeRunHTML'] = rundict
@@ -325,9 +301,3 @@ def getLoadDict(username):
     except:
         DictLoadedResults = {}
     return DictLoadedResults
-
-#UseJmol takes fibrilPDB output from Rosetta, hands it to Jmol for display
-#def runJmol(fibrilPDB):
-   # path = './home/stephen/jmol-14.4.0_2015.12.02/jmol.sh ' + '/home/stephen/Project/trydjango' + str(fibrilPDB)
-   # os.system(path)
-    
