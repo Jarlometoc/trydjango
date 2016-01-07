@@ -9,7 +9,6 @@ from Results.models import dbResults, dbrerun
 from trydjango18.views import PathMaker, removePath
 import json
 import shutil
-from trydjango18.views import Sound
 import urllib.request
 import os
 
@@ -181,7 +180,7 @@ def ParamUsedFile(Qobject6, used):
     FH.write("\n\n")
     FH.write("Parameters:\n")
     for key in used:
-        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file'):
+        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'fibPDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file'):
             next
         else:
             FH.write("\t"+ key + ": " + used[key])
@@ -226,6 +225,10 @@ def ZipIt(request, Qobject6):
 
 #Results for a given run:
 def UsedParam(Qobject6):  #inputed object containing the chosen run number
+    #special path for fibPDB output
+    makestring = str(Qobject6.fibrilPDB)
+    specialPath = '/media/' + makestring[25:]
+    #make dictionary of used parameters from the Results object
     used = {'ID': str(Qobject6.mostRes),
             'Run date':  str(Qobject6.timestamp),
             'PDB':  removePath(str(Qobject6.PDBused)),
@@ -236,7 +239,7 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
             'Rise' : str(Qobject6.rise),
             'Resolution (L)': str(Qobject6.rescutL),
             'Resolution (H)' : str(Qobject6.rescutH),
-            'fibPDB' : removePath(str(Qobject6.fibrilPDB)),
+            'fibPDB' : specialPath,
             'Handedness':  str(Qobject6.LorR)}
     if Qobject6.jobname != ' ':
         used['jobname'] = str(Qobject6.jobname)

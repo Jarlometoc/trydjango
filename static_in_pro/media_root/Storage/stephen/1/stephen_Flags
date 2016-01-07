@@ -22,6 +22,6 @@
 -out:output 
 -fiber_diffraction:output_fiber_spectra
 -out:file:scorefile /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/1/score.sc
--out:prefix RUN29_
+-out:prefix RUN32_
 -out:path:pdb static_in_pro/media_root/Storage/stephen/1/
 -score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt

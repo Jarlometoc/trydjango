@@ -23,7 +23,6 @@ from numpy import cos
 from numpy import sin
 from numpy.linalg import norm
 from math import radians
-from trydjango18.views import Sound
 
 
 class Virtual(object):
