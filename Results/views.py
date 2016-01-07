@@ -25,12 +25,6 @@ def LoadRun(request):  # when Load is entered.....
     Qobject6 = dbResults.objects.raw(query)[0]
     toreturn = UsedParam(Qobject6)
 
-    #move current layerlines.png to static for rendering
-    source = str(Qobject6.LLoutputPic)
-    #Django want pic in both our_static and root_static...
-    shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
-    shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
-
     #make the zipfile
     ZipIt(request, Qobject6)
               
@@ -63,11 +57,6 @@ def ReRun(request):
             Qobject6 = dbResults.objects.raw(query2)[0]
             toreturn = UsedParam(Qobject6)
 
-            #move current layerlines.png to static for rendering
-            source = str(Qobject6.LLoutputPic)
-            shutil.copyfile(source, 'static_in_pro/our_static/images/UserLL.png')
-            shutil.copyfile(source, 'static_in_pro/static_root/images/UserLL.png')
-           
             #make the zipfile
             ZipIt(request, Qobject6)
                 
@@ -180,7 +169,7 @@ def ParamUsedFile(Qobject6, used):
     FH.write("\n\n")
     FH.write("Parameters:\n")
     for key in used:
-        if (key == 'ID' or key == 'Run date' or key == 'jobname' or key == 'PDB' or key == 'fibPDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file'):
+        if (key == 'ID' or key == 'Run date' or key == 'LLoutput' or key == 'jobname' or key == 'PDB' or key == 'fibPDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file'):
             next
         else:
             FH.write("\t"+ key + ": " + used[key])
@@ -225,9 +214,14 @@ def ZipIt(request, Qobject6):
 
 #Results for a given run:
 def UsedParam(Qobject6):  #inputed object containing the chosen run number
+
     #special path for fibPDB output
     makestring = str(Qobject6.fibrilPDB)
-    specialPath = '/media/' + makestring[25:]
+    FIBspecialPath = '/media/' + makestring[25:]
+    #special path for LL output
+    makestring2 = str(Qobject6.LLoutputPic)
+    LLspecialPath = '/media/' + makestring2[25:]
+   
     #make dictionary of used parameters from the Results object
     used = {'ID': str(Qobject6.mostRes),
             'Run date':  str(Qobject6.timestamp),
@@ -239,7 +233,8 @@ def UsedParam(Qobject6):  #inputed object containing the chosen run number
             'Rise' : str(Qobject6.rise),
             'Resolution (L)': str(Qobject6.rescutL),
             'Resolution (H)' : str(Qobject6.rescutH),
-            'fibPDB' : specialPath,
+            'fibPDB' : FIBspecialPath,
+            'LLoutput' : LLspecialPath,
             'Handedness':  str(Qobject6.LorR)}
     if Qobject6.jobname != ' ':
         used['jobname'] = str(Qobject6.jobname)

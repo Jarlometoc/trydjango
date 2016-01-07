@@ -1,20 +1,19 @@
-Files and Parameters used for FAT Run Number 32
+Files and Parameters used for FAT Run Number 33
 User: stephen
-Date: 2016-01-07 10:18:53.576914+00:00
+Date: 2016-01-07 10:29:31.073712+00:00
 
 
 Files:
-	PDB: 1ql1.pdb
+	PDB: 1ifp.pdb
 	Optional exp. layerlines: layer_lines_experimental_7vEuxzT.dat
-	Intensity file: Intensity_32.txt
+	Intensity file: Intensity_33.txt
 
 
 Parameters:
+	Handedness: L
 	Resolution (H): 0.3333333333
 	Turns: 5.0
-	Handedness: L
-	Chi-square: 2.996
-	Resolution (L): 0.0833333333
-	fibPDB: /media/Storage/stephen/1/RUN32_1ql1_0001.pdb
-	Rise: 2.9
 	Units: 27.0
+	Rise: 2.9
+	Resolution (L): 0.0833333333
+	Chi-square: 2.996

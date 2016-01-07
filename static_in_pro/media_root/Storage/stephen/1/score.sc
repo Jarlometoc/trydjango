@@ -12,3 +12,6 @@ SCORE:     0.159               0.159   0.000   empty_tag
 SCORE:     0.159               0.159   0.000   empty_tag
 SCORE:     0.159               0.159   0.000   empty_tag
 SCORE:     0.159               0.159   0.000   empty_tag
+SCORE:     0.465               0.465   0.000   empty_tag
+SCORE:     0.465               0.465   0.000   empty_tag
+SCORE:     1.658               1.658   0.000   empty_tag

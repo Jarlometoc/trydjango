@@ -17,8 +17,8 @@
                    Jmol._getElement(applet, "appletdiv").style.border=""
                }               
                var Info = {
-                   width: 500,
-                   height: 500,
+                   width: 450,
+                   height: 450,
                    debug: false,
                    color: "white",
                    use: "HTML5",
@@ -40,9 +40,13 @@
 <table border="1" cellpadding="5">
    <tbody>
       <tr>
+		{% for key, value in resultsHTML.items %} <!-- removed token! here -->
+		{% if key == 'LLoutput' %}
          <td>
-            <img src="{% static 'images/UserLL.png' %}" alt = "user LL image" style="width:1100px;height:2400px;">
+            <img src="{{ value }}" alt = "user LL image" style="width:1100px;height:2400px;">
          </td>
+		{% endif %}
+		{% endfor %}
       </tr>
    </tbody>
 </table>

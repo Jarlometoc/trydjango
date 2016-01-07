@@ -192,9 +192,11 @@
       {% if key != 'forJmol' %}
       {% if key != 'jobname' %}
       {% if key != 'forLLpic' %}
+	  {% if key != 'LLoutput' %}
       {% if key != 'Intensity file' %}
       <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
       {% endif %}
+	  {% endif %}
 	  {% endif %}
       {% endif %}
       {% endif %}
