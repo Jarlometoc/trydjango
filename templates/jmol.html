@@ -1,7 +1,7 @@
 <!--This pages feeds into the Mainpage using 'include'-->
 {% load static %}
-<!-- function to show empty fields or, if present, fibrilPDB and userLL -->
-{% for key, value in resultsHTML.items %} <!-- removed token! here -->
+<!-- function to show fibrilPDB and userLL, if loaded -->
+{% for key, value in resultsHTML.items %}
 {% if key == 'fibPDB' and value != 'none chosen' %}
 <h3>Quaternary structure</h3>
 <table border="1" cellpadding="5">
@@ -40,7 +40,7 @@
 <table border="1" cellpadding="5">
    <tbody>
       <tr>
-		{% for key, value in resultsHTML.items %} <!-- removed token! here -->
+		{% for key, value in resultsHTML.items %} 
 		{% if key == 'LLoutput' %}
          <td>
             <img src="{{ value }}" alt = "user LL image" style="width:1100px;height:2400px;">
@@ -50,7 +50,7 @@
       </tr>
    </tbody>
 </table>
-<!-- Buttons--->
+<!-- Save Results Buttons and logout--->
 <br><br><br>
 <form action= "{% url 'urlEmailR' %}" method="POST">{% csrf_token %}
    <button type="Submit" class = 'btn btn-success'>Email Results</button>

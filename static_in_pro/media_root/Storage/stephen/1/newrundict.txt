@@ -1,1 +1,1 @@
-{"resolution (L)": "0.0833333333", "handedness": "L", "resolution (H)": "0.3333333333", "rise": "2.9", "PDB": "1ifp", "turns": "6.0", "Optional_exp_layerlines": "layer_lines_experimental_7vEuxzT.dat", "jobname": " mytest", "units": "27.0"}
+{"resolution (H)": 0.3333333333, "rise": 2.9, "PDB": "1ql1", "units": 27, "resolution (L)": 0.0833333333, "Optional_exp_layerlines": "none chosen", "turns": 5, "handedness": "R"}

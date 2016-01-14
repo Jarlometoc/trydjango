@@ -15,6 +15,7 @@ from static_in_pro.media_root.Rosetta_programs.syn_grid import makeDefExp
 from static_in_pro.media_root.Rosetta_programs.layerLinesToImage import LLTI
 import datetime
 
+
 #Main function
 #*************
 def Testing(request):
@@ -204,7 +205,6 @@ def Testing(request):
         #************
         #note! if no expLL (just grid.dat) , then score should be empty and no chisq made!!!!!
         Chisq=findChisq(scorePath, Qobject.username)   #parses Score file, which was produced by Rosetta_programs
-
         
         #add to most recent run
         mostrecent = int(tagOutput(request))
@@ -242,6 +242,8 @@ def Testing(request):
         addResults.save()
 
     
+        #need to remove hydrogens from fibril pdb or Jsmol is slow
+        removeHydrogen(fibrilPDBPath) 
     
     #RENDER
     #toreturn= UsedParam(Qobject6)      #note! UsedParam also includes newrundict.txt results for 'to be run' files/para
@@ -284,6 +286,12 @@ def findChisq(Path, username):
             line = line.rstrip()
             words = line.split()
             Chisq = float(words[index])
+            #remove file now
+            try:
+               pathtoold = PathMaker(username, 'score.sc')
+               os.remove(pathtoold)
+            except OSError:
+               pass
             return Chisq
     FH.close()
 
@@ -328,7 +336,26 @@ def fibRename(request, chosenPDB):
     PathtofibrilPDB = 'RUN' + runnum + '_' + name + suffix
     return PathtofibrilPDB
     
-    
+#need to remove hydrogens or Jsmol is slow    
+def removeHydrogen(fibrilPDBPath):
+    collectLines =[]
+    FH = open(fibrilPDBPath, 'r')
+    for line in FH:
+        line = line.rstrip()
+        col = line.split()
+        print(col)
+        if col[0] != 'ATOM':
+            next
+        if col[-1] == 'H':
+            next
+        else:
+            collectLines.append(line)      
+    FH.close()            
+    fout = open(fibrilPDBPath, 'w')
+    for item in collectLines:
+        fout.write(item)
+        fout.write("\n")
+    fout.close()    
     
 
     

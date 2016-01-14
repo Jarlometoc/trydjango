@@ -120,16 +120,22 @@
    </div>
 </div>
 <div class="row">
-   <div class='col-sm-4 pull-right'>
-      <form id = "noRefresh" action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
-      <button type="submit" class="btn btn-primary">Run</button>
-      </form>
+	<div class='col-sm-1 pull-right'>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    </div>
-   <div class='col-sm-2 pull-right'>
+	<div class='col-sm-1 pull-right'>
+		<a class="btn btn-info" href="{% url 'example' %}">I need help</a>
+   </div>
+	<div class='col-sm-1 pull-right'>
       <form id = "noRefresh" action= "{% url "urlClear" %}" method="POST">{% csrf_token %}
       <input type="submit" class="btn btn-warning" value="Clear">
       </form>
    </div>
+   <div class='col-sm-1 pull-right'>
+      <form id = "noRefresh" action= "{% url "urlTesting" %}" method="POST">{% csrf_token %}
+      <button type="submit" class="btn btn-primary">Run</button>
+      </form>
+   </div> 
 </div>
 <!--Loading the results to be viewed -->
 <div class="page-header">
