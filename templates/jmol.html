@@ -1,8 +1,11 @@
 <!--This pages feeds into the Mainpage using 'include'-->
 {% load static %}
 <!-- function to show fibrilPDB and userLL, if loaded -->
+{% for key, value in showresults.items %}
+{% if key == 'results' and value == 'on' %}
 {% for key, value in resultsHTML.items %}
-{% if key == 'fibPDB' and value != 'none chosen' %}
+{% if key == 'fibPDB' %}
+
 <h3>Quaternary structure</h3>
 <table border="1" cellpadding="5">
    <tbody>
@@ -67,5 +70,7 @@
 </form>
 <br>
 <br>
+{% endif %}
+{% endfor %}
 {% endif %}
 {% endfor %}

@@ -1,9 +1,9 @@
 -out:overwrite
 -database /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/database
--symmetry:symmetry_definition /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/1/helix_denovo.sdef
+-symmetry:symmetry_definition /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/RRR/1/helix_denovo.sdef
 -symmetry:initialize_rigid_body_dofs
--in:file:s /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/1/1ql1.pdb
--fiber_diffraction:layer_lines /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/1/grid.dat
+-in:file:s /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/RRR/1/1ql1.pdb
+-fiber_diffraction:layer_lines /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/RRR/1/grid.dat
 -fiber_diffraction:a 27.0
 -fiber_diffraction:b 5.0
 -fiber_diffraction:p 2.9
@@ -21,7 +21,7 @@
 -fiber_diffraction:grid_phi 128
 -out:output 
 -fiber_diffraction:output_fiber_spectra
--out:file:scorefile /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/stephen/1/score.sc
--out:prefix RUN135_
--out:path:pdb static_in_pro/media_root/Storage/stephen/1/
+-out:file:scorefile /home/stephen/Project/trydjango/static_in_pro/media_root/Storage/RRR/1/score.sc
+-out:prefix RUN12_
+-out:path:pdb static_in_pro/media_root/Storage/RRR/1/
 -score:weights /home/stephen/Project/trydjango/static_in_pro/media_root/Rosetta_files/fiberdiffraction.txt

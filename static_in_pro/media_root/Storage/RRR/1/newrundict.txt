@@ -1,0 +1,1 @@
+{"handedness": "R", "turns": 5, "PDB": "1ql1", "Optional_exp_layerlines": "none chosen", "resolution (L)": 0.0833333333, "units": 27, "rise": 2.9, "resolution (H)": 0.3333333333}

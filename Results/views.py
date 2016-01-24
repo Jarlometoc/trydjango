@@ -19,7 +19,10 @@ def LoadRun(request):  # when Load is entered.....
 
     #include ToBeRun dictionary from inputs, so they dont disappear during page refresh
     ToBeRunDict = getRunDict(request.user.username)
-
+    
+    #onoff toggle for only showing jsmol when pressing load or rerun (not input entries)
+    onoroff = {'results' : 'on'}
+    
     #Make Results object for printing to main:  MOST RECENT ENTRY!
     query = 'SELECT * FROM Results_dbresults WHERE username = "' + request.user.username + '" ORDER BY mostRes DESC LIMIT 1'
     Qobject6 = dbResults.objects.raw(query)[0]
@@ -29,7 +32,7 @@ def LoadRun(request):  # when Load is entered.....
     ZipIt(request, Qobject6)
               
     #RENDER
-    return render(request, 'main.html', {'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': toreturn})
+    return render(request, 'main.html', {'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': toreturn, 'showresults' : onoroff})
 
 
 
@@ -38,7 +41,8 @@ def ReRun(request):
 
     #include ToBeRun dictionary from inputs
     ToBeRunDict = getRunDict(request.user.username)
-
+    #onoff toggle for only showing jsmol when pressing load or rerun (not input entries)
+    onoroff = {'results' : 'on'}
     if request.method == 'GET':
         rerunF = ReRunForm(initial={'runNum': '1'})
     else:
@@ -61,20 +65,24 @@ def ReRun(request):
             ZipIt(request, Qobject6)
                 
             #RENDER
-            return render(request, 'main.html', {'resultsHTML': toreturn, 'ToBeRunHTML' : ToBeRunDict})
+            return render(request, 'main.html', {'resultsHTML': toreturn, 'ToBeRunHTML' : ToBeRunDict, 'showresults' : onoroff})
         else:
             #empty, but need to include input data
             rerunF = ReRunForm(initial={'runNum': '1'})
-            return render(request, 'main.html', {'ReRunHTML': rerunF, 'ToBeRunHTML' : ToBeRunDict})
+            return render(request, 'main.html', {'ReRunHTML': rerunF, 'ToBeRunHTML' : ToBeRunDict, 'showresults' : onoroff})
 
     #empty, but need to include input data
-    return render(request, 'main.html', {'ReRunHTML': rerunF, 'ToBeRunHTML' : ToBeRunDict})
+    return render(request, 'main.html', {'ReRunHTML': rerunF, 'ToBeRunHTML' : ToBeRunDict, 'showresults' : onoroff})
 
 
 #Sends results to user's email
 #*****************************
 def EmailResults(request):
     if request.method == 'POST':  # when send results button pushed....
+    
+        #onoff toggle for only showing jsmol when pressing load or rerun (not input entries)
+        onoroff = {'results' : 'on'}
+       
         from django.conf import settings
         from django.core.mail.message import EmailMessage
         from django.contrib.auth.models import User
@@ -115,7 +123,7 @@ def EmailResults(request):
 
         
         #RENDER
-        return render(request, 'main.html',{'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': rerun})
+        return render(request, 'main.html',{'ToBeRunHTML' : ToBeRunDict, 'resultsHTML': rerun, 'showresults' : onoroff})
 
 
 #Downloads user's results  !!!!make sure it picks what's on screen and not auto most recent!!!
@@ -169,11 +177,17 @@ def ParamUsedFile(Qobject6, used):
     FH.write("\n\n")
     FH.write("Parameters:\n")
     for key in used:
-        if (key == 'ID' or key == 'Run date' or key == 'LLoutput' or key == 'jobname' or key == 'PDB' or key == 'fibPDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file'):
+        if (key == 'ID' or key == 'Run date' or key == 'LLoutput' or key == 'jobname' or key == 'PDB' or key == 'fibPDB' or key == 'Optional_exp_layerlines' or key == 'Intensity file' or key == 'Chi-square'):
             next
         else:
             FH.write("\t"+ key + ": " + used[key])
             FH.write("\n")
+    try:
+        FH.write("\n\n")
+        FH.write("Chi-square test:\n")
+        FH.write("\t"+ used['Chi-square'] + "\n") 
+    except:
+        pass
     FH.close()
 
 

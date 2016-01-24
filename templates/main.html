@@ -190,6 +190,7 @@
       <h4>Parameters used:</h4>
       {% for key, value in resultsHTML.items %}{% csrf_token %}
       {% if key != 'PDB' %}
+	  {% if key != 'Chi-square' %}
 	  {% if key != 'fibPDB' %}
       {% if key != 'ID' %}
       {% if key != 'Optional_exp_layerlines' %}
@@ -201,6 +202,8 @@
 	  {% if key != 'LLoutput' %}
       {% if key != 'Intensity file' %}
       <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ key }}:&nbsp;{{ value }}</h4>
+	  
+	  {% endif %}
       {% endif %}
 	  {% endif %}
 	  {% endif %}
@@ -212,6 +215,13 @@
       {% endif %}
       {% endif %}
       {% endif %}
+	   {%  endfor %}
+	   {% for key, value in resultsHTML.items %}{% csrf_token %}
+	  {% if key == 'Chi-square' and value != 'none chosen' %}
+	  <br>
+	  <h4>Chi-square test:</h4>
+	  <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ value }}</h4>
+	  {% endif %}
       {%  endfor %}
    </div>
    <!-- close button row -->
