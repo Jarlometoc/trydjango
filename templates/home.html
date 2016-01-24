@@ -5,10 +5,10 @@
 {% block jumbotron_content %}
 <div class="jumbotron">
    <div class="row">
-      <h1>FibSim: a fribrillar assembly tool</h1>
+      <h1>FibSim: a refinement tool for fibrillar macromolecular models</h1>
       <div class="col-md-8">
          <br>
-         <p>FibSim is a web server allowing access to a Rosetta simulation for fibrillar quaternary structure, based on the work of <a href="http://www.nature.com/nmeth/journal/v12/n7/abs/nmeth.3399.htmlPotrzebowski">Potrzebowski & André</a> in a paper entitled, 'Automated determination of fibrillar structures by simultaneous model building and fiber diffraction refinement', published in 2015 in Nature Methods, 7, 679-684. 
+         <p>FibSim is a web server providing a refinement tool for fibrillar macromolecular models, based on the work of <a href="http://www.nature.com/nmeth/journal/v12/n7/abs/nmeth.3399.htmlPotrzebowski">Potrzebowski & André</a> in a paper entitled, 'Automated determination of fibrillar structures by simultaneous model building and fiber diffraction refinement', published in 2015 in Nature Methods, 7, 679-684. 
          <p>
             <br>
             <a class="btn btn-lg btn-info" href="{% url 'example' %}">See an example &raquo;</a>
@@ -31,7 +31,7 @@
    </div>
    <div class="row">
       <div class="col-md-12">
-         <p style="font-size:150%">Users provide the monomeric tertiary structure in .pdb format, either uploaded from a local source, or downloaded from RCSB, along with helical symmetry data, and in return receive a simulated layer-lines output, the predicted fibril as a .pdb and its Jsmol 3D image.  Users can include experimentally-derived layer-lines for a statistical comparison with the simulated layer-lines, and to guild in model building. Users must register with an email address to have access to the server. A run usually takes just a minute and results can be viewed online, downloaded, or sent to your email address. Results are stored two month and then erased.
+         <p style="font-size:150%">Users provide the monomeric, tertiary structure in .pdb format, either uploaded from a local source, or downloaded from RCSB, and the helical symmetry data. In return, the user receives a simulated layer-lines output, the predicted fibrillar macromolecule in .pdb format and the corresponding 3D image using Jsmol.  Users can include experimentally-derived layer-lines for a statistical comparison with the simulated layer-lines, to guild in model refinement. Users must register with an email address to have access to the server. A run usually takes just a minute and results can be viewed online, downloaded, or sent to your email address. Results are stored two month and then erased.
          </p>
       </div>
    </div>

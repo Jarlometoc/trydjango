@@ -1,1 +1,1 @@
-{"resolution (H)": 0.3333333333, "rise": 2.9, "PDB": "1ql1", "units": 27, "resolution (L)": 0.0833333333, "Optional_exp_layerlines": "none chosen", "turns": 5, "handedness": "R"}
+{"turns": 5, "resolution (H)": 0.3333333333, "resolution (L)": 0.0833333333, "rise": 2.9, "PDB": "5d7w", "handedness": "R", "units": 27, "Optional_exp_layerlines": "none chosen"}
