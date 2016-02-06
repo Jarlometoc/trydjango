@@ -1,0 +1,22 @@
+Files and Parameters used for FAT Run Number 140
+User: stephen
+Date: 2016-02-06 20:38:22.515007+00:00
+
+
+Files:
+	PDB: 1QL1_monomer.pdb
+	Optional exp. layerlines: layer_lines_experimental_bjw2l25.dat
+	Intensity file: Intensity_140.txt
+
+
+Parameters:
+	Resolution (L): 0.0833333333
+	Resolution (H): 0.3333333333
+	Units: 27.0
+	Turns: 5.0
+	Handedness: R
+	Rise: 3.9
+
+
+Chi-square test:
+	1.36

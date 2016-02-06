@@ -16,7 +16,11 @@ from Results.views import getLoadDict
 #pdb download
 #************
 def importPDBdown(request):
-
+    
+    #load db with an initial value, if first time user
+    defDown = dbPDBdown(username=request.user.username, PDBdown='none chosen')
+    defDown.save()
+    
     #get loaded Results data, if any, for the Testing Refresh, otherwise it will blank
     rerun = getLoadDict(request.user.username)
 
@@ -50,6 +54,10 @@ def importPDBdown(request):
 #***********
 def importPDBup(request):
 
+    #load db with an initial value, if first time user
+    defUp = dbPDBup(username=request.user.username, PDBup='none chosen')
+    defUp.save()
+    
     #get loaded Results data, if any, for the Testing Refresh, otherwise it will blank
     rerun = getLoadDict(request.user.username)
 
@@ -83,6 +91,10 @@ def importPDBup(request):
 #********************
 def importEXP(request):
 
+    #load db with an initial value, if first time user
+    defEXP = dbEXPupload(username=request.user.username, EXPupload='none chosen')
+    defEXP.save()
+
     #get loaded Results data, if any, for the Testing Refresh, otherwise it will blank
     rerun = getLoadDict(request.user.username)
 
@@ -113,6 +125,10 @@ def importEXP(request):
 #parameters
 #************
 def importParameters(request):
+
+    #load db with an initial value, if first time user
+    defPara = dbPara(username=request.user.username, jobname=' ', turns=5, units=27, rise=2.9, rescutL=0.0833333333, rescutH=0.3333333333, LorR='R')
+    defPara.save()
 
     #get loaded Results data, if any, for the Testing Refresh, otherwise it will blank
     rerun = getLoadDict(request.user.username)
@@ -148,6 +164,12 @@ def importParameters(request):
 #additional parameters
 #*********************
 def importPara2(request):
+
+    #load db with an initial value, if first time user
+    defPara2 = dbPara2(username=request.user.username, bfactor=20.0, bfactorSolv=400, bfactorSolvK=0.4, gridPhi=128,
+                           gridR=256, gridZ=128, qfhtK1=2.0, qfhtK2=2.2, rfactor='False', scscaling=0.92, R_step=0.001,
+                           layer_lines=20)
+    defPara2.save()
 
     #get loaded Results data, if any, for the Testing Refresh, otherwise it will blank
     rerun = getLoadDict(request.user.username)

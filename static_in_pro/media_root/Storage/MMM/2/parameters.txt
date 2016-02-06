@@ -1,0 +1,22 @@
+Files and Parameters used for FAT Run Number 1
+User: MMM
+Date: 2016-02-06 21:27:21.374069+00:00
+
+
+Files:
+	PDB: 1ql1.pdb
+	Optional exp. layerlines: none chosen
+	Intensity file: Intensity_1.txt
+
+
+Parameters:
+	Rise: 2.9
+	Resolution (H): 0.3333333333
+	Bfactor: 21.0
+	Units: 27.0
+	Resolution (L): 0.0833333333
+	Handedness: R
+	Turns: 5.0
+
+
+Chi-square test:

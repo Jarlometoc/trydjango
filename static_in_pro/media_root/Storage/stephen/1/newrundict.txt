@@ -1,1 +1,1 @@
-{"rise": 2.9, "PDB": "layer_lines_experimental_5Qte28X.dat", "units": 27, "resolution (H)": 0.3333333333, "resolution (L)": 0.0833333333, "handedness": "R", "turns": 5, "Optional_exp_layerlines": "none chosen"}
+{"resolution (H)": 0.3333333333, "Optional_exp_layerlines": "layer_lines_experimental_bjw2l25.dat", "units": 27, "handedness": "R", "rise": 2.9, "turns": 5, "resolution (L)": 0.0833333333, "PDB": "1ql1"}

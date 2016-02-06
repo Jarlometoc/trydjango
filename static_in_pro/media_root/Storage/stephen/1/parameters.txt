@@ -1,18 +1,22 @@
-Files and Parameters used for FAT Run Number 135
+Files and Parameters used for FAT Run Number 138
 User: stephen
-Date: 2016-01-24 19:25:23.723248+00:00
+Date: 2016-01-26 20:01:13.545606+00:00
 
 
 Files:
 	PDB: 1ql1.pdb
-	Optional exp. layerlines: none chosen
-	Intensity file: Intensity_135.txt
+	Optional exp. layerlines: layer_lines_experimental_bjw2l25.dat
+	Intensity file: Intensity_138.txt
 
 
 Parameters:
-	Handedness: R
-	Resolution (L): 0.0833333333
-	Rise: 2.9
-	Turns: 5.0
 	Units: 27.0
+	Rise: 2.9
+	Handedness: R
+	Turns: 5.0
 	Resolution (H): 0.3333333333
+	Resolution (L): 0.0833333333
+
+
+Chi-square test:
+	0.159
